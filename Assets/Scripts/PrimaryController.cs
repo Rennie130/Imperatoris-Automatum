@@ -13,7 +13,7 @@ public class PrimaryController : MonoBehaviour
     public float jumpHeight = 1.5f;
 
     public int maxJumps = 2; //total jumps
-    private int JumpCount = 0; //tracks jumpage
+    private int jumpCount = 0; //tracks jumpage
 
     public float groundedThreshold = 0.05f; //buffer for grounded detection
 
@@ -64,8 +64,16 @@ public class PrimaryController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         
-        Vector3 move = cameraTransform.forward * v + cameraTransform.right * h;
-        move.y = 0f;
+        Vector3 forward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+        
+        forward.y = 0f;
+        right.y = 0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 move = forward * v + right * h;
     
         if (move.magnitude > 0.1f)
         {
@@ -78,18 +86,28 @@ public class PrimaryController : MonoBehaviour
 
     void HandleJump()
     {
-        //reset jump input when grounded
-        if (controller.isGrounded && velocity.y <= groundedThreshold)
+        //force grounded stability
+        if (controller.isGrounded)
         {
-            JumpCount = 0;
-            velocity.y = 2f; //keep grounded stable
+            jumpCount = 0;
+
+            if (velocity.y <0)
+            {
+                velocity.y = -2f; //stick to ground
+            }
         }
+        //reset jump input when grounded
+       // if (controller.isGrounded && velocity.y <= groundedThreshold)
+      //  {
+        //    jumpCount = 0;
+      //      velocity.y = 2f; //keep grounded stable
+      //  }
 
         //jump input
-        if (Input.GetButtonDown("Jump") && JumpCount < maxJumps)
+        if (Input.GetButtonDown("Jump") && jumpCount < maxJumps)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            JumpCount++;
+            jumpCount++;
         }
     }
 
