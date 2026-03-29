@@ -8,79 +8,85 @@ public class CameraController : MonoBehaviour
     public Transform secondaryTarget;
 
     [Header("Third Person")]
-    public Vector3 thirdPersonOffset = new Vector3(0, 2, -5);
-    public float mouseSensitivity = 200f;
-    public float followSpeed = 10f;
-
-    [Header("Collision")]
-    public float collisionRadius = 0.3f;
-    public LayerMask collisionMask;
+    public Vector3 Offset = new Vector3(0, 2, -4);
+    public float followSpeed = 5f;
+    public float rotationSpeed = 120f;
 
     float yaw;
     float pitch;
 
-    bool firstPersonMode = false;
+    bool secondPersonMode = false;
+
+    void Start()
+    {
+        yaw = primaryTarget.eulerAngles.y;
+        pitch = 10f;
+    }
 
     void LateUpdate()
     {
-        if (firstPersonMode)
-        {
-            FirstPersonUpdate();
-        }
+        if (secondPersonMode)
+            SecondPersonUpdate();
         else
-        {
             ThirdPersonUpdate();
-        }
     }
 
     void ThirdPersonUpdate()
     {
         //mouse input
-        yaw += Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        yaw += Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+        pitch -= Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
          //clamp vertical look
-         pitch = Mathf.Clamp(pitch, -40f, 80f);
+         pitch = Mathf.Clamp(pitch, -30f, 70f);
 
-        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
+        Quaternion rot = Quaternion.Euler(pitch, yaw, 0);
+
         //desired camera position
-        Vector3 desiredPosition = primaryTarget.position + rotation * thirdPersonOffset;
-
-        //camera collision check
-        Vector3 direction = desiredPosition - primaryTarget.position;
-        if (Physics.SphereCast(primaryTarget.position, collisionRadius, direction.normalized, out RaycastHit hit, direction.magnitude, collisionMask))
-        {
-            //pull camera closer if blocked
-            desiredPosition = hit.point;
-        }
+        Vector3 desired = primaryTarget.position + rot * Offset;
 
         //smooth movement
-        transform.position = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, desired, followSpeed * Time.deltaTime);
         //always look at player
-        transform.LookAt(primaryTarget.position + Vector3.up * 1.5f);
+        Vector3 lookTarget = primaryTarget.position + Vector3.up * 1.5f;
+
+        Quaternion lookRot = Quaternion.LookRotation(lookTarget - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, followSpeed * Time.deltaTime);
     }
 
-    void FirstPersonUpdate()
+    void SecondPersonUpdate()
     {
-        //camera at head
-        Vector3 targetPos = primaryTarget.position + Vector3.up * 1.6f;
-        //smooth transition into head
-        transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
-        //match rotation
-        transform.rotation = Quaternion.Lerp(transform.rotation, primaryTarget.rotation, followSpeed *Time.deltaTime);
+        Transform secondary = secondaryTarget;
+        Transform primary = primaryTarget;
+        
+        //first-person position (head)
+        Vector3 headPosition = primary.position + Vector3.up * 1.6f;
+
+        transform.position = Vector3.Lerp(transform.position, headPosition, followSpeed * Time.deltaTime);
+
+       //always look at secondary
+       Vector3 lookTarget = secondary.position + Vector3.up * 2f;
+
+       Vector3 direction = (lookTarget - transform.position).normalized;
+       
+       Vector3 flatDirection = direction;
+       flatDirection.y = Mathf.Clamp(flatDirection.y, -0.5f, 0.7f);
+       
+       Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
+
+       //Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+       transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (followSpeed * 0.5f) * Time.deltaTime);
+       
     }
 
     public void SwitchToThirdPerson()
     {
-        firstPersonMode = false;
-
-        //reset angles for smoother transition
-        yaw = primaryTarget.eulerAngles.y;
-        pitch = 10f;
+        secondPersonMode = false;
     }
 
-    public void SwitchToFirstPerson()
+    public void SwitchToSecondPerson()
     {
-        firstPersonMode = true;
+        secondPersonMode = true;
     }
 
 }

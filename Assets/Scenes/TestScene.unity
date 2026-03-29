@@ -1436,8 +1436,6 @@ MonoBehaviour:
   rotationSpeed: 10
   gravity: -15
   jumpHeight: 1
-  maxJumps: 2
-  groundedThreshold: 0.05
 --- !u!143 &68363267
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4871,13 +4869,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryTarget: {fileID: 68363265}
   secondaryTarget: {fileID: 2026614257}
-  thirdPersonOffset: {x: 0, y: 3, z: -5}
-  mouseSensitivity: 500
+  Offset: {x: 0, y: 2, z: -4}
   followSpeed: 10
-  collisionRadius: 0.3
-  collisionMask:
-    serializedVersion: 2
-    m_Bits: 1
+  rotationSpeed: 120
 --- !u!43 &641873627
 Mesh:
   m_ObjectHideFlags: 0
@@ -11587,6 +11581,9 @@ MonoBehaviour:
   primaryController: {fileID: 68363266}
   secondaryController: {fileID: 2026614258}
   cameraController: {fileID: 605128364}
+  maxSignalDistance: 100
+  minSignalDistance: 5
+  signalStrength: 1
 --- !u!4 &1381209369
 Transform:
   m_ObjectHideFlags: 0
