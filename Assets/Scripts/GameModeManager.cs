@@ -14,11 +14,19 @@ public class GameModeManager : MonoBehaviour
 
     public GameMode CurrentMode = GameMode.ThirdPerson;
 
+    [Header("References")]
     public PrimaryController primaryController;
     public SecondaryController secondaryController;
     public CameraController cameraController;
 
-    public void Awake()
+    [Header("Signal System")]
+    public float maxSignalDistance = 25f;
+    public float minSignalDistance = 5f;
+
+    [HideInInspector]
+    public float signalStrength = 1f;
+
+    void Awake()
     {
         Instance = this;
     }
@@ -38,6 +46,12 @@ public class GameModeManager : MonoBehaviour
                 SetMode(GameMode.SecondPerson);
             else
                 SetMode(GameMode.ThirdPerson);
+        }
+
+        //update signal only in second person
+        if (CurrentMode == GameMode.SecondPerson)
+        {
+            UpdateSignal();
         }
     }
 
@@ -61,8 +75,25 @@ public class GameModeManager : MonoBehaviour
             //enable tank controls
             secondaryController.EnableControl(true);
             //switch camera
-            cameraController.SwitchToFirstPerson();
+            cameraController.SwitchToSecondPerson();
         }
 
+    }
+
+    //calculate signal strength based on distance
+    void UpdateSignal()
+    {
+        float distance = Vector3.Distance(primaryController.transform.position, secondaryController.transform.position);
+        signalStrength = Mathf.InverseLerp(maxSignalDistance, minSignalDistance, distance);
+    }
+
+    //debug line in scene view
+    void OnDrawGizmos()
+    {
+        if (primaryController == null || secondaryController == null) return;
+
+        Gizmos.color = Color.Lerp(Color.red, Color.green, signalStrength);
+
+        Gizmos.DrawLine(primaryController.transform.position, secondaryController.transform.position);
     }
 }

@@ -8,7 +8,11 @@ public class SecondaryController : MonoBehaviour
     public float moveSpeed = 4f;
     public float rotationSpeed = 100f;
     
-    CharacterController controller;
+    private CharacterController controller;
+
+    float inputH;
+    float inputV;
+
     bool canControl = false;
 
     void Start()
@@ -20,15 +24,31 @@ public class SecondaryController : MonoBehaviour
     {
         if (!canControl) return;
 
-        float move = Input.GetAxis("Vertical");
-        float rotate = Input.GetAxis("Horizontal");
+        float signal = GameModeManager.Instance.signalStrength;
 
-        //rotate left/right
-        transform.Rotate(Vector3.up * rotate * rotationSpeed * Time.deltaTime);
+        if (signal <= 0.05f)
+            return; //lost signal
 
-        //forward / backward movement
-        Vector3 forwardMove = transform.forward * move;
-        controller.Move(forwardMove * moveSpeed * Time.deltaTime);
+        HandleMovement(signal);
+    }
+
+    public void ReceiveInput(float h, float v)
+    {
+        inputH = h;
+        inputV = v;
+    }
+
+    void HandleMovement(float signal)
+    {
+        float rot = rotationSpeed * signal;
+        float speed = moveSpeed * signal;
+
+        //tank rotation
+        transform.Rotate(Vector3.up * inputH * rot * Time.deltaTime);
+
+        //forward/backward movement
+        Vector3 move = transform.forward * inputV;
+        controller.Move(move * speed * Time.deltaTime);
     }
 
     public void EnableControl(bool value)
