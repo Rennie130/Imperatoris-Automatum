@@ -44,6 +44,14 @@ public class CameraController : MonoBehaviour
         //desired camera position
         Vector3 desired = primaryTarget.position + rot * Offset;
 
+        Vector3 direction = desired - primaryTarget.position;
+
+        //camera collision
+        if (Physics.SphereCast(primaryTarget.position, 0.3f, direction.normalized, out RaycastHit hit, direction.magnitude))
+        {
+            desired = hit.point;
+        }
+
         //smooth movement
         transform.position = Vector3.Lerp(transform.position, desired, followSpeed * Time.deltaTime);
         //always look at player
@@ -60,6 +68,12 @@ public class CameraController : MonoBehaviour
         
         //first-person position (head)
         Vector3 headPosition = primary.position + Vector3.up * 1.6f;
+
+        //prevent clipping into walls
+        if (Physics.CheckSphere(headPosition, 0.2f))
+        {
+            headPosition += Vector3.up * 0.5f; //push up slightly
+        }
 
         transform.position = Vector3.Lerp(transform.position, headPosition, followSpeed * Time.deltaTime);
 

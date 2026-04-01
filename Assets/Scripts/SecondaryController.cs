@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class SecondaryController : MonoBehaviour
 {
     public float moveSpeed = 4f;
     public float rotationSpeed = 100f;
     
-    private CharacterController controller;
+    private Rigidbody rb;
+
+    [Header("Acceleration")]
+    public float acceleration = 8f;
+    public float deceleration = 10f;
+
+    float currentSpeed = 0f;
 
     float inputH;
     float inputV;
@@ -17,10 +23,11 @@ public class SecondaryController : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!canControl) return;
 
@@ -40,15 +47,29 @@ public class SecondaryController : MonoBehaviour
 
     void HandleMovement(float signal)
     {
-        float rot = rotationSpeed * signal;
-        float speed = moveSpeed * signal;
+        float forwardInput = inputV;
+        float turnInput = inputH;
+        
+        float targetSpeed = forwardInput * moveSpeed * signal;
+        float targetTurn = turnInput * rotationSpeed * signal;
+    
+        //smooth acceleration / deceleration
+        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, (Mathf.Abs(forwardInput) > 0.1f ? acceleration : deceleration) * Time.fixedDeltaTime);
+
+        float turnAccel = (Mathf.Abs(inputH) > 0.1f) ? acceleration : deceleration * 2f;
+        //currentTurnSpeed = Mathf.MoveTowards(currentTurnSpeed, targetTurn, turnAccel * Time.fixedDeltaTime);
 
         //tank rotation
-        transform.Rotate(Vector3.up * inputH * rot * Time.deltaTime);
+        float turnAmount = inputH * rotationSpeed * signal * Time.fixedDeltaTime;
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(0, turnAmount, 0));
 
         //forward/backward movement
-        Vector3 move = transform.forward * inputV;
-        controller.Move(move * speed * Time.deltaTime);
+        Vector3 velocity = transform.forward * currentSpeed;
+
+        //preserve gravity
+        velocity.y = rb.velocity.y;
+
+        rb.velocity = velocity;
     }
 
     public void EnableControl(bool value)
