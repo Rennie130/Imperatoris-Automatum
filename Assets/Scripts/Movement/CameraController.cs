@@ -9,8 +9,8 @@ public class CameraController : MonoBehaviour
 
     [Header("Third Person")]
     public Vector3 Offset = new Vector3(0, 2, -4);
-    public float followSpeed = 5f;
-    public float rotationSpeed = 120f;
+    public float cameraSensitivity = 120f;
+    private float followSpeed = 5f;
 
     float yaw;
     float pitch;
@@ -34,8 +34,8 @@ public class CameraController : MonoBehaviour
     void ThirdPersonUpdate()
     {
         //mouse input
-        yaw += Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-        pitch -= Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+        yaw += Input.GetAxis("Mouse X") * cameraSensitivity;
+        pitch -= Input.GetAxis("Mouse Y") * cameraSensitivity;
          //clamp vertical look
          pitch = Mathf.Clamp(pitch, -30f, 70f);
 
@@ -53,12 +53,13 @@ public class CameraController : MonoBehaviour
         }
 
         //smooth movement
-        transform.position = Vector3.Lerp(transform.position, desired, followSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, desired, followSpeed * Time.deltaTime); //followSpeed
         //always look at player
         Vector3 lookTarget = primaryTarget.position + Vector3.up * 1.5f;
 
         Quaternion lookRot = Quaternion.LookRotation(lookTarget - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, followSpeed * Time.deltaTime);
+        // Set .Slerp to .RotateTowards. Needs debugging.
+        transform.rotation = lookRot;
     }
 
     void SecondPersonUpdate()
@@ -75,7 +76,7 @@ public class CameraController : MonoBehaviour
             headPosition += Vector3.up * 0.5f; //push up slightly
         }
 
-        transform.position = Vector3.Lerp(transform.position, headPosition, followSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, headPosition, followSpeed * Time.deltaTime); //followSpeed
 
        //always look at secondary
        Vector3 lookTarget = secondary.position + Vector3.up * 2f;
@@ -89,7 +90,7 @@ public class CameraController : MonoBehaviour
 
        //Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-       transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (followSpeed * 0.5f) * Time.deltaTime);
+       transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (followSpeed * 0.5f) * Time.deltaTime); //followSpeed
 
        
 
