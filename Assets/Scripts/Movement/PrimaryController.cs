@@ -40,7 +40,11 @@ public class PrimaryController : MonoBehaviour
     void Update()
     {
         CheckGrounded();
+        HandleJump();
+    }
 
+    void FixedUpdate()
+    {
         //locked in operator/mech mode
         if (!canMove)
         {
@@ -49,11 +53,6 @@ public class PrimaryController : MonoBehaviour
         }
 
         Move();
-        HandleJump();
-    }
-
-    void FixedUpdate()
-    {
         ApplyGravity();
     }
 

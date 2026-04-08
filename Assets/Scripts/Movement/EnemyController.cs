@@ -4,7 +4,7 @@ using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     public Transform target;
     public float attackDistance;
