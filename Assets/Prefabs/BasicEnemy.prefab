@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5023660935452924185}
   - component: {fileID: 5023660935452924186}
   - component: {fileID: 5023660935452924261}
-  - component: {fileID: 5023660935452924260}
   - component: {fileID: 5023660935452924187}
   - component: {fileID: 5023660935452924188}
+  - component: {fileID: 5972696759954362377}
   m_Layer: 0
   m_Name: BasicEnemy
   m_TagString: Untagged
@@ -124,20 +124,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5023660935452924260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5023660935452924189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a99489a1bf52104198ce069b26f59fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  attackDistance: 4
 --- !u!114 &5023660935452924187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +149,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b54eb386497e641a3a2440e4b4f7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5972696759954362377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5023660935452924189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a99489a1bf52104198ce069b26f59fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  patrolPoints: []
+  attackDistance: 4
+  patrolWaitTime: 2
+  stopAtDistance: 0.5
 --- !u!1 &5023660936677289868
 GameObject:
   m_ObjectHideFlags: 0
