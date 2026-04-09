@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1386427581705338193}
   - component: {fileID: 1386427581705338190}
   - component: {fileID: 1386427581705338191}
+  - component: {fileID: 1386427581705338196}
   - component: {fileID: 1386427581705338195}
   - component: {fileID: 1386427581705338197}
-  - component: {fileID: 1386427581705338196}
   m_Layer: 0
   m_Name: Mech
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386427581705338189}
-  m_LocalRotation: {x: -0, y: -0.9998988, z: -0, w: -0.014229482}
+  m_LocalRotation: {x: -0, y: -0.99989873, z: 0, w: -0.014232658}
   m_LocalPosition: {x: 15.21, y: 3.0099998, z: 21.92}
   m_LocalScale: {x: 3.5708005, y: 6.0427837, z: 2.2870915}
   m_ConstrainProportionsScale: 0
@@ -95,41 +95,12 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386427581705338189}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b7c7d5da1db23174182d16d53c154f26, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1386427581705338195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386427581705338189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96b7e2a06f7bbb24b994a74bd4707625, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
-  rotationSpeed: 50
-  acceleration: 8
-  deceleration: 10
---- !u!114 &1386427581705338197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386427581705338189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a60e2dea0b9da4448ad94319fa429818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHeatlh: 10
 --- !u!54 &1386427581705338196
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,6 +117,37 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1386427581705338195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386427581705338189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b7e2a06f7bbb24b994a74bd4707625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  rotationSpeed: 50
+  directionChangeResistance: 12
+  skidFactor: 0.97
+  acceleration: 8
+  deceleration: 10
+--- !u!114 &1386427581705338197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386427581705338189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60e2dea0b9da4448ad94319fa429818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHeatlh: 5
 --- !u!1 &1386427582550289358
 GameObject:
   m_ObjectHideFlags: 0

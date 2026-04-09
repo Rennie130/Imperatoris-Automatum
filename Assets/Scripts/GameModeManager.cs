@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public enum GameMode
@@ -53,6 +54,8 @@ public class GameModeManager : MonoBehaviour
         {
             UpdateSignal();
         }
+        
+
     }
 
     void SetMode(GameMode mode)
@@ -85,6 +88,17 @@ public class GameModeManager : MonoBehaviour
     {
         float distance = Vector3.Distance(primaryController.transform.position, secondaryController.transform.position);
         signalStrength = Mathf.InverseLerp(maxSignalDistance, minSignalDistance, distance);
+
+        /*
+        if (secondaryController != null)
+        {
+            
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Mech destroyed, no secondary controller script accessible.");
+        }
+        */
     }
 
     //debug line in scene view

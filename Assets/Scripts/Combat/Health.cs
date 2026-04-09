@@ -19,7 +19,7 @@ public class Health : MonoBehaviour
     {
         //subtract damage value from current heatlh value and update current health variable with new value.
         currentHealth -= damage;
-        Debug.Log($"{name} took damage ({damage})");
+        Debug.Log($"{name} took damage ({damage}; current health = ({currentHealth}))");
         
         if(currentHealth <= 0)
         {
@@ -29,6 +29,7 @@ public class Health : MonoBehaviour
 
     private void HandleDeath()
     {
-        Debug.Log($"{name} Died");
+        Destroy(gameObject);
+        Debug.Log($"{name} Died ({currentHealth})");
     }
 }

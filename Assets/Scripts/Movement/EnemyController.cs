@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
+using System.Security;
+//using System.Threading.Tasks.Dataflow;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,6 +23,16 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
+        if (target != null)
+        {
+         
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Mech destroyed and no longer chaseable.");
+        } */
+        
         // checks and assigns the distance between enemy and mech
         distance = UnityEngine.Vector3.Distance(agent.transform.position, target.position);
         // if distance is less than specified attack distance, enemy stops.
