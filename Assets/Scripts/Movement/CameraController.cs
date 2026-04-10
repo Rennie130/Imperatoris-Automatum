@@ -8,103 +8,117 @@ public class CameraController : MonoBehaviour
     public Transform secondaryTarget;
 
     [Header("Third Person")]
-    public Vector3 Offset = new Vector3(0, 2, -4);
-    public float cameraSensitivity = 120f;
-    private float followSpeed = 5f;
+    //public float positionSnapSpeed = 8f;
+    //public float rotationSpeed = 2f;
+    public float cameraDistance = 5f;
+    public float cameraHeight = 2f;
+    public float followSmooth = 8f;
+
+    [Header("Mouse Control")]
+    public float mouseSensitivity = 3f;
+    public float minY = -30f;
+    public float maxY = 60f;
 
     float yaw;
     float pitch;
 
-    bool secondPersonMode = false;
+    [Header("Auto Align")]
+    public float autoAlignSpeed = 2f;
+    public bool autoAlign = true;
+
+    [Header("Collision")]
+    public LayerMask cameraCollisionMask;
+    public float collisionOffset = 0.3f;
 
     void Start()
     {
-        yaw = primaryTarget.eulerAngles.y;
+        if (primaryTarget != null)
+        {
+            yaw = primaryTarget.eulerAngles.y;
+        }
         pitch = 10f;
     }
 
     void LateUpdate()
     {
-        if (secondPersonMode)
-            SecondPersonUpdate();
-        else
-            ThirdPersonUpdate();
+        switch (GameModeManager.Instance.CurrentMode)
+        {
+            case GameMode.ThirdPerson:
+                ThirdPersonUpdate();
+                break;
+                
+            case GameMode.SecondPerson:
+                SecondPersonUpdate();
+                break;
+        }
     }
 
     void ThirdPersonUpdate()
     {
+        if (primaryTarget == null) return;
+
+        Transform target = primaryTarget;
+
         //mouse input
-        yaw += Input.GetAxis("Mouse X") * cameraSensitivity;
-        pitch -= Input.GetAxis("Mouse Y") * cameraSensitivity;
-         //clamp vertical look
-         pitch = Mathf.Clamp(pitch, -30f, 70f);
+        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
+        pitch += Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        Quaternion rot = Quaternion.Euler(pitch, yaw, 0);
+        pitch = Mathf.Clamp(pitch, minY, maxY);
 
-        //desired camera position
-        Vector3 desired = primaryTarget.position + rot * Offset;
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-        Vector3 direction = desired - primaryTarget.position;
+       //desired position
+       Vector3 offset = rotation * new Vector3(0, cameraHeight, -cameraDistance);
+       Vector3 desiredPosition = target.position + offset;
 
-        //camera collision
-        if (Physics.SphereCast(primaryTarget.position, 0.3f, direction.normalized, out RaycastHit hit, direction.magnitude))
+        //collision
+        RaycastHit hit;
+
+       if (Physics.Linecast(target.position + Vector3.up * 1.5f, desiredPosition, out hit, cameraCollisionMask))
         {
-            desired = hit.point;
+            desiredPosition = hit.point + hit.normal * collisionOffset;
         }
 
-        //smooth movement
-        transform.position = Vector3.MoveTowards(transform.position, desired, followSpeed * Time.deltaTime); //followSpeed
-        //always look at player
-        Vector3 lookTarget = primaryTarget.position + Vector3.up * 1.5f;
+       //smooth but slightly stiff ps2 feel
+       transform.position = Vector3.Lerp(transform.position, desiredPosition, 8f * Time.deltaTime);
 
-        Quaternion lookRot = Quaternion.LookRotation(lookTarget - transform.position);
-        // Set .Slerp to .RotateTowards. Needs debugging.
-        transform.rotation = lookRot;
+       //look at player
+       transform.LookAt(target.position + Vector3.up * 1.5f);
+       
+        //auto-align behind player
+       if (autoAlign && Mathf.Abs(Input.GetAxis("Mouse X")) < 0.1f)
+        {
+            float targetYaw = target.eulerAngles.y;
+            yaw = Mathf.LerpAngle(yaw, targetYaw, autoAlignSpeed * Time.deltaTime);
+        }
     }
 
     void SecondPersonUpdate()
     {
+        if (primaryTarget == null || secondaryTarget == null) return;
+
         Transform secondary = secondaryTarget;
         Transform primary = primaryTarget;
-        
-        //first-person position (head)
-        Vector3 headPosition = primary.position + Vector3.up * 1.6f;
 
-        //prevent clipping into walls
+        //first-person position (head)
+        Vector3 headOffset = Vector3.up * 1.6f;
+        Vector3 headPosition = primary.position + headOffset;
+
+        //prevent clipping
         if (Physics.CheckSphere(headPosition, 0.2f))
         {
             headPosition += Vector3.up * 0.5f; //push up slightly
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, headPosition, followSpeed * Time.deltaTime); //followSpeed
+        transform.position = headPosition;
 
        //always look at secondary
-       Vector3 lookTarget = secondary.position + Vector3.up * 2f;
-
-       Vector3 direction = (lookTarget - transform.position).normalized;
+        Vector3 lookTarget = secondary.position + Vector3.up * 2f;
+        Vector3 direction = (lookTarget - transform.position).normalized;
        
-       Vector3 flatDirection = direction;
-       flatDirection.y = Mathf.Clamp(flatDirection.y, -0.5f, 0.7f);
-       
-       Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
+       Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-       //Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-       transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, (followSpeed * 0.5f) * Time.deltaTime); //followSpeed
-
-       
-
+       transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 6f * Time.deltaTime);
        
     }
-
-    public void SwitchToThirdPerson()
-    {
-        secondPersonMode = false;
-    }
-
-    public void SwitchToSecondPerson()
-    {
-        secondPersonMode = true;
-    }
-
 }

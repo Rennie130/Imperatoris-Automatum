@@ -23218,6 +23218,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1090638894959739850, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
+      propertyPath: autoAlign
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1090638894959739850, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
       propertyPath: followSpeed
       value: 10
       objectReference: {fileID: 0}
@@ -23230,12 +23234,20 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1090638894959739850, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
+      propertyPath: autoAlignSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1090638894959739850, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
       propertyPath: secondaryTarget
       value: 
       objectReference: {fileID: 2026614257}
     - target: {fileID: 1090638894959739850, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
       propertyPath: cameraSensitivity
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1090638894959739850, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
+      propertyPath: cameraCollisionMask.m_Bits
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1090638894959739853, guid: 547b02586d7732d46be9448e9a1716c9, type: 3}
       propertyPath: m_RootOrder

@@ -53,8 +53,7 @@ public class GameModeManager : MonoBehaviour
         if (CurrentMode == GameMode.SecondPerson)
         {
             UpdateSignal();
-        }
-        
+        }  
 
     }
 
@@ -68,8 +67,6 @@ public class GameModeManager : MonoBehaviour
             primaryController.EnableMovement(true);
             //disable secondary control
             secondaryController.EnableControl(false);
-            //switch camera
-            cameraController.SwitchToThirdPerson();
         }
         else
         {
@@ -77,8 +74,6 @@ public class GameModeManager : MonoBehaviour
             primaryController.EnableMovement(false);
             //enable tank controls
             secondaryController.EnableControl(true);
-            //switch camera
-            cameraController.SwitchToSecondPerson();
         }
 
     }
