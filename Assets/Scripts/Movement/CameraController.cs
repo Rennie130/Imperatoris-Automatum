@@ -32,6 +32,8 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         if (primaryTarget != null)
         {
             yaw = primaryTarget.eulerAngles.y;
