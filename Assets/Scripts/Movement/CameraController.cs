@@ -61,7 +61,7 @@ public class CameraController : MonoBehaviour
 
         //mouse input
         yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-        pitch += Input.GetAxis("Mouse Y") * mouseSensitivity;
+        pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         pitch = Mathf.Clamp(pitch, minY, maxY);
 
