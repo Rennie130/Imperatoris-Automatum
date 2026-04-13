@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Numerics;
-using System.Security;
 //using System.Threading.Tasks.Dataflow;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,8 +9,10 @@ public class EnemyController : MonoBehaviour
     [Header ("References")]
     // sets the target we are chasing
     public Transform target;
+    public float detectionRange = 25f;
     // a Transform array to store patrol point locations
     public Transform[] patrolPoints;
+    public float fieldOfView = 120f;
 
 
     [Header ("Settings")]
@@ -30,6 +29,17 @@ public class EnemyController : MonoBehaviour
     private int currentPatrolIndex;
     private bool isWaiting;
 
+    EnemyCombat combat;
+
+    enum EnemyState
+    {
+        Patrol,
+        Chase,
+        Attack
+    }
+    
+    EnemyState currentState;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,35 +48,97 @@ public class EnemyController : MonoBehaviour
 
         // send enemy to first patrol point
         GoToNext();
+
+        combat = GetComponent<EnemyCombat>();
+        //ensure combat always knows target
+        if (combat != null)
+        {
+            combat.target = target;
+        }
+
+        currentState = EnemyState.Patrol;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        Patrol();
-        // if (target == null) return;
+        float distance = Vector3.Distance(transform.position, target.position);
+        float effectiveAttackRange = combat.attackRange + combat.attackRadius;
         
-
-        /*
-        // checks and assigns the distance between enemy and mech
-        distance = UnityEngine.Vector3.Distance(agent.transform.position, target.position);
-        // if distance is less than specified attack distance, enemy stops.
-        if (distance <= attackDistance)
+        if (distance > detectionRange || !CanSeeTarget())
         {
-            agent.isStopped = true;
+            currentState = EnemyState.Patrol;
         }
-        //otherwise, if distance is not less than, enemy keeps moving to mech position
+        else if (distance > effectiveAttackRange)
+        {
+            currentState = EnemyState.Chase;     
+        }
         else
         {
-            agent.isStopped = false;
-            //updates the enemy destination to player mech's location
-            agent.destination = target.position;
-        } 
-        */
+            currentState = EnemyState.Attack;
+        }
+        
+        if (combat !=null)
+        {
+            combat.target = target;
+        }
+
+        switch (currentState)
+        {
+            case EnemyState.Patrol:
+                HandlePatrol();
+                break;
+
+            case EnemyState.Chase:
+                HandleChase();
+                break;
+            case EnemyState.Attack:
+                HandleAttack();
+                break;
+        }
     }
 
+    void HandlePatrol()
+    {
+        if (agent.isStopped)
+            agent.isStopped = false;
+        
+        Patrol();
+    }
 
+    void HandleChase()
+    {
+        if (target == null) return;
+
+        agent.isStopped = false;
+        agent.SetDestination(target.position);
+    }
+
+    void HandleAttack()
+    {
+        if (target == null) return;
+
+        agent.isStopped = true;
+
+        //Face the player
+        Vector3 dir = (target.position - transform.position);
+        dir.y = 0;
+
+        if (dir.magnitude > 0.1f)
+        {
+            Quaternion lookRot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 10f * Time.deltaTime);
+        }
+
+        if (combat != null)
+        {
+            combat.TryAttack(target);
+        }
+
+        Debug.Log("Enemy in ATTACK state");
+    }
+       
     // method to patrol between points
     private void Patrol()
     {
@@ -112,6 +184,15 @@ public class EnemyController : MonoBehaviour
         // change it back to 0 if no more points to shift through.Ensures resulting value is always between 0 and array.Length
         currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
         UnityEngine.Debug.Log("Patrol Point updated");
+    }
+
+    bool CanSeeTarget()
+    {
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
+
+        float angle = Vector3.Angle(transform.forward, dirToTarget);
+
+        return angle < fieldOfView * 0.5f;
     }
 
 }

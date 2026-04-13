@@ -2,29 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCombat : MonoBehaviour
+public class EnemyCombat : CombatBase
 {
+    public Transform target;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        if (target == null) return;
+
+        TryAttack(target);
     }
 
-    private void OnCollisionEnter(Collision other) 
+     protected override void OnWindUp()
     {
-        Debug.Log("player collided");
-        if(other.gameObject.GetComponent<SecondaryController>())
-        {
-            var mechHealth = other.gameObject.GetComponent<Health>();
-            mechHealth.Hurt(1);
-            Debug.Log("player found");
-        }
+        Debug.Log(name + " wind-up");
+    }
+
+    protected override void OnHit(Transform hitTarget)
+    {
+        Debug.Log(name + " hit: " + hitTarget.name);
     }
 }
