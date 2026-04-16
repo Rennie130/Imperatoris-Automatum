@@ -41,7 +41,7 @@ public abstract class CombatBase : MonoBehaviour
         yield return new WaitForSeconds(windUpTime);
 
         //Hit Frame
-        PerformHit(target);
+        PerformHit();
 
         //Recovery
         yield return new WaitForSeconds(recoveryTime);
@@ -52,12 +52,19 @@ public abstract class CombatBase : MonoBehaviour
         Debug.Log("Attack started");
     }
 
-    void PerformHit(Transform target)
+    void PerformHit()
     {
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
-        Vector3 hitPoint = transform.position + directionToTarget * attackRange;
+        //Define attack origin slightly forward
+        Vector3 origin = transform.position + Vector3.up * 1.0f;
 
-        Collider[] hits = Physics.OverlapSphere(target.position, attackRadius);
+        //Direction forward
+        Vector3 forward = transform.forward;
+
+        //Hit point in front
+        Vector3 hitPoint = origin + forward * attackRange;
+
+        //Detect everything in range
+        Collider[] hits = Physics.OverlapSphere(hitPoint, attackRadius);
 
         foreach (Collider col in hits)
         {
