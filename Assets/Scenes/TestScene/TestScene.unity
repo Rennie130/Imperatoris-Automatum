@@ -9915,6 +9915,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &777572144 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1386427581705338189, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+  m_PrefabInstance: {fileID: 1386427581843247265}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &785506441
 Mesh:
   m_ObjectHideFlags: 0
@@ -23089,12 +23094,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1386427581705338195, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
   m_PrefabInstance: {fileID: 1386427581843247265}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 777572144}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96b7e2a06f7bbb24b994a74bd4707625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2026614264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777572144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4b6b0b56d8959468dc921d88736196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 2
+  attackRange: 2
+  attackRadius: 1.5
+  windUpTime: 0.3
+  recoveryTime: 0.5
+  attackCooldown: 1
 --- !u!1 &2093722187
 GameObject:
   m_ObjectHideFlags: 0
@@ -23360,6 +23383,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1386427581705338197, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+      propertyPath: maxHeatlh
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
@@ -23434,6 +23461,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5023660935452924187, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+      propertyPath: maxHeatlh
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924189, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_Name
       value: BasicEnemy
@@ -23486,6 +23517,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 2026614257}
+    - target: {fileID: 5972696759954362377, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+      propertyPath: fieldOfView
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5972696759954362377, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: attackDistance
       value: 4
