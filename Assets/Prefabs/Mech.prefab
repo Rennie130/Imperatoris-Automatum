@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 1386427581705338196}
   - component: {fileID: 1386427581705338195}
   - component: {fileID: 1386427581705338197}
+  - component: {fileID: 2026614264}
   m_Layer: 0
   m_Name: Mech
-  m_TagString: Untagged
+  m_TagString: Mech
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,7 +37,7 @@ Transform:
   m_Children:
   - {fileID: 1386427582550289361}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: -181.631, z: 0}
 --- !u!33 &1386427581705338193
 MeshFilter:
@@ -147,7 +148,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60e2dea0b9da4448ad94319fa429818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHeatlh: 5
+  gameManager: {fileID: 0}
+  maxHeatlh: 10
+--- !u!114 &2026614264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386427581705338189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4b6b0b56d8959468dc921d88736196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 2
+  attackRange: 2
+  attackRadius: 1.5
+  windUpTime: 0.3
+  recoveryTime: 0.5
+  attackCooldown: 1
 --- !u!1 &1386427582550289358
 GameObject:
   m_ObjectHideFlags: 0

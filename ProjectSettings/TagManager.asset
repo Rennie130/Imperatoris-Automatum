@@ -6,6 +6,8 @@ TagManager:
   tags:
   - EnemyDestructable
   - PlayerDestructable
+  - Enemy
+  - Ally
   layers:
   - Default
   - TransparentFX

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5972696759954362377}
   m_Layer: 0
   m_Name: BasicEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +37,7 @@ Transform:
   m_Children:
   - {fileID: 5023660936677289867}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: -269.999, z: 0}
 --- !u!33 &5023660935452924184
 MeshFilter:
@@ -136,7 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60e2dea0b9da4448ad94319fa429818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHeatlh: 10
+  gameManager: {fileID: 0}
+  maxHeatlh: 5
 --- !u!114 &5023660935452924188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,6 +150,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b54eb386497e641a3a2440e4b4f7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 2
+  attackRange: 2
+  attackRadius: 1.5
+  windUpTime: 0.3
+  recoveryTime: 0.5
+  attackCooldown: 1
+  target: {fileID: 0}
 --- !u!114 &5972696759954362377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,10 +170,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  patrolPoints: []
+  detectionRange: 25
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fieldOfView: 100
   attackDistance: 4
   patrolWaitTime: 2
-  stopAtDistance: 0.5
+  stopAtDistance: 4
 --- !u!1 &5023660936677289868
 GameObject:
   m_ObjectHideFlags: 0

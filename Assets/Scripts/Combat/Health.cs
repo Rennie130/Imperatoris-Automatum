@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    private int currentHealth = 10;
+    [Header("References")]
+    public GameManager gameManager;
+
+    [Header("Health")]
     public int maxHeatlh = 10;
 
-    
+
+    private int currentHealth = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +40,15 @@ public class Health : MonoBehaviour
         if(currentHealth <= 0)
         {
             HandleDeath();
+            
+            gameManager.gameOver();
         }
     }
 
     private void HandleDeath()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
         Debug.Log($"{name} Died ({currentHealth})");
+
     }
 }

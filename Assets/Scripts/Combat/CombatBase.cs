@@ -29,7 +29,7 @@ public abstract class CombatBase : MonoBehaviour
         
         StartCoroutine(AttackRoutine(target));
 
-        Debug.Log("Trying to attack...");
+        Debug.Log($"{name} is trying to attack...");
     }
 
     IEnumerator AttackRoutine(Transform target)
@@ -49,7 +49,7 @@ public abstract class CombatBase : MonoBehaviour
         lastAttackTime = Time.time;
         isAttacking = false;
 
-        Debug.Log("Attack started");
+        Debug.Log($"{name} attack started");
     }
 
     void PerformHit()
