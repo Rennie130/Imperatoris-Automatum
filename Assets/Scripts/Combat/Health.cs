@@ -1,54 +1,103 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, Damageable
 {
-    [Header("References")]
-    public GameManager gameManager;
-
     [Header("Health")]
-    public int maxHeatlh = 10;
+    public int maxHealth = 10;
+    public int currentHealth;
 
+    public Action OnDeath; // Used by MissionManager
 
-    private int currentHealth = 10;
+   // [Header("Hit Reaction")]
+//    public float staggerForce = 3f;
+  //  public float knockbackForce = 8f;
 
-    // Start is called before the first frame update
+    Rigidbody rb;
+
+    //int hitCount = 0;
+    //float lastHitTime;
+   // public float comboResetTime = 1f;
+
     void Start()
     {
-        // Set the object's starting health to it's max health.
-        currentHealth = maxHeatlh;
+        Debug.Log($"[HEALTH ACTIVE] {name} HP: {currentHealth}");
+    }
+
+    void Awake()
+    {
+        currentHealth = maxHealth;
+        rb = GetComponent<Rigidbody>();
     }
 
     // Function to call on individual combat scripts to deal damage (reduce other object's current health value)
-    public void Hurt(int damage)
+    public void Hurt(int damage, Transform attacker)
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            Vector3 dir = (transform.position - Camera.main.transform.position).normalized;
-            rb.AddForce(dir * 3f, ForceMode.Impulse);
-        }
-
-       // GetComponent<Animator>()?.SetTrigger("Attack");
-
-        //subtract damage value from current heatlh value and update current health variable with new value.
         currentHealth -= damage;
-        Debug.Log($"{name} took damage ({damage}; current health = ({currentHealth}))");
-        
-        if(currentHealth <= 0)
+
+        Debug.Log($"[DAMAGE] {name} took {damage} from {attacker?.name}. HP: {currentHealth}/{maxHealth}");
+
+        //HitReaction(attacker);
+
+        if (currentHealth <= 0)
         {
-            HandleDeath();
+            Debug.Log($"[DEATH] {name} died");
+            Die();
+        }
             
-            gameManager.gameOver();
+    }
+
+    private void Die()
+        {
+            OnDeath?.Invoke();
+            Destroy(gameObject);
+            Debug.Log($"{name} Died ({currentHealth})");
         }
     }
 
-    private void HandleDeath()
-    {
-        gameObject.SetActive(false);
-        Debug.Log($"{name} Died ({currentHealth})");
+    // void HitReaction(Transform attacker)
+   // {
+        //float timeSinceLastHit = Time.time - lastHitTime;
 
-    }
-}
+       // if (timeSinceLastHit > comboResetTime)
+          //  hitCount = 0;
+        
+       // hitCount++;
+       // lastHitTime = Time.time;
+
+       // if (hitCount < 3)
+       // {
+        //    Stagger(attacker);
+       // }
+       // else
+       // {
+       //     Knockback(attacker);
+      //      hitCount = 0;
+      //  }
+  //  }      
+
+  //  void Stagger(Transform attacker)
+  //  {
+   //     if (rb == null || attacker == null) return;
+
+  //      Vector3 dir = (transform.position - attacker.position).normalized;
+  //      rb.AddForce(dir * staggerForce, ForceMode.Impulse);
+
+  //      Debug.Log(name + " staggered");
+
+        //optional: small movement interrupt
+   // }
+
+   // void Knockback(Transform attacker)
+   // {
+    //    if (rb == null || attacker == null) return;
+
+   //     Vector3 dir = (transform.position - attacker.position). normalized;
+   //     rb.AddForce(dir * knockbackForce, ForceMode.Impulse);
+
+  //     Debug.Log(name + " knocked back");
+  //  }
+
+   

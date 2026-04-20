@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
 
         if (primaryTarget != null)
         {
@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        switch (GameModeManager.Instance.CurrentMode)
+        switch (GameModeManager.Instance.currentMode)
         {
             case GameMode.ThirdPerson:
                 ThirdPersonUpdate();

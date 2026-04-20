@@ -27,10 +27,30 @@ public class SecondaryController : MonoBehaviour
 
     bool canControl = false;
 
+    MechCombat combat;
+
+    void Awake()
+    {
+        combat = GetComponent<MechCombat>();
+
+        if (combat == null)
+        {
+            Debug.Log($"[ERROR] MechCombat missing on {name}");
+        }
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        rb.mass = 1000f;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    void Update()
+    {
+        if (!GameModeManager.Instance.IsControllingSecondary())
+            return;
     }
 
     void FixedUpdate()
@@ -73,9 +93,6 @@ public class SecondaryController : MonoBehaviour
 
             targetSpeed = direction * speed * Mathf.Abs(forwardInput) * signal;
         }
-        
-        //float targetSpeed = forwardInput * moveSpeed * signal;
-        //float targetTurn = turnInput * rotationSpeed * signal;
     
         //smooth acceleration / deceleration
         float accelRate = (Mathf.Abs(forwardInput) > 0.1f) ? acceleration : deceleration;
@@ -116,9 +133,6 @@ public class SecondaryController : MonoBehaviour
 
         //apply rotation
         float turnAmount = turnSpeed * Time.fixedDeltaTime;
-
-        //float turnAccel = (Mathf.Abs(inputH) > 0.1f) ? acceleration : deceleration * 2f;
-        //currentTurnSpeed = Mathf.MoveTowards(currentTurnSpeed, targetTurn, turnAccel * Time.fixedDeltaTime);
 
         //tank rotation
        // float turnAmount = inputH * rotationSpeed * signal * Time.fixedDeltaTime;

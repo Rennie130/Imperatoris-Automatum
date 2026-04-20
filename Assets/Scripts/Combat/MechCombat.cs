@@ -4,33 +4,55 @@ using UnityEngine;
 
 public class MechCombat : CombatBase
 {
+    int comboStep;
+    float lastComboTime;
+    public float comboResetTime = 1f;
+
     void Update()
     {
-        if (!GameModeManager.Instance.secondaryController)
+        if (!GameModeManager.Instance.IsControllingSecondary())
             return;
         
         if (Input.GetMouseButtonDown(0))
         {
-            TryAttack(transform);
+            Debug.Log("[MECH INPUT DETECTED]");
+            TryAttack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            Debug.Log("[MECH INPUT] Attack pressed");
+
+            TryAttack();
         }
     }
 
+   // void HandleCombo()
+   // {
+  //      if (Time.time > lastComboTime + comboResetTime)
+  //      {
+  //          comboStep = 0;
+    //    }
+//
+ //       comboStep++;
+//        lastComboTime = Time.time;
+
+ //       TryAttack();
+ //   }
+
+  //  public void Interrupt()
+  //  {
+  //      comboStep = 0;
+  //  }
+
     protected override void OnWindUp()
     {
-        Debug.Log("Player wind-up");
+        Debug.Log($"[MECH WIND-UP] {name} preparing attack");
     }
 
-    protected override void OnHit(Transform hitTarget)
+    protected override void OnHit(Transform target)
     {
-        Debug.Log("Player hit: " + hitTarget.name);
-
-        //Hit Feedback
-        Time.timeScale = 0.2f;
-        Invoke(nameof(ResetTime), 0.05f);
+        Debug.Log($"[MECH HIT CONFIRMED] {name} hit {target.name}");
     }
 
-    void ResetTime()
-    {
-        Time.timeScale = 1f;
-    }
 }

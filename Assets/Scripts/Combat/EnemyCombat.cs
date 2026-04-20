@@ -6,20 +6,19 @@ public class EnemyCombat : CombatBase
 {
     public Transform target;
 
-    void Update()
+    void Start()
     {
-        if (target == null) return;
-
-        TryAttack(target);
+        Debug.Log($"[ENEMY COMBAT ACTIVE] {name}");
     }
 
      protected override void OnWindUp()
     {
-        Debug.Log(name + " wind-up");
+        Debug.Log($"[ENEMY WIND-UP] {name} preparing attack");
     }
 
     protected override void OnHit(Transform hitTarget)
     {
-        Debug.Log(name + " hit: " + hitTarget.name);
+        Debug.Log($"[ENEMY HIT CONFIRMED] {name} hit {target.name}");
     }
+
 }

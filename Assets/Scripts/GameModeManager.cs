@@ -13,7 +13,7 @@ public class GameModeManager : MonoBehaviour
 {
     public static GameModeManager Instance;
 
-    public GameMode CurrentMode = GameMode.ThirdPerson;
+    public GameMode currentMode = GameMode.ThirdPerson;
 
     [Header("References")]
     public PrimaryController primaryController;
@@ -43,14 +43,15 @@ public class GameModeManager : MonoBehaviour
         //press TAB to toggle modes
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (CurrentMode == GameMode.ThirdPerson)
+            if (currentMode == GameMode.ThirdPerson)
                 SetMode(GameMode.SecondPerson);
             else
                 SetMode(GameMode.ThirdPerson);
+                ResetSecondaryState();
         }
 
         //update signal only in second person
-        if (CurrentMode == GameMode.SecondPerson)
+        if (currentMode == GameMode.SecondPerson)
         {
             UpdateSignal();
         }  
@@ -59,7 +60,7 @@ public class GameModeManager : MonoBehaviour
 
     void SetMode(GameMode mode)
     {
-        CurrentMode = mode;
+        currentMode = mode;
 
         if (mode == GameMode.ThirdPerson)
         {
@@ -84,15 +85,33 @@ public class GameModeManager : MonoBehaviour
         float distance = Vector3.Distance(primaryController.transform.position, secondaryController.transform.position);
         signalStrength = Mathf.InverseLerp(maxSignalDistance, minSignalDistance, distance);
 
+        /*
+        if (secondaryController != null)
+        {
+            
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Mech destroyed, no secondary controller script accessible.");
+        }
+        */
     }
 
-    //debug line in scene view
-    void OnDrawGizmos()
+    void ResetSecondaryState()
     {
-        if (primaryController == null || secondaryController == null) return;
+        if (secondaryController == null) return;
 
-        Gizmos.color = Color.Lerp(Color.red, Color.green, signalStrength);
+        Rigidbody rb = secondaryController.GetComponent<Rigidbody>();
 
-        Gizmos.DrawLine(primaryController.transform.position, secondaryController.transform.position);
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+    public bool IsControllingSecondary()
+    {
+        return currentMode == GameMode.SecondPerson;
     }
 }
