@@ -10,6 +10,16 @@ public class GameManager : MonoBehaviour
 {
     [Header("UI Screens")]
     public GameObject gameOverUI;
+    public static GameManager Instance {get; private set; }
+
+    private void Awake() 
+    {
+        if(Instance != null)
+            Destroy(gameObject);
+        else
+            Instance = this;
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +43,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void gameOver()
+    public void GameOver()
     {
         gameOverUI.SetActive(true); 
     }

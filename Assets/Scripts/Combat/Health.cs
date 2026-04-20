@@ -52,7 +52,7 @@ public class Health : MonoBehaviour, Damageable
     private void Die()
         {
             OnDeath?.Invoke();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             Debug.Log($"{name} Died ({currentHealth})");
         }
     }

@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class EnemyController : MonoBehaviour
 {
-    enum State
+    public enum EnemyBehaviourState
     {
         Patrol,
-        Chase,
-        Attack,
+        ChasePlayer,
+        ChaseBuilding,
+        AttackPlayer,
         AttackBuilding
     }
 
-    State currentState;
+    public EnemyBehaviourState stateDebug;
+    EnemyBehaviourState currentState = EnemyBehaviourState.Patrol;
+
+    StateMachine<EnemyController, EnemyBehaviourState> StateMachine;
 
     private Rigidbody rb;
 
     [Header("References")]
-    public Transform mechTarget;            // assign mech in inspector
+    public Transform mechTarget;         // assign mech in inspector
     EnemyCombat combat;
     NavMeshAgent agent;
 
@@ -28,12 +33,45 @@ public class EnemyController : MonoBehaviour
     public Transform[] patrolPoints;
     int patrolIndex;
 
-    Transform currentTarget; // mech OR building
+    public Transform currentTarget; // mech OR building
+
+    Vector3 wanderTarget;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
+
+        StateMachine = new StateMachine<EnemyController, EnemyBehaviourState>(this, EnemyBehaviourState.Patrol);
+
+        //PATROL
+        StateMachine.ForState(EnemyBehaviourState.Patrol)
+            .OnTick(_ => HandlePatrol())
+            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, mechTarget.position) <= detectionRange)
+            .WithTransition(EnemyBehaviourState.ChaseBuilding, _ => GetDistanceToNearestBuilding() <= detectionRange);
+
+        //PLAYER
+        StateMachine.ForState(EnemyBehaviourState.ChasePlayer)
+            .OnEnter(_ => currentTarget = mechTarget)
+            .OnTick(_ => HandleChase())
+            .WithTransition(EnemyBehaviourState.Patrol, _ => Vector3.Distance(transform.position, currentTarget.position) > detectionRange)
+            .WithTransition(EnemyBehaviourState.AttackPlayer, _ => Vector3.Distance(transform.position, currentTarget.position) <= attackRange);
+
+        StateMachine.ForState(EnemyBehaviourState.AttackPlayer)
+            .OnTick(_ => HandleAttack())
+            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, currentTarget.position) > attackRange);
+
+        //BUILDING
+        StateMachine.ForState(EnemyBehaviourState.ChaseBuilding)
+            .OnEnter(_ => currentTarget = DistrictManager.Instance?.GetClosestBuilding(transform.position).transform)
+            .OnTick(_ => HandleChase())
+            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, mechTarget.position) <= detectionRange)
+            .WithTransition(EnemyBehaviourState.AttackBuilding, _ => Vector3.Distance(transform.position, currentTarget.position) <= attackRange);
+
+        StateMachine.ForState(EnemyBehaviourState.AttackBuilding)
+            .OnTick(_ => HandleAttack())
+            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, mechTarget.position) <= detectionRange)
+            .WithTransition(EnemyBehaviourState.ChaseBuilding, _ => Vector3.Distance(transform.position, currentTarget.position) > attackRange);
 
         //Auto find Mech (or building)
 
@@ -45,8 +83,7 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
-        currentState = State.Patrol;
-        GoToNextPatrolPoint();
+        currentState = EnemyBehaviourState.Patrol;
 
         agent.stoppingDistance = attackRange * 0.9f;
 
@@ -56,12 +93,12 @@ public class EnemyController : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         if (mechTarget == null) return;
 
-        UpdateState();
-        HandleState();
+        StateMachine.Tick();
+        stateDebug = StateMachine.CurrentState.ID;
 
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -70,82 +107,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // DECIDE WHAT STATE WE SHOULD BE IN
-    void UpdateState()
+    private float GetDistanceToNearestBuilding()
     {
-        State previous = currentState;
-
-        float distToMech = Vector3.Distance(transform.position, mechTarget.position);
-
-        if (distToMech <= attackRange)
-        {
-            currentState = State.Attack;
-            currentTarget = mechTarget;
-        }
-
-        if (distToMech <= detectionRange)
-        {
-            currentState = State.Chase;
-            currentTarget = mechTarget;
-        }
-
-        // fallback to buildings
-        Building b = DistrictManager.Instance?.GetClosestBuilding(transform.position);
-
-        if (b != null)
-        {
-            float distToBuilding = Vector3.Distance(transform.position, b.transform.position);
-
-            if (distToBuilding <= attackRange)
-            {
-                currentState = State.AttackBuilding;
-                currentTarget = b.transform;
-            }
-            else
-            {
-                currentState = State.Chase;
-                currentTarget = b.transform;
-            }
-
-            return;
-        }
-
-        if (previous != currentState)
-        {
-            Debug.Log($"[AI STATE] {name}: {previous} -> {currentState}");
-
-            agent.isStopped = false;
-            agent.ResetPath();
-        }
-
-        // default
-        currentState = State.Patrol;
+        Building buildingTarget = DistrictManager.Instance?.GetClosestBuilding(transform.position);
+        return Vector3.Distance(transform.position, buildingTarget.transform.position);
     }
 
-    //EXECUTE STATE BEHAVIOUR
-    void HandleState()
-    {
-        switch (currentState)
-        {
-            case State.Patrol:
-                HandlePatrol();
-                break;
-
-            case State.Chase:
-                HandleChase();
-                break;
-
-            case State.Attack:
-                HandleAttack();
-                break;
-
-            case State.AttackBuilding:
-                HandleAttack();
-                break;
-        }
-    }
-
-    Vector3 wanderTarget;
 
     // PATROL
     void HandlePatrol()
@@ -157,7 +124,7 @@ public class EnemyController : MonoBehaviour
             wanderTarget = GetRandomPoint(transform.position, 10f);
             agent.SetDestination(wanderTarget);
 
-            Debug.Log($"[PATROL] New wander target: {wanderTarget}");
+            //Debug.Log($"[PATROL] New wander target: {wanderTarget}");
         }
 
         Vector3 GetRandomPoint(Vector3 centre, float radius)
@@ -171,21 +138,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    void GoToNextPatrolPoint()
-    {
-        if (patrolPoints.Length == 0) return;
-
-        agent.destination = patrolPoints[patrolIndex].position;
-        patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
-    }
-
     // CHASE (mech or building)
     void HandleChase()
     {
         if (currentTarget == null) return;
-
-        agent.isStopped = false;
-        agent.SetDestination(currentTarget.position);
+        //if(!agent.hasPath)
+            agent.SetDestination(currentTarget.position);
     }
 
     //ATTACK
@@ -193,7 +151,8 @@ public class EnemyController : MonoBehaviour
     {
         if (currentTarget == null) return;
 
-        agent.isStopped = true;
+
+        agent.ResetPath();
 
         // face target
         Vector3 dir = (currentTarget.position - transform.position);

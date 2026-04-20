@@ -28,10 +28,13 @@ public class SecondaryController : MonoBehaviour
     bool canControl = false;
 
     MechCombat combat;
+    Health healthPool;
 
     void Awake()
     {
         combat = GetComponent<MechCombat>();
+        healthPool = GetComponent<Health>();
+        healthPool.OnDeath += OnMechDeath;
 
         if (combat == null)
         {
@@ -69,6 +72,11 @@ public class SecondaryController : MonoBehaviour
     {
         inputH = h;
         inputV = v;
+    }
+
+    private void OnMechDeath()
+    {
+        GameManager.Instance.GameOver();
     }
 
     void HandleMovement(float signal)
