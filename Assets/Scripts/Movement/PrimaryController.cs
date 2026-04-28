@@ -153,4 +153,9 @@ public class PrimaryController : MonoBehaviour
             rb.velocity = Vector3.zero; //stop instantly
         }
     }   
+
+    private void OnPlayerDeath()
+    {
+        GameManager.Instance.GameOver();
+    }
 }

@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("UI Screens")]
-    public GameObject gameOverUI;
+    public UIManager uiManager;
+
     public static GameManager Instance {get; private set; }
 
     private void Awake() 
@@ -18,49 +18,62 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         else
             Instance = this;
+            DontDestroyOnLoad(gameObject);
 
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        MainMenu();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void NewGame()
     {
-        if (gameOverUI.activeInHierarchy)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        LoadDistrictOne();
+
+        //Ensure game isn't paused
+        Time.timeScale = 1f;
+        UIManager.gameIsPaused = false;
     }
+
+    public void LoadDistrictOne()
+    {
+        SceneManager.LoadSceneAsync("DistrictOne");
+        uiManager.ToggleLevelUI();
+    }
+
+       //Not using yet but set up for when we have more scenes. 
+    // public void LoadNextLevelScene()
+    // {
+    //     //call scene which is next scene after current scene in the build index
+    //     SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+    // }
 
     public void GameOver()
     {
-        gameOverUI.SetActive(true); 
+        uiManager.ToggleGameOverUI();
+
+        //pause game when game over
+        Time.timeScale = 0f;
+        UIManager.gameIsPaused = true;
     }
 
-    public void restart()
+    public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         UnityEngine.Debug.Log("Restart");
     }
 
-    /* public void mainMenu()
+    public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
-        UnityEngine.Debug.Log("MainMenu");
-    } */
+        SceneManager.LoadSceneAsync("SenateScene");
+        uiManager.ToggleMainMenuUI();
+        UnityEngine.Debug.Log("Senate Scene");
+    }
 
-    public void quit()
+    public void Quit()
     {
         Application.Quit();
 

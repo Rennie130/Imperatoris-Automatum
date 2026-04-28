@@ -74,10 +74,7 @@ public class SecondaryController : MonoBehaviour
         inputV = v;
     }
 
-    private void OnMechDeath()
-    {
-        GameManager.Instance.GameOver();
-    }
+    //
 
     void HandleMovement(float signal)
     {
@@ -179,5 +176,10 @@ public class SecondaryController : MonoBehaviour
     public void EnableControl(bool value)
     {
         canControl = value;
+    }
+
+    private void OnMechDeath()
+    {
+        GameManager.Instance.GameOver();
     }
 }

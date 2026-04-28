@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SenateScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/DistrictOne/DistrictOne.unity
+    guid: 39f03b1bacd7b8940bd3323dfdc01d28
+  - enabled: 0
     path: Assets/Scenes/TestScene/TestScene.unity
     guid: 12362531209764b40a03c0bb7a437658
   m_configObjects: {}
