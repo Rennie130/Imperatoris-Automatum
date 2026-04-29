@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 2
-    agentHeight: 4
+    agentRadius: 0.5
+    agentHeight: 1
     agentSlope: 45
-    agentClimb: 1.6
+    agentClimb: 1
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.6666667
+    cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -1560,7 +1560,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84830
+  m_Name: pb_Mesh-13504
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -3401,7 +3401,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84844
+  m_Name: pb_Mesh-13518
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -5717,6 +5717,45 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &445592347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8358486226075155869, guid: 21c8d5f19edd57c4e82d00055f50dc7c, type: 3}
+  m_PrefabInstance: {fileID: 8358486225127606369}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &445592348
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445592347}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 5, y: 5.64, z: 8.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.79, y: 4.16, z: 2.6}
+  m_TimeToStationary: 0.5
+--- !u!65 &445592349
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445592347}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 11.28, z: 17}
+  m_Center: {x: 0.79, y: 4.16, z: 2.6}
+--- !u!4 &445592351 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8358486226075155868, guid: 21c8d5f19edd57c4e82d00055f50dc7c, type: 3}
+  m_PrefabInstance: {fileID: 8358486225127606369}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &471252925
 Mesh:
   m_ObjectHideFlags: 0
@@ -10545,7 +10584,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84816
+  m_Name: pb_Mesh-13490
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -10938,7 +10977,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84788
+  m_Name: pb_Mesh-13462
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -11765,7 +11804,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84858
+  m_Name: pb_Mesh-13532
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -14084,7 +14123,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84872
+  m_Name: pb_Mesh-13546
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -15466,7 +15505,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84802
+  m_Name: pb_Mesh-13476
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -19026,7 +19065,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-84774
+  m_Name: pb_Mesh-13448
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -31443,6 +31482,10 @@ PrefabInstance:
       propertyPath: attackRange
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2026614264, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+      propertyPath: damageMask.m_Bits
+      value: 448
+      objectReference: {fileID: 0}
     - target: {fileID: 1386427581705338189, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
       propertyPath: m_Name
       value: Mech
@@ -31457,7 +31500,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386427581705338192, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.2
+      value: 13.93
       objectReference: {fileID: 0}
     - target: {fileID: 1386427581705338192, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -31465,7 +31508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386427581705338192, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.7
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 1386427581705338192, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -31505,7 +31548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386427581705338197, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
       propertyPath: currentHealth
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -31680,6 +31723,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 605128364}
     - target: {fileID: 3753957177447690686, guid: 54f1fc735eaa9f64eb1658a788d90d6c, type: 3}
+      propertyPath: maxSignalDistance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3753957177447690686, guid: 54f1fc735eaa9f64eb1658a788d90d6c, type: 3}
       propertyPath: primaryController
       value: 
       objectReference: {fileID: 68363266}
@@ -31835,7 +31882,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5023660935452924187, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: maxHealth
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924187, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: maxHeatlh
@@ -31847,7 +31894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924187, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: currentHealth
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924188, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: target
@@ -31857,9 +31904,21 @@ PrefabInstance:
       propertyPath: attackRange
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5023660935452924188, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+      propertyPath: damageMask.m_Bits
+      value: 448
+      objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924189, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_Name
       value: BasicEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023660935452924261, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+      propertyPath: m_Acceleration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023660935452924261, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_RootOrder
@@ -31867,7 +31926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29.34
+      value: -18.36
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -31875,11 +31934,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.59
+      value: -4.1
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.6906688
+      value: -0.5314875
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalRotation.x
@@ -31887,7 +31946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7231712
+      value: -0.8470661
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalRotation.z
@@ -31899,7 +31958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -267.366
+      value: -244.212
       objectReference: {fileID: 0}
     - target: {fileID: 5023660935452924263, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -31915,11 +31974,15 @@ PrefabInstance:
       objectReference: {fileID: 2026614257}
     - target: {fileID: 5972696759954362377, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: attackRange
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5972696759954362377, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: detectionRange
-      value: 50
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972696759954362377, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+      propertyPath: obstructionMask.m_Bits
+      value: 257
       objectReference: {fileID: 0}
     - target: {fileID: 5972696759954362377, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
       propertyPath: patrolPoints.Array.size
@@ -32164,8 +32227,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6296052637503788128, guid: 21c8d5f19edd57c4e82d00055f50dc7c, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6296052637503788128, guid: 21c8d5f19edd57c4e82d00055f50dc7c, type: 3}
+      propertyPath: maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6296052637503788128, guid: 21c8d5f19edd57c4e82d00055f50dc7c, type: 3}
+      propertyPath: targetPoint
+      value: 
+      objectReference: {fileID: 445592351}
     - target: {fileID: 8358486224639864420, guid: 21c8d5f19edd57c4e82d00055f50dc7c, type: 3}
       propertyPath: m_Mesh
       value: 

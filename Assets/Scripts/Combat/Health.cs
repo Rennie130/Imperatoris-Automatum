@@ -10,36 +10,33 @@ public class Health : MonoBehaviour, Damageable
     public int currentHealth;
 
     public Action OnDeath; // Used by MissionManager
-
-   // [Header("Hit Reaction")]
-//    public float staggerForce = 3f;
-  //  public float knockbackForce = 8f;
+    public Action<Transform> OnDamaged;
 
     Rigidbody rb;
 
-    //int hitCount = 0;
-    //float lastHitTime;
-   // public float comboResetTime = 1f;
+    public bool IsAlive => currentHealth > 0;
+
+      void Awake()
+    {
+        currentHealth = maxHealth;
+        rb = GetComponent<Rigidbody>();
+    }
 
     void Start()
     {
         Debug.Log($"[HEALTH ACTIVE] {name} HP: {currentHealth}");
     }
 
-    void Awake()
-    {
-        currentHealth = maxHealth;
-        rb = GetComponent<Rigidbody>();
-    }
-
     // Function to call on individual combat scripts to deal damage (reduce other object's current health value)
     public void Hurt(int damage, Transform attacker)
     {
-        currentHealth -= damage;
+        if (!IsAlive) return;
+
+        currentHealth = Mathf.Max(currentHealth - damage, 0);
 
         Debug.Log($"[DAMAGE] {name} took {damage} from {attacker?.name}. HP: {currentHealth}/{maxHealth}");
 
-        //HitReaction(attacker);
+        OnDamaged?.Invoke(attacker);
 
         if (currentHealth <= 0)
         {
@@ -50,54 +47,19 @@ public class Health : MonoBehaviour, Damageable
     }
 
     private void Die()
-        {
-            OnDeath?.Invoke();
-            gameObject.SetActive(false);
-            Debug.Log($"{name} Died ({currentHealth})");
-        }
-    }
+    {
+    
+        OnDeath?.Invoke();
+            
+        Collider col = GetComponent<Collider>();
+        if (col) col.enabled = false;
 
-    // void HitReaction(Transform attacker)
-   // {
-        //float timeSinceLastHit = Time.time - lastHitTime;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb) rb.isKinematic = true;
 
-       // if (timeSinceLastHit > comboResetTime)
-          //  hitCount = 0;
+        gameObject.layer = LayerMask.NameToLayer("Dead");
+
+        Debug.Log($"{name} Died ({currentHealth})");
         
-       // hitCount++;
-       // lastHitTime = Time.time;
-
-       // if (hitCount < 3)
-       // {
-        //    Stagger(attacker);
-       // }
-       // else
-       // {
-       //     Knockback(attacker);
-      //      hitCount = 0;
-      //  }
-  //  }      
-
-  //  void Stagger(Transform attacker)
-  //  {
-   //     if (rb == null || attacker == null) return;
-
-  //      Vector3 dir = (transform.position - attacker.position).normalized;
-  //      rb.AddForce(dir * staggerForce, ForceMode.Impulse);
-
-  //      Debug.Log(name + " staggered");
-
-        //optional: small movement interrupt
-   // }
-
-   // void Knockback(Transform attacker)
-   // {
-    //    if (rb == null || attacker == null) return;
-
-   //     Vector3 dir = (transform.position - attacker.position). normalized;
-   //     rb.AddForce(dir * knockbackForce, ForceMode.Impulse);
-
-  //     Debug.Log(name + " knocked back");
-  //  }
-
-   
+    }
+}

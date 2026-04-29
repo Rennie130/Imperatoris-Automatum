@@ -6,39 +6,67 @@ public class DistrictManager : MonoBehaviour
 {
     public static DistrictManager Instance;
 
-    public int maxDistrictHealth = 100;
-    public int currentDistrictHealth;
-
     List<Building> buildings = new List<Building>();
+
+    public int maxDistrictHealth {get; private set; }
+    public int currentDistrictHealth {get; private set; }
+
+    bool isDestroyed = false;
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        currentDistrictHealth = maxDistrictHealth;
     }
 
     public void RegisterBuilding(Building b)
     {
         buildings.Add(b);
+        RecalculateDistrictHealth();
     }
 
     public void UnregisterBuilding(Building b)
     {
         buildings.Remove(b);
+        RecalculateDistrictHealth();
     }
 
-    public void ReportDamage(int damage)
+    public void RecalculateDistrictHealth()
     {
-        currentDistrictHealth -= damage;
+        buildings.RemoveAll(b => b == null);
 
-        Debug.Log($"[DISTRICT DAMAGE] -{damage} -> {currentDistrictHealth}/{maxDistrictHealth}");
+        maxDistrictHealth = 0;
+        currentDistrictHealth = 0;
 
-        if (currentDistrictHealth <= 0)
+        foreach (var b in buildings)
         {
-            Debug.Log("DISTRICT DESTROYED");
-            //todo: trigger fail state / game over
+            maxDistrictHealth += b.maxHealth;
+            currentDistrictHealth += b.CurrentHealth;
         }
-       
+
+        if (maxDistrictHealth > 0)
+        {
+            Debug.Log($"[DISTRICT] {(float)currentDistrictHealth / maxDistrictHealth}");
+        }
+        else
+        {
+            Debug.Log("[DISTRICT] No buildings remaining");
+        }
+        
+
+        if (!isDestroyed && currentDistrictHealth <= 0)
+        {
+            isDestroyed = true;
+
+            Debug.Log("DISTRICT DESTROYED");
+
+            //put the fail state here
+        }
     }
 
     public Building GetClosestBuilding(Vector3 position)
@@ -48,6 +76,8 @@ public class DistrictManager : MonoBehaviour
 
         foreach (Building b in buildings)
         {
+            if (b == null || !b.IsAlive) continue;
+ 
             float dist = Vector3.Distance(position, b.transform.position);
 
             if (dist < closestDist)

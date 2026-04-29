@@ -5,28 +5,39 @@ using UnityEngine;
 public abstract class CombatBase : MonoBehaviour
 {
     [Header("Attack Settings")]
-    public int damage = 2;
-    public float attackRange = 2f;
-    public float attackRadius = 1.5f;
+    [SerializeField] float attackRadius = 1.5f;
+    [SerializeField] float attackCooldown = 1f;
+    [SerializeField] float attackRange = 2.5f;
+    [SerializeField] int damage = 1;
+    [SerializeField] LayerMask damageMask;
 
     [Header("Timing")]
     public float windUpTime = 0.3f;
     public float hitDelay = 0.1f;
     public float recoveryTime = 0.4f;
-    public float cooldown = 1f;
 
     protected bool isAttacking;
     protected float lastAttackTime;
-
     protected Rigidbody rb;
+
+    Coroutine attackRoutine;
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    public void TryAttack()
+    public virtual void TryAttack()
     {
+        Debug.Log("[COMBAT] TryAttack called");
+
+        //Cooldown check
+        if (Time.time < lastAttackTime + attackCooldown)
+        {
+            Debug.Log("[BLOCKED] {name} on cooldown");
+            return;
+        }
+        
         Debug.Log("[TRY ATTACK CALLED]");
 
         //prevent mech attacking in wrong mode
@@ -34,29 +45,24 @@ public abstract class CombatBase : MonoBehaviour
         {
             if (!GameModeManager.Instance.IsControllingSecondary())
             {
-                Debug.Log($"[BLOCKED] {name} not in control mode");
+                Debug.Log("[BLOCKED] {name} not in control mode");
                 return;
             }
                
         }
 
+        //Prevent overlap
         if (isAttacking)
         {
-            Debug.Log($"[BLOCKED {name} already attacking]");
+            Debug.Log("[BLOCKED {name} already attacking]");
             return;
         }
 
-        if (Time.time < lastAttackTime + cooldown)
-        {
-            Debug.Log($"[BLOCKED] {name} on cooldown");
-            return;
-        }
-
-        Debug.Log($"[ATTACK START] {name} ({GetType().Name})");
+        Debug.Log("[ATTACK START] {name} ({GetType().Name})");
         
-        StartCoroutine(AttackRoutine());
+        attackRoutine = StartCoroutine(AttackRoutine());
 
-    }
+    }  
 
     IEnumerator AttackRoutine()
     {
@@ -73,7 +79,7 @@ public abstract class CombatBase : MonoBehaviour
         //Small Delay Before Hit Frame
         yield return new WaitForSeconds(hitDelay / signalMultiplier);
 
-        //Hit Detection
+        //Hit Frame
         PerformHit();
 
         //Recovery
@@ -81,6 +87,7 @@ public abstract class CombatBase : MonoBehaviour
 
         lastAttackTime = Time.time;
         isAttacking = false;
+        attackRoutine = null;
 
         Debug.Log($"[ATTACK END] {name}");
 
@@ -88,19 +95,15 @@ public abstract class CombatBase : MonoBehaviour
 
     void PerformHit()
     {
-        //Define attack origin slightly forward
-        Vector3 origin = transform.position + Vector3.up;
-        //Hit point in front
-        Vector3 hitPoint = origin + transform.forward * attackRange;
-
         Debug.Log($"[PERFORM HIT CALLED] {name}");
-
+        
+        //Vector3 origin = transform.position + Vector3.up;
+        Vector3 hitPoint = transform.position;
+        
         //Detect everything in range
-        Collider[] hits = Physics.OverlapSphere(hitPoint, attackRadius);
+        Collider[] hits = Physics.OverlapSphere(hitPoint, attackRadius, damageMask);
 
         Debug.Log($"[HITS FOUND] {hits.Length}");
-
-        Debug.Log($"[HIT CHECK] {name} checking {hits.Length} colliders");
 
         foreach (Collider col in hits)
         {
@@ -120,6 +123,11 @@ public abstract class CombatBase : MonoBehaviour
             
         }
 
+        if (hits.Length == 0)
+        {
+            Debug.Log("[MISS] No targets in range");
+        }
+
     }
     
   float GetSignalMultiplier()
@@ -131,6 +139,23 @@ public abstract class CombatBase : MonoBehaviour
 
         //clamp so it doesn't break gameplay
         //return Mathf.Clamp(signal, 0.5f, 1.5f);
+    }
+
+    public virtual void CancelAttack()
+    {
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
+
+        isAttacking = false;
+    }
+
+    public bool CanAttack()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, attackRange, damageMask);
+        return hits.Length > 0;
     }
 
     protected virtual void OnWindUp()

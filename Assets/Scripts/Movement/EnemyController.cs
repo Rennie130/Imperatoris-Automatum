@@ -14,80 +14,83 @@ public class EnemyController : MonoBehaviour
     }
 
     public EnemyBehaviourState stateDebug;
-    EnemyBehaviourState currentState = EnemyBehaviourState.Patrol;
-
     StateMachine<EnemyController, EnemyBehaviourState> StateMachine;
-
-    private Rigidbody rb;
 
     [Header("References")]
     public Transform mechTarget;         // assign mech in inspector
     EnemyCombat combat;
     NavMeshAgent agent;
 
+    [Header("Vision")]
+    public LayerMask obstructionMask;
+    public float eyeHeight = 1.5f;
+
     [Header("Ranges")]
     public float detectionRange = 15f;
-    public float attackRange = 2.5f;
+    private float attackRange = 2.5f;
+    public float loseInterestRange =25f;
 
     [Header("Patrol")]
-    public Transform[] patrolPoints;
-    int patrolIndex;
+    public float patrolRadius = 15f;
 
-    public Transform currentTarget; // mech OR building
+    Transform currentTarget; // mech OR building
+    EnemyBehaviourState desiredState;
 
     Vector3 wanderTarget;
+
+    float aggroTimer = 0f;
+    public float aggroDuration = 3f;
+
+    float idleTimer = 0f;
+    float idleDuration = 2f;
+    float attackTimer;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
 
+        GetComponent<Health>().OnDamaged += OnDamaged;
+
         StateMachine = new StateMachine<EnemyController, EnemyBehaviourState>(this, EnemyBehaviourState.Patrol);
 
         //PATROL
         StateMachine.ForState(EnemyBehaviourState.Patrol)
-            .OnTick(_ => HandlePatrol())
-            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, mechTarget.position) <= detectionRange)
-            .WithTransition(EnemyBehaviourState.ChaseBuilding, _ => GetDistanceToNearestBuilding() <= detectionRange);
+            .OnTick(_ => HandlePatrol());
 
         //PLAYER
         StateMachine.ForState(EnemyBehaviourState.ChasePlayer)
-            .OnEnter(_ => currentTarget = mechTarget)
-            .OnTick(_ => HandleChase())
-            .WithTransition(EnemyBehaviourState.Patrol, _ => Vector3.Distance(transform.position, currentTarget.position) > detectionRange)
-            .WithTransition(EnemyBehaviourState.AttackPlayer, _ => Vector3.Distance(transform.position, currentTarget.position) <= attackRange);
+            .OnTick(_ => HandleChase());
+
 
         StateMachine.ForState(EnemyBehaviourState.AttackPlayer)
-            .OnTick(_ => HandleAttack())
-            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, currentTarget.position) > attackRange);
+            .OnTick(_ => HandleAttack());
 
         //BUILDING
         StateMachine.ForState(EnemyBehaviourState.ChaseBuilding)
-            .OnEnter(_ => currentTarget = DistrictManager.Instance?.GetClosestBuilding(transform.position).transform)
-            .OnTick(_ => HandleChase())
-            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, mechTarget.position) <= detectionRange)
-            .WithTransition(EnemyBehaviourState.AttackBuilding, _ => Vector3.Distance(transform.position, currentTarget.position) <= attackRange);
+            .OnTick(_ => HandleChase());
 
         StateMachine.ForState(EnemyBehaviourState.AttackBuilding)
-            .OnTick(_ => HandleAttack())
-            .WithTransition(EnemyBehaviourState.ChasePlayer, _ => Vector3.Distance(transform.position, mechTarget.position) <= detectionRange)
-            .WithTransition(EnemyBehaviourState.ChaseBuilding, _ => Vector3.Distance(transform.position, currentTarget.position) > attackRange);
-
-        //Auto find Mech (or building)
-
-        if (combat == null)
-        {
-            Debug.Log($"[ERROR] EnemyCombat missing on {name}");
-        }
+            .OnTick(_ => HandleAttack());
     }
 
     void Start()
     {
-        currentState = EnemyBehaviourState.Patrol;
+        //Agent is properly placed
+        if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+        {
+            transform.position = hit.position;
+            agent.Warp(hit.position);
+        }
 
         agent.stoppingDistance = attackRange * 0.9f;
 
-        rb = GetComponent<Rigidbody>();
+       var rb = GetComponent<Rigidbody>();
+       if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+
         rb.freezeRotation = true;
         rb.mass = 1000f;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -97,65 +100,188 @@ public class EnemyController : MonoBehaviour
     {
         if (mechTarget == null) return;
 
+        EvaluateDecision();
+
+        if (StateMachine.CurrentState.ID != desiredState)
+        {
+            StateMachine.SetState(desiredState, false);
+        }
+
         StateMachine.Tick();
         stateDebug = StateMachine.CurrentState.ID;
+
+        Debug.Log($"State: {StateMachine.CurrentState.ID} | HasPath: {agent.hasPath}");
 
         if (Input.GetKeyDown(KeyCode.T))
         {
             Debug.Log("[TEST] forcing attack");
             combat.TryAttack();
         }
+         
     }
 
-    private float GetDistanceToNearestBuilding()
+    /// =========================
+    ///     DECISION SYSTEM
+    /// =========================
+    
+    void EvaluateDecision()
     {
-        Building buildingTarget = DistrictManager.Instance?.GetClosestBuilding(transform.position);
-        return Vector3.Distance(transform.position, buildingTarget.transform.position);
+        //aggroTimer = Time.deltaTime;
+
+        Transform bestTarget = GetBestTarget();
+
+        if (bestTarget == null)
+        {
+            currentTarget = null;
+            desiredState = EnemyBehaviourState.Patrol;
+            return;
+        }
+
+        currentTarget = bestTarget;
+
+        bool isPlayer = currentTarget == mechTarget;
+
+        if (IsInAttackRange())
+        {
+            desiredState = isPlayer
+                ? EnemyBehaviourState.AttackPlayer
+                : EnemyBehaviourState.AttackBuilding;
+        }
+        else
+        {
+            desiredState = isPlayer
+                ? EnemyBehaviourState.ChasePlayer
+                : EnemyBehaviourState.ChaseBuilding;
+        }
     }
 
+    bool IsInAttackRange()
+    {
+        if (agent.pathPending) return false;
+        
+        return agent.remainingDistance <= attackRange;
+    }
 
-    // PATROL
+    Transform GetBestTarget()
+    {
+        //Aggro priority
+        if (aggroTimer > 0 && currentTarget != null)
+            return currentTarget;
+
+        //Player (LOS required)
+        if (mechTarget != null && CanDetectTarget(mechTarget))
+        {
+            return mechTarget;
+        }
+
+        //Building fallback
+        var building = DistrictManager.Instance?.GetClosestBuilding(transform.position);
+
+        if (building != null && CanDetectTarget(building.transform))
+        {
+            return building.transform;
+        }
+
+        return null;
+    }
+
+    /// =========================
+    ///     LINE OF SIGHT
+    /// =========================
+    
+    bool CanDetectTarget(Transform target)
+    {
+        if (target == null) return false;
+
+        float dist = Vector3.Distance(transform.position, target.position);
+        if (dist > detectionRange) return false;
+
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        Vector3 targetPos = target.position + Vector3.up * eyeHeight;
+        Vector3 dir = (targetPos - origin).normalized;
+
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, detectionRange, obstructionMask))
+        {
+            if (!hit.transform.IsChildOf(target))
+                return false;
+        }
+
+        Debug.DrawLine(origin, targetPos, Color.red, 0.1f);
+
+        return true;
+    }
+
+    /// =========================
+    ///     PATROL STATE
+    /// =========================
+    
     void HandlePatrol()
     {
+        if (StateMachine.CurrentState.ID != EnemyBehaviourState.Patrol)
+            return;
+
         agent.isStopped = false;
 
-        if (!agent.hasPath && agent.remainingDistance < 1f)
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.2f || !agent.hasPath)
         {
-            wanderTarget = GetRandomPoint(transform.position, 10f);
-            agent.SetDestination(wanderTarget);
+            idleTimer += Time.deltaTime;
+
+            if (idleTimer >= idleDuration)
+            {
+                wanderTarget = GetRandomPoint(transform.position, patrolRadius);
+                agent.SetDestination(wanderTarget);
+                idleTimer = 0f;
+            }
+            
 
             //Debug.Log($"[PATROL] New wander target: {wanderTarget}");
         }
+    }
 
-        Vector3 GetRandomPoint(Vector3 centre, float radius)
+    Vector3 GetRandomPoint(Vector3 centre, float radius)
+    {
+        for (int i = 0; i < 10; i++)
         {
             Vector3 random = centre + Random.insideUnitSphere * radius;
 
-            NavMeshHit hit;
-            NavMesh.SamplePosition(random, out hit, radius, NavMesh.AllAreas);
+            if (NavMesh.SamplePosition(random, out NavMeshHit hit, radius, NavMesh.AllAreas))
+            {
+                float dist = Vector3.Distance(transform.position, hit.position);
 
-            return hit.position;
+                if (dist > 5f) //minimum distance
+                    return hit.position;
+            }
         }
+        
+        return transform.position + transform.forward * 5f;
     }
-
-    // CHASE (mech or building)
+               
+    /// =========================
+    ///     CHASE STATE
+    /// =========================
+    
     void HandleChase()
     {
         if (currentTarget == null) return;
-        //if(!agent.hasPath)
-            agent.SetDestination(currentTarget.position);
+
+        agent.isStopped = false;
+        agent.SetDestination(GetTargetPoint(currentTarget));
+          
     }
 
-    //ATTACK
+    /// =========================
+    ///     ATTACK STATE
+    /// =========================
+
     void HandleAttack()
     {
         if (currentTarget == null) return;
 
-
+        agent.isStopped = true;
         agent.ResetPath();
 
-        // face target
-        Vector3 dir = (currentTarget.position - transform.position);
+        // Face target
+        Vector3 dir = currentTarget.position - transform.position;
         dir.y = 0;
 
         if (dir != Vector3.zero)
@@ -163,9 +289,48 @@ public class EnemyController : MonoBehaviour
             transform.forward = dir.normalized;
         }
 
-        Debug.Log($"[AI] {name} attempting attack on {currentTarget.name}");
+        attackTimer -= Time.deltaTime;
 
-        // attack
-        combat.TryAttack();
+        Debug.Log($"[ATTACK] {name} attempting attack on {currentTarget.name}");
+
+        if (attackTimer <= 0f)
+        {
+            var damageable = currentTarget.GetComponentInParent<Damageable>();
+        
+
+            if (damageable != null)
+            {
+                damageable.Hurt(1, transform);
+            }
+        }
+
+        attackTimer = 1.0f; //attack rate
     }
+
+    Vector3 GetTargetPoint(Transform target)
+    {
+        Collider col = target.GetComponentInChildren<Collider>();
+
+        if (col != null)
+        {
+            return col.ClosestPoint(transform.position);
+        }
+
+        return target.position;
+    }
+
+    /// =========================
+    ///     DAMAGE / AGGRO
+    /// =========================
+    
+    void OnDamaged (Transform attacker)
+    {
+        if (attacker == null) return;
+
+        currentTarget = attacker;
+        aggroTimer = aggroDuration;
+        
+        attackTimer = 0f; //force immediate response
+    }
+
 }

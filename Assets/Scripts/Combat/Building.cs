@@ -8,6 +8,21 @@ public class Building : MonoBehaviour, Damageable
     public int maxHealth = 20;
     int currentHealth;
 
+    public int CurrentHealth => currentHealth;
+    public bool IsAlive => currentHealth > 0;
+
+    public System.Action<Transform> OnDamaged;
+
+    [Header("Targeting")]
+    public Transform targetPoint;
+
+    [SerializeField] Transform[] attackPoints;
+
+    public Transform GetTargetPoint()
+    {
+        return targetPoint != null ? targetPoint : transform;
+    }
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -16,16 +31,19 @@ public class Building : MonoBehaviour, Damageable
 
     public void Hurt(int damage, Transform attacker)
     {
-        currentHealth -= damage;
+        if (!IsAlive) return;
+
+        currentHealth = Mathf.Max(currentHealth - damage, 0);
 
         Debug.Log($"[Building HIT] {name} took {damage} from {attacker?.name}. HP: {currentHealth}/{maxHealth}");
 
-        DistrictManager.Instance?.ReportDamage(damage);
+        OnDamaged?.Invoke(attacker);
+
+        DistrictManager.Instance?.RecalculateDistrictHealth();
 
         if (currentHealth <= 0)
         {
-            DistrictManager.Instance?.UnregisterBuilding(this);
-            Destroy(gameObject);
+            DestroyBuilding();
         }
     }
 
@@ -35,8 +53,13 @@ public class Building : MonoBehaviour, Damageable
 
         DistrictManager.Instance?.UnregisterBuilding(this);
 
-        //optional: play VFX
-        Destroy(gameObject);
+        Collider col = GetComponent<Collider>();
+        if (col) col.enabled = false;
+
+        gameObject.layer = LayerMask.NameToLayer("Dead");
+
+        //Delay destroy slightly (gives enemy time to react)
+        Destroy(gameObject, 0.1f);
     }
 
 }
