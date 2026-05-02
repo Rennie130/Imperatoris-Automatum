@@ -66,6 +66,7 @@ public class DistrictManager : MonoBehaviour
             Debug.Log("DISTRICT DESTROYED");
 
             //put the fail state here
+            //GameManager.Instance.GameOver();
         }
     }
 

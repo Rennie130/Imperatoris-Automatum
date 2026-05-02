@@ -8,3 +8,5 @@ public interface Damageable
     void Hurt(int damage, Transform attacker);
 
 }
+
+// is this script still necessary since the same thing happens in the "Health" script?

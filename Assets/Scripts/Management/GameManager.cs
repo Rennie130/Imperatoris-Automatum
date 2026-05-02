@@ -60,6 +60,16 @@ public class GameManager : MonoBehaviour
         UIManager.gameIsPaused = true;
     }
 
+    public void LevelCompleted()
+    {
+        uiManager.ToggleLevelCompleteUI();
+
+        //pause game when level completed.
+        Time.timeScale = 0f;
+        UIManager.gameIsPaused = true;
+        //Once there are more levels, can then call a LoadNextLevel() method (isn't created yet).
+    }
+
     public void Restart()
     {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);

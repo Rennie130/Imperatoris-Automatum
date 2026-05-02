@@ -72,7 +72,8 @@ public class UIManager : MonoBehaviour
 
     public void ToggleLevelCompleteUI()
     {
-        levelCompletedUI.SetActive(true);
+        levelCompletedUI.SetActive(true); 
+        //Once there are more levels, should add information/stats about level and button to proceed to next level.
     }
 
 

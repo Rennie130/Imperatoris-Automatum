@@ -6,7 +6,7 @@ public class Building : MonoBehaviour, Damageable
 {
 
     public int maxHealth = 20;
-    int currentHealth;
+    int currentHealth; // should this be a public or private variable?
 
     public int CurrentHealth => currentHealth;
     public bool IsAlive => currentHealth > 0;
@@ -59,7 +59,7 @@ public class Building : MonoBehaviour, Damageable
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
         //Delay destroy slightly (gives enemy time to react)
-        Destroy(gameObject, 0.1f);
+        Destroy(gameObject, 0.1f); //should we make this SetActive = false instead so it's just disabled/gone from view but the enemy isn't throwing out null errors.
     }
 
 }
