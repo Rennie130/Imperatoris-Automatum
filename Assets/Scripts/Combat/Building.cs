@@ -2,52 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour, Damageable
+public class Building : HealthBase
 {
-
-    public int maxHealth = 20;
-    int currentHealth; // should this be a public or private variable?
-
-    public int CurrentHealth => currentHealth;
-    public bool IsAlive => currentHealth > 0;
-
-    public System.Action<Transform> OnDamaged;
-
     [Header("Targeting")]
     public Transform targetPoint;
-
-    [SerializeField] Transform[] attackPoints;
 
     public Transform GetTargetPoint()
     {
         return targetPoint != null ? targetPoint : transform;
     }
 
-    void Start()
+    protected override void Awake()
     {
-        currentHealth = maxHealth;
+        base.Awake();
         DistrictManager.Instance?.RegisterBuilding(this);
     }
 
-    public void Hurt(int damage, Transform attacker)
+    public override void Hurt(int damage, Transform attacker)
     {
-        if (!IsAlive) return;
+        base.Hurt(damage, attacker);
 
-        currentHealth = Mathf.Max(currentHealth - damage, 0);
-
-        Debug.Log($"[Building HIT] {name} took {damage} from {attacker?.name}. HP: {currentHealth}/{maxHealth}");
-
-        OnDamaged?.Invoke(attacker);
-
+        // Building-specific
         DistrictManager.Instance?.RecalculateDistrictHealth();
-
-        if (currentHealth <= 0)
-        {
-            DestroyBuilding();
-        }
     }
 
-    void DestroyBuilding()
+    protected override void Die()
     {
         Debug.Log($"[BUILDING DESTROYED] {name}");
 
@@ -58,8 +37,7 @@ public class Building : MonoBehaviour, Damageable
 
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
-        //Delay destroy slightly (gives enemy time to react)
-        Destroy(gameObject, 0.1f); //should we make this SetActive = false instead so it's just disabled/gone from view but the enemy isn't throwing out null errors.
+        Destroy(gameObject, 0.1f);
     }
 
 }

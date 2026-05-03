@@ -83,7 +83,7 @@ public class EnemyController : MonoBehaviour
             agent.Warp(hit.position);
         }
 
-        agent.stoppingDistance = attackRange * 0.9f;
+        agent.stoppingDistance = attackRange + 0.2f;
 
        var rb = GetComponent<Rigidbody>();
        if (rb != null)
@@ -100,6 +100,8 @@ public class EnemyController : MonoBehaviour
     {
         if (mechTarget == null) return;
 
+        aggroTimer -= Time.deltaTime;
+
         EvaluateDecision();
 
         if (StateMachine.CurrentState.ID != desiredState)
@@ -110,7 +112,7 @@ public class EnemyController : MonoBehaviour
         StateMachine.Tick();
         stateDebug = StateMachine.CurrentState.ID;
 
-        Debug.Log($"State: {StateMachine.CurrentState.ID} | HasPath: {agent.hasPath}");
+        //Debug.Log($"State: {StateMachine.CurrentState.ID} | HasPath: {agent.hasPath}");
 
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -157,9 +159,12 @@ public class EnemyController : MonoBehaviour
 
     bool IsInAttackRange()
     {
-        if (agent.pathPending) return false;
+        if (currentTarget == null) return false;
+
+        Vector3 targetPoint = GetTargetPoint(currentTarget);
+        float dist = Vector3.Distance(transform.position, targetPoint);
         
-        return agent.remainingDistance <= attackRange;
+        return dist <= attackRange;
     }
 
     Transform GetBestTarget()
@@ -173,6 +178,10 @@ public class EnemyController : MonoBehaviour
         {
             return mechTarget;
         }
+
+        var health = mechTarget.GetComponent<HealthBase>();
+        if (health != null && !health.IsAlive)
+            return null;
 
         //Building fallback
         var building = DistrictManager.Instance?.GetClosestBuilding(transform.position);
@@ -192,6 +201,14 @@ public class EnemyController : MonoBehaviour
     bool CanDetectTarget(Transform target)
     {
         if (target == null) return false;
+
+        float viewAngle = 120f;
+
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
+        float angle = Vector3.Angle(transform.forward, dirToTarget);
+
+        if (angle > viewAngle * 0.5f)
+            return false;
 
         float dist = Vector3.Distance(transform.position, target.position);
         if (dist > detectionRange) return false;
@@ -264,6 +281,12 @@ public class EnemyController : MonoBehaviour
     {
         if (currentTarget == null) return;
 
+        if (IsInAttackRange())
+        {
+            agent.isStopped = true;
+            return;
+        }
+
         agent.isStopped = false;
         agent.SetDestination(GetTargetPoint(currentTarget));
           
@@ -286,7 +309,8 @@ public class EnemyController : MonoBehaviour
 
         if (dir != Vector3.zero)
         {
-            transform.forward = dir.normalized;
+            Quaternion lookRot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 8f * Time.deltaTime);
         }
 
         attackTimer -= Time.deltaTime;
@@ -295,16 +319,10 @@ public class EnemyController : MonoBehaviour
 
         if (attackTimer <= 0f)
         {
-            var damageable = currentTarget.GetComponentInParent<Damageable>();
-        
-
-            if (damageable != null)
-            {
-                damageable.Hurt(1, transform);
-            }
+            combat.TryAttack();
+            attackTimer = 1.0f; //attack rate
         }
-
-        attackTimer = 1.0f; //attack rate
+ 
     }
 
     Vector3 GetTargetPoint(Transform target)

@@ -3,63 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Health : MonoBehaviour, Damageable
+public class Health : HealthBase
 {
-    [Header("Health")]
-    public int maxHealth = 10;
-    public int currentHealth;
-
-    public Action OnDeath; // Used by MissionManager
-    public Action<Transform> OnDamaged;
-
-    Rigidbody rb;
-
-    public bool IsAlive => currentHealth > 0;
-
-      void Awake()
+    protected override void Die()
     {
-        currentHealth = maxHealth;
-        rb = GetComponent<Rigidbody>();
-    }
+        Debug.Log($"[DEATH] {name} died");
 
-    void Start()
-    {
-        Debug.Log($"[HEALTH ACTIVE] {name} HP: {currentHealth}");
-    }
-
-    // Function to call on individual combat scripts to deal damage (reduce other object's current health value)
-    public void Hurt(int damage, Transform attacker)
-    {
-        if (!IsAlive) return;
-
-        currentHealth = Mathf.Max(currentHealth - damage, 0);
-
-        Debug.Log($"[DAMAGE] {name} took {damage} from {attacker?.name}. HP: {currentHealth}/{maxHealth}");
-
-        OnDamaged?.Invoke(attacker);
-
-        if (currentHealth <= 0)
-        {
-            Debug.Log($"[DEATH] {name} died");
-            Die();
-        }
-            
-    }
-
-    private void Die()
-    {
-    
         OnDeath?.Invoke();
-            
+
+        // Disable AI
+
+        var ai = GetComponent<EnemyController>();
+        if (ai) ai.enabled = false;
+
+        // Stop NavMesh
+        var agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent)
+        {
+            agent.isStopped = true;
+            agent.enabled = false;
+        }
+
+        // Stop Combat
+        var combat = GetComponent<CombatBase>();
+        if (combat) combat.CancelAttack();
+
+        // Disable Collider
         Collider col = GetComponent<Collider>();
         if (col) col.enabled = false;
 
+        // Freeze Physics
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb) rb.isKinematic = true;
 
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
-        Debug.Log($"{name} Died ({currentHealth})");
-        
+        // Destroy after delay
+        Destroy(gameObject, 2f);  
     }
+
+    // No duplicate damage logic
+    // Only defines what happens on death
 }

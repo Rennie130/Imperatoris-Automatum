@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class CombatBase : MonoBehaviour
 {
     [Header("Attack Settings")]
-    [SerializeField] float attackRadius = 1.5f;
+    [SerializeField] float attackRadius = 2.5f;
     [SerializeField] float attackCooldown = 1f;
     [SerializeField] float attackRange = 2.5f;
     [SerializeField] int damage = 1;
@@ -98,10 +98,10 @@ public abstract class CombatBase : MonoBehaviour
         Debug.Log($"[PERFORM HIT CALLED] {name}");
         
         //Vector3 origin = transform.position + Vector3.up;
-        Vector3 hitPoint = transform.position;
+        Vector3 hitPoint = transform.position + transform.forward * attackRadius;
         
         //Detect everything in range
-        Collider[] hits = Physics.OverlapSphere(hitPoint, attackRadius, damageMask);
+        Collider[] hits = Physics.OverlapSphere(hitPoint, attackRadius);
 
         Debug.Log($"[HITS FOUND] {hits.Length}");
 
@@ -111,7 +111,7 @@ public abstract class CombatBase : MonoBehaviour
 
             if (col.transform == transform) continue;
 
-            Damageable dmg = col.GetComponentInParent<Damageable>();
+            Damageable dmg = col.GetComponent<Damageable>() ?? col.GetComponentInParent<Damageable>();
 
             if (dmg != null)
             {
