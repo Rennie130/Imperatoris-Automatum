@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public UIManager uiManager;
+    public Transform mech;
 
     public static GameManager Instance {get; private set; }
 
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadDistrictOne()
     {
-        SceneManager.LoadSceneAsync("DistrictOne");
+        SceneManager.LoadSceneAsync(1);
         uiManager.ToggleLevelUI();
     }
 

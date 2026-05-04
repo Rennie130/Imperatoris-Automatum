@@ -50,7 +50,9 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
 
-        GetComponent<Health>().OnDamaged += OnDamaged;
+        var health = GetComponent<Health>();
+        health.OnDamaged += OnDamaged;
+        health.OnDeath += OnDeath;
 
         StateMachine = new StateMachine<EnemyController, EnemyBehaviourState>(this, EnemyBehaviourState.Patrol);
 
@@ -91,6 +93,8 @@ public class EnemyController : MonoBehaviour
             rb.isKinematic = true;
         }
 
+        mechTarget = GameManager.Instance.mech;
+
         rb.freezeRotation = true;
         rb.mass = 1000f;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -120,6 +124,11 @@ public class EnemyController : MonoBehaviour
             combat.TryAttack();
         }
          
+    }
+
+    private void OnDeath()
+    {
+        MissionManager.Instance.aliveEnemies.Remove(gameObject); //dumb fix to deal with the fact that lambda expressions can't capture external variables - MEL
     }
 
     /// =========================
@@ -239,6 +248,8 @@ public class EnemyController : MonoBehaviour
 
         agent.isStopped = false;
 
+        Debug.Log("DING");
+
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.2f || !agent.hasPath)
         {
             idleTimer += Time.deltaTime;
@@ -248,9 +259,10 @@ public class EnemyController : MonoBehaviour
                 wanderTarget = GetRandomPoint(transform.position, patrolRadius);
                 agent.SetDestination(wanderTarget);
                 idleTimer = 0f;
+                Debug.Log("DING3");
             }
             
-
+            Debug.Log("DING2");
             //Debug.Log($"[PATROL] New wander target: {wanderTarget}");
         }
     }

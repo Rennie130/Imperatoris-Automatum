@@ -35,6 +35,7 @@ public class SecondaryController : MonoBehaviour
         combat = GetComponent<MechCombat>();
         healthPool = GetComponent<Health>();
         healthPool.OnDeath += OnMechDeath;
+        GameManager.Instance.mech = transform;
 
         if (combat == null)
         {

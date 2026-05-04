@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 5023660935452924187}
   - component: {fileID: 5023660935452924188}
   - component: {fileID: 5972696759954362377}
-  m_Layer: 0
+  - component: {fileID: 906640235}
+  m_Layer: 7
   m_Name: BasicEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -37,7 +38,7 @@ Transform:
   m_Children:
   - {fileID: 5023660936677289867}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: -269.999, z: 0}
 --- !u!33 &5023660935452924184
 MeshFilter:
@@ -113,10 +114,10 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 2
-  m_Acceleration: 8
+  m_Acceleration: 6
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 4
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -136,8 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60e2dea0b9da4448ad94319fa429818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  maxHeatlh: 5
+  maxHealth: 5
 --- !u!114 &5023660935452924188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,12 +150,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b54eb386497e641a3a2440e4b4f7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
-  attackRange: 2
   attackRadius: 1.5
-  windUpTime: 0.3
-  recoveryTime: 0.5
   attackCooldown: 1
+  attackRange: 5
+  damage: 2
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 448
+  windUpTime: 0.3
+  hitDelay: 0.1
+  recoveryTime: 0.5
   target: {fileID: 0}
 --- !u!114 &5972696759954362377
 MonoBehaviour:
@@ -169,16 +173,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a99489a1bf52104198ce069b26f59fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  detectionRange: 25
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  fieldOfView: 100
-  attackDistance: 4
-  patrolWaitTime: 2
-  stopAtDistance: 4
+  stateDebug: 0
+  mechTarget: {fileID: 0}
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 257
+  eyeHeight: 1.5
+  detectionRange: 20
+  loseInterestRange: 25
+  patrolRadius: 15
+  aggroDuration: 3
+--- !u!54 &906640235
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5023660935452924189}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5023660936677289868
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +210,7 @@ GameObject:
   - component: {fileID: 5023660936677289867}
   - component: {fileID: 5023660936677289864}
   - component: {fileID: 5023660936677289865}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}

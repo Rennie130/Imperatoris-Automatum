@@ -15,6 +15,10 @@ public class Building : HealthBase
     protected override void Awake()
     {
         base.Awake();
+        
+    }
+
+    private void Start() {
         DistrictManager.Instance?.RegisterBuilding(this);
     }
 

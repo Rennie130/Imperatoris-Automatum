@@ -9,15 +9,20 @@ public class MissionManager : MonoBehaviour
     [Header("Spawning")]
     public List<GameObject> enemyPrefabs;
     public Transform[] spawnPoints;
+    private GameObject basicEnemy;
+    public int maxWaves = 2; //Actually want this to update depending on level requirements.
 
     [Header("References")]
     public Health mechHealth;
     public Health playerHealth;
     public DistrictManager district;
 
-    List<GameObject> aliveEnemies = new List<GameObject>(); //should this be made public or private?
+    public List<GameObject> aliveEnemies = new List<GameObject>(); //should this be made public or private?
 
-    int wave = 0; //is this public or private?
+    private int waveCount = 0; //is this public or private?
+    
+    private bool canSpawn = true;
+    
 
     void Awake()
     {
@@ -26,50 +31,41 @@ public class MissionManager : MonoBehaviour
     
     void Start()
     {
-        StartCoroutine(WaveLoop()); // how to stop once enough waves have passed?
+        StartCoroutine(SpawnWave()); // how to stop once enough waves have passed?
     }
 
-    IEnumerator WaveLoop()
-    {
-        while (true)
-        {
-            wave++; 
-
-            SpawnWave();
-
-            //wait until all enemies are dead
-            yield return new WaitUntil(() => aliveEnemies.Count == 0);
-            yield return new WaitForSeconds(5f);
-        }
-    }
     
-    void SpawnWave()
+    IEnumerator SpawnWave()
     {
-        int count = 3 + wave;
-
-        for (int i = 0; i < count; i++)
+        while(waveCount < maxWaves) //are all waves completed?
         {
-            Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-            GameObject enemy = Instantiate(enemyPrefabs[0], spawn.position, spawn.rotation);
-
-            aliveEnemies.Add(enemy);
-
-            enemy.GetComponent<Health>().OnDeath += () => // unsure what += () => means
+            Debug.Log("Starting wave:" + waveCount);
+            //spawn a wave  
+            
+            for(int i = 0; i < 2; i++)
             {
-                aliveEnemies.Remove(enemy);
-            }; 
+                SpawnEnemy();
+            }
+
+            yield return new WaitUntil(() => aliveEnemies.Count == 0); //is the current wave alive?
+
+            yield return new WaitForSeconds(5f); //wait 5 seconds before the next wave
+            waveCount++;
         }
+
+         GameManager.Instance.LevelCompleted();
     }
 
-    public void EndOfMission()
+
+    private void SpawnEnemy()
     {
-        // check to see if all waves are completed and the current wave aliveEnemies.Count == 0.
-        // If above correct, can either trigger game win screen/ui, or set a bool AllEnemiesDead to true which can be used in function to call UI and update player score?
-        // if (aliveEnemies.Count == 0 /* && end of wave*/)
-        // {
-        //     GameManager.Instance.LevelCompleted();
-        // }
+        //maybe have to check if the spawn point is already occupied?
+
+        Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        basicEnemy = Instantiate(enemyPrefabs[0], spawn.position, spawn.rotation);
+
+        aliveEnemies.Add(basicEnemy);
 
     }
+
 }
