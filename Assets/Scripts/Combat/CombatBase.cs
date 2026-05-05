@@ -29,7 +29,7 @@ public abstract class CombatBase : MonoBehaviour
 
     public virtual void TryAttack()
     {
-        Debug.Log("[COMBAT] TryAttack called");
+        //Debug.Log("[COMBAT] TryAttack called");
 
         //Cooldown check
         if (Time.time < lastAttackTime + attackCooldown)
@@ -38,7 +38,7 @@ public abstract class CombatBase : MonoBehaviour
             return;
         }
         
-        Debug.Log("[TRY ATTACK CALLED]");
+        //Debug.Log("[TRY ATTACK CALLED]");
 
         //prevent mech attacking in wrong mode
         if (this is MechCombat)

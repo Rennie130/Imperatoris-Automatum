@@ -51,7 +51,7 @@ public class DistrictManager : MonoBehaviour
 
         if (maxDistrictHealth > 0)
         {
-            Debug.Log($"[DISTRICT] {(float)currentDistrictHealth / maxDistrictHealth}");
+            //Debug.Log($"[DISTRICT] {(float)currentDistrictHealth / maxDistrictHealth}");
         }
         else
         {
@@ -66,7 +66,7 @@ public class DistrictManager : MonoBehaviour
             Debug.Log("DISTRICT DESTROYED");
 
             //put the fail state here
-            //GameManager.Instance.GameOver();
+            GameManager.Instance.GameOver();
         }
     }
 

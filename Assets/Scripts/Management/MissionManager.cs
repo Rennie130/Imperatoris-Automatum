@@ -17,11 +17,11 @@ public class MissionManager : MonoBehaviour
     public Health playerHealth;
     public DistrictManager district;
 
-    public List<GameObject> aliveEnemies = new List<GameObject>(); //should this be made public or private?
+    public List<GameObject> aliveEnemies = new List<GameObject>(); 
 
-    private int waveCount = 0; //is this public or private?
+    private int waveCount = 0; 
     
-    private bool canSpawn = true;
+    //private bool canSpawn = true;
     
 
     void Awake()
@@ -31,7 +31,7 @@ public class MissionManager : MonoBehaviour
     
     void Start()
     {
-        StartCoroutine(SpawnWave()); // how to stop once enough waves have passed?
+        StartCoroutine(SpawnWave()); 
     }
 
     

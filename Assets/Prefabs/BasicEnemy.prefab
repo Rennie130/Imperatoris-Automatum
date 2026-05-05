@@ -38,7 +38,7 @@ Transform:
   m_Children:
   - {fileID: 5023660936677289867}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -269.999, z: 0}
 --- !u!33 &5023660935452924184
 MeshFilter:
@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
+  currentHealth: 0
 --- !u!114 &5023660935452924188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,13 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b54eb386497e641a3a2440e4b4f7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRadius: 1.5
+  attackRadius: 5
   attackCooldown: 1
   attackRange: 5
   damage: 2
   damageMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 320
   windUpTime: 0.3
   hitDelay: 0.1
   recoveryTime: 0.5

@@ -248,7 +248,7 @@ public class EnemyController : MonoBehaviour
 
         agent.isStopped = false;
 
-        Debug.Log("DING");
+        //Debug.Log("DING");
 
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.2f || !agent.hasPath)
         {
@@ -259,10 +259,10 @@ public class EnemyController : MonoBehaviour
                 wanderTarget = GetRandomPoint(transform.position, patrolRadius);
                 agent.SetDestination(wanderTarget);
                 idleTimer = 0f;
-                Debug.Log("DING3");
+                //Debug.Log("DING3");
             }
             
-            Debug.Log("DING2");
+            //Debug.Log("DING2");
             //Debug.Log($"[PATROL] New wander target: {wanderTarget}");
         }
     }

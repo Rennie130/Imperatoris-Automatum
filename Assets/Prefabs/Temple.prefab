@@ -14,12 +14,12 @@ GameObject:
   - component: {fileID: 8358486224639864422}
   - component: {fileID: 8358486224639864423}
   - component: {fileID: 8358486224639864420}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486224639864421
 Transform:
@@ -680,12 +680,12 @@ GameObject:
   - component: {fileID: 8358486224664037600}
   - component: {fileID: 8358486224664037601}
   - component: {fileID: 8358486224664037406}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486224664037407
 Transform:
@@ -1346,12 +1346,12 @@ GameObject:
   - component: {fileID: 8358486224971293875}
   - component: {fileID: 8358486224971293872}
   - component: {fileID: 8358486224971293873}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486224971293870
 Transform:
@@ -2012,12 +2012,12 @@ GameObject:
   - component: {fileID: 8358486224998725165}
   - component: {fileID: 8358486224998725162}
   - component: {fileID: 8358486224998725163}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486224998725160
 Transform:
@@ -2678,12 +2678,12 @@ GameObject:
   - component: {fileID: 8358486225096165117}
   - component: {fileID: 8358486225096165114}
   - component: {fileID: 8358486225096165115}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486225096165112
 Transform:
@@ -3344,12 +3344,12 @@ GameObject:
   - component: {fileID: 8358486225328496025}
   - component: {fileID: 8358486225328496022}
   - component: {fileID: 8358486225328496023}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486225328496020
 Transform:
@@ -4010,12 +4010,12 @@ GameObject:
   - component: {fileID: 8358486225850973671}
   - component: {fileID: 8358486225850973668}
   - component: {fileID: 8358486225850973669}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486225850973666
 Transform:
@@ -6007,12 +6007,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8358486226075155868}
   - component: {fileID: 6296052637503788128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Temple
   m_TagString: EnemyDestructable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486226075155868
 Transform:
@@ -6035,7 +6035,7 @@ Transform:
   - {fileID: 8358486224998725160}
   - {fileID: 8358486225328496020}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -0.008, z: 0}
 --- !u!114 &6296052637503788128
 MonoBehaviour:
@@ -6050,6 +6050,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
+  currentHealth: 0
+  targetPoint: {fileID: 0}
 --- !u!1 &8358486226087687082
 GameObject:
   m_ObjectHideFlags: 0
@@ -6064,12 +6066,12 @@ GameObject:
   - component: {fileID: 8358486226087687086}
   - component: {fileID: 8358486226087687087}
   - component: {fileID: 8358486226087687084}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stairs (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8358486226087687085
 Transform:

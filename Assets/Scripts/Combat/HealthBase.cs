@@ -7,7 +7,7 @@ public abstract class HealthBase : MonoBehaviour, Damageable
 {
    [Header("Health")]
    public int maxHealth = 10;
-   protected int currentHealth;
+   public int currentHealth;
 
    public int CurrentHealth => currentHealth;
    public bool IsAlive => currentHealth > 0;
