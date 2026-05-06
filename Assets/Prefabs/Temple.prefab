@@ -6007,6 +6007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8358486226075155868}
   - component: {fileID: 6296052637503788128}
+  - component: {fileID: -6519313668590113236}
   m_Layer: 8
   m_Name: Temple
   m_TagString: EnemyDestructable
@@ -6052,6 +6053,19 @@ MonoBehaviour:
   maxHealth: 20
   currentHealth: 0
   targetPoint: {fileID: 0}
+--- !u!65 &-6519313668590113236
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358486226075155869}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8358486226087687082
 GameObject:
   m_ObjectHideFlags: 0
