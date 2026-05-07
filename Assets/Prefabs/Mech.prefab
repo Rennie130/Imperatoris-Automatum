@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 1386427581705338195}
   - component: {fileID: 1386427581705338197}
   - component: {fileID: 2026614264}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mech
-  m_TagString: Mech
+  m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,11 +32,11 @@ Transform:
   m_GameObject: {fileID: 1386427581705338189}
   m_LocalRotation: {x: -0, y: -0.99989873, z: 0, w: -0.014232658}
   m_LocalPosition: {x: 15.21, y: 3.0099998, z: 21.92}
-  m_LocalScale: {x: 5.796881, y: 6.0427837, z: 6.882133}
+  m_LocalScale: {x: 5.7968807, y: 6.0427837, z: 6.8821325}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: -181.631, z: 0}
 --- !u!33 &1386427581705338193
 MeshFilter:
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  currentHealth: 0
+  currentHealth: 10
 --- !u!114 &2026614264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,11 +163,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRadius: 1.5
   attackCooldown: 1
-  attackRange: 2
+  attackRange: 5
   damage: 2
   damageMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 448
   windUpTime: 0.3
   hitDelay: 0.1
   recoveryTime: 0.5

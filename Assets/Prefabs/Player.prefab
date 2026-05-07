@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1942480511660121323}
   - component: {fileID: 1942480511660121333}
   - component: {fileID: 1942480511660121332}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,14 +94,13 @@ GameObject:
   - component: {fileID: 1942480511971624517}
   - component: {fileID: 1942480511971624516}
   - component: {fileID: 1942480511971623355}
-  - component: {fileID: 1942480511971623354}
   - component: {fileID: 68363268}
   - component: {fileID: 1942480511971624519}
   - component: {fileID: 1942480511971624518}
   - component: {fileID: 628646002}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,7 +119,7 @@ Transform:
   m_Children:
   - {fileID: 1942480511660121323}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!33 &1942480511971624516
 MeshFilter:
@@ -172,19 +171,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1942480511971623354
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1942480511971623352}
-  m_Material: {fileID: 13400000, guid: b7c7d5da1db23174182d16d53c154f26, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &68363268
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -247,5 +233,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a60e2dea0b9da4448ad94319fa429818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  maxHeatlh: 10
+  maxHealth: 10
+  currentHealth: 10
