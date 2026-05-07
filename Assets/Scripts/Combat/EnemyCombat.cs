@@ -9,6 +9,7 @@ public class EnemyCombat : CombatBase
     void Start()
     {
         Debug.Log($"[ENEMY COMBAT ACTIVE] {name}");
+        target = GameManager.Instance.mech;
     }
 
      protected override void OnWindUp()

@@ -23,26 +23,26 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
+    //Start is called before the first frame update
     void Start()
     {
         MainMenu();
-
     }
 
     public void NewGame()
     {
-        LoadDistrictOne();
 
-        //Ensure game isn't paused
-        Time.timeScale = 1f;
-        UIManager.gameIsPaused = false;
+        LoadDistrictOne();
     }
 
     public void LoadDistrictOne()
     {
         SceneManager.LoadSceneAsync(1);
         uiManager.ToggleLevelUI();
+
+        //Ensure game isn't paused
+        Time.timeScale = 1f;
+        UIManager.gameIsPaused = false;
     }
 
        //Not using yet but set up for when we have more scenes. 
