@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CollateralDamageZone : MonoBehaviour
 {
-    public int damage = 1;
-    public float damageCooldown = 1f;
+    [SerializeField] int damage = 1;
+    [SerializeField] float damageInterval = 1f;
+    [SerializeField] float pushForce = 5f;
 
     float timer;
 
@@ -18,6 +19,7 @@ public class CollateralDamageZone : MonoBehaviour
             return;
         }
 
+        // Only affect Emperor
         PrimaryController player = other.GetComponent<PrimaryController>();
 
         if (player == null)
@@ -30,16 +32,19 @@ public class CollateralDamageZone : MonoBehaviour
         if (dmg != null)
         {
             dmg.Hurt(damage, transform);
-            timer = damageCooldown;
-        }
 
-        Rigidbody rb = other.GetComponent<Rigidbody>();
+            Rigidbody rb = other.GetComponent<Rigidbody>();
+        
 
-        if (rb != null)
-        {
-            Vector3 dir = (other.transform.position - transform.position).normalized;
+            if (rb != null)
+            {
+                Vector3 dir = (other.transform.position - transform.position).normalized;
 
-            rb.AddForce(dir * 5f, ForceMode.Impulse);
+                rb.AddForce(dir * pushForce, ForceMode.Impulse);
+            }
+
+            timer = damageInterval;
         }
     }
 }
+

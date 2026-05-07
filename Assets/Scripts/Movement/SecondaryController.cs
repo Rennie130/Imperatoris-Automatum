@@ -46,7 +46,7 @@ public class SecondaryController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        rb.freezeRotation = false;
         rb.mass = 1000f;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }

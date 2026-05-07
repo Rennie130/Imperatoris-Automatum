@@ -90,7 +90,7 @@ public class EnemyController : MonoBehaviour
        var rb = GetComponent<Rigidbody>();
        if (rb != null)
         {
-            rb.isKinematic = true;
+            rb.isKinematic = false;
         }
 
         mechTarget = GameManager.Instance.mech;
@@ -292,6 +292,11 @@ public class EnemyController : MonoBehaviour
     void HandleChase()
     {
         if (currentTarget == null) return;
+
+        if (combat.navigationLocked)
+        {
+            return;
+        }
 
         if (IsInAttackRange())
         {

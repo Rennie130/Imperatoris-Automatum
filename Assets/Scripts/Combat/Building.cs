@@ -41,7 +41,45 @@ public class Building : HealthBase
 
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
-        Destroy(gameObject, 0.1f);
+        StartCoroutine(DestroyRoutine());
+    }
+
+    IEnumerator DestroyRoutine()
+    {
+        // Disable targeting
+        enabled = false;
+
+        // Disable children
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
+
+        // Disable rigidbody physics
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+
+        // Disable new obstacles
+        UnityEngine.AI.NavMeshObstacle obstacle = GetComponent<UnityEngine.AI.NavMeshObstacle>();
+
+        if (obstacle != null)
+        {
+            obstacle.enabled = false;
+        }
+
+        // Change layer
+        gameObject.layer = LayerMask.NameToLayer("Dead");
+
+        Debug.Log($"[BUILDING DESTROYED] {name}");
+
+        // Wait before despawn
+        yield return new WaitForSeconds(5f);
+
+        Destroy(gameObject);
     }
 
 }

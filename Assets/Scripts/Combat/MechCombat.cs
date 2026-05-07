@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class MechCombat : CombatBase
 {
-    int comboStep;
-    float lastComboTime;
-    public float comboResetTime = 1f;
-
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (!GameModeManager.Instance.IsControllingSecondary())
             return;
         
@@ -26,24 +24,6 @@ public class MechCombat : CombatBase
             TryAttack();
         }
     }
-
-   // void HandleCombo()
-   // {
-  //      if (Time.time > lastComboTime + comboResetTime)
-  //      {
-  //          comboStep = 0;
-    //    }
-//
- //       comboStep++;
-//        lastComboTime = Time.time;
-
- //       TryAttack();
- //   }
-
-  //  public void Interrupt()
-  //  {
-  //      comboStep = 0;
-  //  }
 
     protected override void OnWindUp()
     {

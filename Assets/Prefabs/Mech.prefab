@@ -110,12 +110,12 @@ Rigidbody:
   m_GameObject: {fileID: 1386427581705338189}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 4
+  m_AngularDrag: 8
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1386427581705338195
 MonoBehaviour:
@@ -148,7 +148,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  currentHealth: 10
+  hitKnockbackForce: 3
+  knockbackDuration: 0.06
+  canBeInterrupted: 1
 --- !u!114 &2026614264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,13 +164,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRadius: 1.5
-  attackCooldown: 1
+  attackCooldown: 0.6
   attackRange: 5
   damage: 2
   damageMask:
     serializedVersion: 2
-    m_Bits: 448
-  windUpTime: 0.3
-  hitDelay: 0.1
-  recoveryTime: 0.5
-  comboResetTime: 1
+    m_Bits: 384
+  windUpTime: 0.45
+  hitDelay: 0.08
+  recoveryTime: 0.7
+  maxCombo: 3
+  comboResetTime: 1.5
+  lungeForce: 0.6
+  lungeDuration: 0.12
+  normalHit:
+    freezeTime: 0.025
+    timeScale: 0.08
+  heavyHit:
+    freezeTime: 0.045
+    timeScale: 0.04
+  finisherHit:
+    freezeTime: 0.08
+    timeScale: 0
+  navigationLocked: 0
