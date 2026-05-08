@@ -39,7 +39,7 @@ Transform:
   - {fileID: 6335463075199344341}
   - {fileID: 7610388859850338225}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: -269.999, z: 0}
 --- !u!33 &5023660935452924184
 MeshFilter:
@@ -139,9 +139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
+  currentHealth: 10
   hitKnockbackForce: 3
   knockbackDuration: 0.06
   canBeInterrupted: 1
+  primaryController: {fileID: 0}
 --- !u!114 &5023660935452924188
 MonoBehaviour:
   m_ObjectHideFlags: 0
