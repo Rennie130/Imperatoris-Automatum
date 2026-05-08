@@ -51,6 +51,7 @@ public abstract class CombatBase : MonoBehaviour
     public bool navigationLocked;
    
     protected Rigidbody rb;
+    protected Animator animator;
 
     Coroutine attackRoutine;
 
@@ -59,6 +60,8 @@ public abstract class CombatBase : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         agent = GetComponent<NavMeshAgent>();
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void Update()
@@ -130,21 +133,27 @@ public abstract class CombatBase : MonoBehaviour
         Debug.Log($"[WINDUP] {name}");
         // Wind-Up (telegraph)
         OnWindUp();
+
+        // Trigger animation
+        PlayAttackAnimation();
+
+        // Wait for animation to finish
+        yield return new WaitForSeconds(recoveryTime);
         
         // Small forward movement
-        PerformLunge();
+       // PerformLunge();
         
-        yield return new WaitForSeconds(windUpTime / signalMultiplier);
+      //  yield return new WaitForSeconds(windUpTime / signalMultiplier);
 
-        Debug.Log($"[HIT FRAME] {name}");
+      //  Debug.Log($"[HIT FRAME] {name}");
         // Small Delay Before Hit Frame
-        yield return new WaitForSeconds(hitDelay / signalMultiplier);
+      //  yield return new WaitForSeconds(hitDelay / signalMultiplier);
 
         // Hit Frame
-        PerformHit();
+       // PerformHit();
 
         // Recovery
-        yield return new WaitForSeconds(recoveryTime / signalMultiplier);
+     //   yield return new WaitForSeconds(recoveryTime / signalMultiplier);
 
         lastAttackTime = Time.time;
         isAttacking = false;
@@ -168,6 +177,14 @@ public abstract class CombatBase : MonoBehaviour
             comboTimer = comboResetTime;
         }
 
+    }
+
+    protected virtual void PlayAttackAnimation()
+    {
+        if (animator == null) return;
+
+        animator.SetInteger("ComboStep", comboStep);
+        animator.SetTrigger("Plap");
     }
 
     /// ======================
@@ -380,6 +397,12 @@ public abstract class CombatBase : MonoBehaviour
         agent.updateRotation = true;
 
         agent.isStopped = false;
+    }
+
+    public void AnimationHitFrame()
+    {
+        PerformLunge();
+        PerformHit();
     }
 
     protected virtual void OnWindUp()

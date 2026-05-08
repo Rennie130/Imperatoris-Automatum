@@ -25,6 +25,11 @@ public class MechCombat : CombatBase
         }
     }
 
+    public void AnimationHitFrame_Event()
+    {
+        AnimationHitFrame();
+    }
+
     protected override void OnWindUp()
     {
         Debug.Log($"[MECH WIND-UP] {name} preparing attack");
