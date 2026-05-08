@@ -22,6 +22,9 @@ public class DistrictManager : MonoBehaviour
         }
 
         Instance = this;
+
+        //Assign script reference to Game Manager
+        GameManager.Instance.districtHealth = this;
     }
 
     public void RegisterBuilding(Building b)
@@ -46,12 +49,12 @@ public class DistrictManager : MonoBehaviour
         foreach (var b in buildings)
         {
             maxDistrictHealth += b.maxHealth;
-            currentDistrictHealth += b.CurrentHealth;
+            currentDistrictHealth += b.currentHealth;
         }
 
         if (maxDistrictHealth > 0)
         {
-            //Debug.Log($"[DISTRICT] {(float)currentDistrictHealth / maxDistrictHealth}");
+            Debug.Log($"[DISTRICT] {(float)currentDistrictHealth / maxDistrictHealth}");
         }
         else
         {

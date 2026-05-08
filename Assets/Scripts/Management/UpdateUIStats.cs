@@ -5,7 +5,7 @@ using TMPro;
 
 public class UpdateUIStats : MonoBehaviour
 {
-    public HealthBase mechHealth;
+   [Header("UI Text")]
     public TMP_Text playerHealthText;
     public TMP_Text signalStrengthText;
     public TMP_Text mechHealthText;
@@ -14,9 +14,34 @@ public class UpdateUIStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if(mechHealth.currentHealth)
-        // {
+        if(GameManager.Instance.playerHealth)
+        {
+            //Update Player Health display in UI
+            playerHealthText.text = "Player Health " + GameManager.Instance.playerHealth.currentHealth.ToString() + "/10";
+        }        
 
-        // }
+        if(GameManager.Instance.mechHealth)
+        {
+            //Update Mech Health display in UI
+            mechHealthText.text = "Mech Health " + GameManager.Instance.mechHealth.currentHealth.ToString() + "/20";
+        }
+
+        if(GameManager.Instance.signalStrength)
+        {
+            //Update Signal Strength display in UI
+            signalStrengthText.text = "Signal Strength " + GameManager.Instance.signalStrength.signalStrength.ToString();
+        }
+
+        if(GameManager.Instance.districtHealth)
+        {
+            //Update Mech Health display in UI
+            districtHealthText.text = "District Health " + GameManager.Instance.districtHealth.currentDistrictHealth.ToString() + "/20";
+        }
+
+        
+
+        // mechHealthText.text = "Mech Health " + mechHealth.currentHealth.ToString() + "/20";
+        // playerHealthText.text = "Player Health " + playerHealth.currentHealth.ToString() + "/10";
+        // signalStrengthText.text = "Signal Strength " + signalStrength.signalStrength.ToString();
     }
 }

@@ -235,3 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 10
+  hitKnockbackForce: 0.3
+  knockbackDuration: 0.06
+  canBeInterrupted: 1
+  primaryController: {fileID: 0}

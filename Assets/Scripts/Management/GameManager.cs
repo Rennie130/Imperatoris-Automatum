@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Security;
 using System.Security.AccessControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Script References")]
+    public HealthBase playerHealth;
+    public HealthBase mechHealth;
+    public GameModeManager signalStrength;
+    public DistrictManager districtHealth;
     public UIManager uiManager;
+
+
     public Transform mech;
 
     public static GameManager Instance {get; private set; }
@@ -74,6 +82,11 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+         uiManager.ToggleLevelUI();
+
+        //Ensure game isn't paused
+        Time.timeScale = 1f;
+        UIManager.gameIsPaused = false;
         UnityEngine.Debug.Log("Restart");
     }
 

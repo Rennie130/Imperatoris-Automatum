@@ -5,6 +5,12 @@ using System;
 
 public class Health : HealthBase
 {
+    public PrimaryController primaryController;
+
+    void Start()
+    {
+        primaryController = GetComponent<PrimaryController>();
+    }
     protected override void Die()
     {
         Debug.Log($"[DEATH] {name} died");
@@ -40,6 +46,8 @@ public class Health : HealthBase
 
         // Destroy after delay
         Destroy(gameObject, 2f);  
+
+        primaryController.OnPlayerDeath();
     }
 
     // No duplicate damage logic

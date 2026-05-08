@@ -25,6 +25,7 @@ public class PrimaryController : MonoBehaviour
 
     private Rigidbody rb;
     private Transform cameraTransform;
+    private HealthBase playerHealthBase;
 
     private bool isGrounded;
     private bool canMove = true;
@@ -35,6 +36,10 @@ public class PrimaryController : MonoBehaviour
         cameraTransform = Camera.main.transform;
 
         rb.freezeRotation = true; //prevent tipping
+
+        playerHealthBase = GetComponent<HealthBase>();
+        //Assign script reference to Game Manager
+        GameManager.Instance.playerHealth = playerHealthBase;
     }
 
     void Update()
@@ -154,7 +159,7 @@ public class PrimaryController : MonoBehaviour
         }
     }   
 
-    private void OnPlayerDeath()
+    public void OnPlayerDeath()
     {
         GameManager.Instance.GameOver();
     }

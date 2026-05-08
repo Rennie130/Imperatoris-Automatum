@@ -44,8 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f54299bc12b7a984689f2eddcf313788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefabs: []
-  spawnPoints: []
+  enemyPrefabs:
+  - {fileID: 5023660935452924189, guid: c6b08df9cbaa0c94aa830b369dcecfa3, type: 3}
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  maxWaves: 2
   mechHealth: {fileID: 0}
   playerHealth: {fileID: 0}
   district: {fileID: 0}
+  aliveEnemies: []

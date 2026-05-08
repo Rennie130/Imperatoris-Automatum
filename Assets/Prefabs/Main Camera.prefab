@@ -99,6 +99,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryTarget: {fileID: 0}
   secondaryTarget: {fileID: 0}
-  Offset: {x: 0, y: 2, z: -4}
-  followSpeed: 10
-  rotationSpeed: 10
+  cameraDistance: 5
+  cameraHeight: 2
+  followSmooth: 8
+  mouseSensitivity: 2
+  minY: -30
+  maxY: 60
+  autoAlignSpeed: 0.1
+  autoAlign: 0
+  cameraCollisionMask:
+    serializedVersion: 2
+    m_Bits: 1
+  collisionOffset: 0.3

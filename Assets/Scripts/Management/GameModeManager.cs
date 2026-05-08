@@ -24,12 +24,15 @@ public class GameModeManager : MonoBehaviour
     public float maxSignalDistance = 25f;
     public float minSignalDistance = 5f;
 
-    [HideInInspector]
+    //[HideInInspector]
     public float signalStrength = 1f;
 
     void Awake()
     {
         Instance = this;
+
+        //Assign script reference to Game Manager
+        GameManager.Instance.signalStrength = this;
     }
 
   void Start()

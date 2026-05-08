@@ -30,6 +30,8 @@ public class SecondaryController : MonoBehaviour
     MechCombat combat;
     Health healthPool;
 
+    private HealthBase mechHealthBase;
+
     void Awake()
     {
         combat = GetComponent<MechCombat>();
@@ -41,6 +43,11 @@ public class SecondaryController : MonoBehaviour
         {
             Debug.Log($"[ERROR] MechCombat missing on {name}");
         }
+
+        mechHealthBase = GetComponent<HealthBase>();
+
+        //Assign script reference to Game Manager
+        GameManager.Instance.mechHealth = mechHealthBase;
     }
 
     void Start()

@@ -48,6 +48,6 @@ MonoBehaviour:
   primaryController: {fileID: 0}
   secondaryController: {fileID: 0}
   cameraController: {fileID: 0}
-  maxSignalDistance: 25
+  maxSignalDistance: 50
   minSignalDistance: 5
   signalStrength: 1
