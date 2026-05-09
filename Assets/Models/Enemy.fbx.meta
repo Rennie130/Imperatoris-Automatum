@@ -263,322 +263,322 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Reference
       parentName: Mech(Clone)
-      position: {x: 6.6757205e-10, y: 0.00034783958, z: 0.0008097003}
+      position: {x: 0.0000000667572, y: 0.03478396, z: 0.08097003}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Hips
       parentName: MechRig_Reference
-      position: {x: 2.6077003e-12, y: 0.0064151837, z: 0.00014706144}
+      position: {x: 2.6077002e-10, y: 0.64151835, z: 0.014706144}
       rotation: {x: 0.45299643, y: -0.54294956, z: -0.45299643, w: 0.54294956}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_LeftUpLeg
       parentName: MechRig_Hips
-      position: {x: 0.0005085419, y: -0.000051060495, z: 0.0010326707}
+      position: {x: 0.050854187, y: -0.0051060496, z: 0.10326707}
       rotation: {x: 0.008316666, y: 0.005881101, z: -0.9987499, w: -0.04893844}
       scale: {x: 1.0000002, y: 1.0000001, z: 1.0000002}
     - name: MechRig_LeftLeg
       parentName: MechRig_LeftUpLeg
-      position: {x: -0.0027473674, y: -0.00000018672715, z: 3.7969575e-10}
+      position: {x: -0.27473673, y: -0.000018672716, z: 0.000000037969574}
       rotation: {x: -0.003554648, y: 0.00015670352, z: 0.044023883, w: -0.99902415}
       scale: {x: 0.99999994, y: 1, z: 1}
     - name: MechRig_LeftFoot
       parentName: MechRig_LeftLeg
-      position: {x: -0.0026871238, y: 0.000000017754555, z: 0.0000000019592483}
+      position: {x: -0.26871237, y: 0.0000017754555, z: 0.00000019592483}
       rotation: {x: -0.0010638805, y: 0.0058511114, z: -0.23243466, w: -0.9725939}
       scale: {x: 0.9999998, y: 0.9999999, z: 1}
     - name: MechRig_LeftToeBase
       parentName: MechRig_LeftFoot
-      position: {x: -0.00072312664, y: 3.524671e-11, z: 4.0623174e-10}
+      position: {x: -0.07231266, y: 0.0000000035246708, z: 0.000000040623174}
       rotation: {x: -0, y: -0, z: -0.000000003802142, w: 1}
       scale: {x: 1, y: 1.0000001, z: 1.0000001}
     - name: MechRig_RightUpLeg
       parentName: MechRig_Hips
-      position: {x: 0.0005085419, y: -0.000051060495, z: -0.00096638146}
+      position: {x: 0.050854187, y: -0.0051060496, z: -0.09663814}
       rotation: {x: -0.0067750365, y: 0.015094459, z: -0.047495186, w: 0.9987345}
       scale: {x: 1.0000001, y: 1.0000002, z: 1.0000001}
     - name: MechRig_RightLeg
       parentName: MechRig_RightUpLeg
-      position: {x: 0.002740108, y: 0.000000110261716, z: -0.0000000020428146}
+      position: {x: 0.2740108, y: 0.000011026172, z: -0.00000020428146}
       rotation: {x: 0.0022523436, y: -0.000082553364, z: -0.04664679, w: 0.99890894}
       scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
     - name: MechRig_RightFoot
       parentName: MechRig_RightLeg
-      position: {x: 0.0027010147, y: -0.000000016785279, z: -1.6978381e-10}
+      position: {x: 0.2701015, y: -0.000001678528, z: -0.000000016978381}
       rotation: {x: 0.00049633323, y: -0.004418192, z: 0.2349094, w: 0.97200716}
       scale: {x: 1, y: 1, z: 1.0000002}
     - name: MechRig_RightToeBase
       parentName: MechRig_RightFoot
-      position: {x: 0.0007193776, y: -5.9000964e-11, z: 4.8783318e-11}
+      position: {x: 0.07193776, y: -0.0000000059000964, z: 0.000000004878332}
       rotation: {x: 0.00002534332, y: -0.00000006379559, z: 0.0000001038088, w: 1}
       scale: {x: 1.0000001, y: 0.9999999, z: 1.0000001}
     - name: MechRig_Spine
       parentName: MechRig_Hips
-      position: {x: -0.000614368, y: -3.8595533e-11, z: 0}
+      position: {x: -0.061436802, y: -0.000000003859553, z: 0}
       rotation: {x: -0, y: -0, z: -0.064888485, w: 0.9978925}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Spine1
       parentName: MechRig_Spine
-      position: {x: -0.00094419025, y: 3.9420173e-12, z: -1.4823077e-25}
+      position: {x: -0.094419025, y: 3.9420173e-10, z: -1.4823077e-23}
       rotation: {x: 0.000000031673345, y: -0.000000027805688, z: 0.0016089679, w: 0.99999875}
       scale: {x: 1.0000004, y: 1.0000004, z: 1.0000004}
     - name: MechRig_Spine2
       parentName: MechRig_Spine1
-      position: {x: -0.00088744756, y: 2.5652414e-11, z: 1.4823077e-25}
+      position: {x: -0.08874476, y: 0.0000000025652414, z: 1.4823077e-23}
       rotation: {x: 0.00024239362, y: -0.007477348, z: 0.032400973, w: 0.999447}
       scale: {x: 0.99999994, y: 1, z: 1.0000001}
     - name: MechRig_LeftShoulder
       parentName: MechRig_Spine2
-      position: {x: -0.00036299592, y: 0.0005647497, z: 0.00085245585}
+      position: {x: -0.036299594, y: 0.05647497, z: 0.08524559}
       rotation: {x: -0.3721696, y: 0.6019741, z: 0.5528637, w: 0.43983933}
       scale: {x: 1.0000001, y: 1, z: 1}
     - name: MechRig_LeftArm
       parentName: MechRig_LeftShoulder
-      position: {x: -0.00041131105, y: 1.0359946e-10, z: -4.6629365e-19}
+      position: {x: -0.041131105, y: 0.000000010359946, z: -4.6629366e-17}
       rotation: {x: -0.4455505, y: 0.06660665, z: -0.12836912, w: 0.88349855}
       scale: {x: 1.0000004, y: 1.0000001, z: 1.0000001}
     - name: MechRig_LeftForeArm
       parentName: MechRig_LeftArm
-      position: {x: -0.002176547, y: -0.000000011348816, z: 0.00000011250826}
+      position: {x: -0.21765469, y: -0.0000011348816, z: 0.000011250826}
       rotation: {x: 0.003057092, y: 0.013070126, z: -0.04501736, w: 0.998896}
       scale: {x: 0.99999994, y: 1.0000001, z: 1}
     - name: MechRig_LeftHand
       parentName: MechRig_LeftForeArm
-      position: {x: -0.0015273793, y: -0.000000010797913, z: 5.3393223e-10}
+      position: {x: -0.15273793, y: -0.0000010797913, z: 0.000000053393222}
       rotation: {x: -0.000000047468337, y: 0.000000018917484, z: 0.00008230061, w: 1}
       scale: {x: 1.0000001, y: 1, z: 0.99999994}
     - name: MechRig_RightShoulder
       parentName: MechRig_Spine2
-      position: {x: -0.0004079951, y: 0.0005669853, z: -0.00089774455}
+      position: {x: -0.04079951, y: 0.056698527, z: -0.08977445}
       rotation: {x: 0.59351355, y: 0.38322148, z: -0.45138916, w: 0.5450971}
       scale: {x: 1, y: 1.0000001, z: 1.0000002}
     - name: MechRig_RightArm
       parentName: MechRig_RightShoulder
-      position: {x: 0.00038469947, y: -1.7867181e-10, z: 3.1086246e-19}
+      position: {x: 0.038469948, y: -0.000000017867182, z: 3.1086245e-17}
       rotation: {x: -0.4688651, y: 0.06622958, z: -0.11749826, w: 0.8729109}
       scale: {x: 1.0000002, y: 0.9999998, z: 1}
     - name: MechRig_RightForeArm
       parentName: MechRig_RightArm
-      position: {x: 0.0020436954, y: 0.000000018541371, z: -0.00000010635211}
+      position: {x: 0.20436954, y: 0.000001854137, z: -0.000010635211}
       rotation: {x: 0.0035558934, y: 0.01644892, z: -0.048957765, w: 0.9986591}
       scale: {x: 1.0000001, y: 1.0000005, z: 1.0000002}
     - name: MechRig_RightHand
       parentName: MechRig_RightForeArm
-      position: {x: 0.0016209033, y: 0.000000009284375, z: 2.7158845e-10}
+      position: {x: 0.16209033, y: 0.0000009284375, z: 0.000000027158844}
       rotation: {x: -0.7313968, y: 0.0000447272, z: 0.000050392693, w: 0.6819523}
       scale: {x: 1, y: 0.9999998, z: 0.9999998}
     - name: MechRig_Neck
       parentName: MechRig_Spine2
-      position: {x: -0.0006329226, y: 1.8480755e-11, z: 2.2321602e-12}
+      position: {x: -0.06329226, y: 0.0000000018480755, z: 2.2321602e-10}
       rotation: {x: -0.000059529717, y: 0.015987018, z: 0.056684125, w: 0.9982642}
       scale: {x: 1.0000001, y: 1, z: 1}
     - name: MechRig_Head
       parentName: MechRig_Neck
-      position: {x: -0.00166494, y: 4.385966e-10, z: -1.5972407e-11}
+      position: {x: -0.166494, y: 0.00000004385966, z: -0.0000000015972408}
       rotation: {x: -0, y: -0, z: 0.0000000017536192, w: 1}
       scale: {x: 1.0000002, y: 1.0000002, z: 1}
     - name: MechRig_Ctrl_Reference
       parentName: Mech(Clone)
-      position: {x: 6.6757205e-10, y: 0.00034783958, z: 0.0008097003}
+      position: {x: 0.0000000667572, y: 0.03478396, z: 0.08097003}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_HipsEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.000033144697, y: 0.0065878937, z: 0.00018794628}
+      position: {x: -0.0033144697, y: 0.6587894, z: 0.018794628}
       rotation: {x: 3.0616168e-17, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftAnkleEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.0011166893, y: 0.0011633445, z: 0.00039742308}
+      position: {x: -0.11166893, y: 0.116334446, z: 0.03974231}
       rotation: {x: 0.0000018804056, y: -0.0009978496, z: -0.0019975782, w: 0.9999975}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightAnkleEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.0011229463, y: 0.0011589711, z: 0.00039742418}
+      position: {x: 0.11229463, y: 0.11589711, z: 0.039742418}
       rotation: {x: 0.0002372868, y: 0.004965985, z: 0.009862074, w: 0.999939}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftWristEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.0035404626, y: 0.007080947, z: 0.00013553214}
+      position: {x: -0.35404626, y: 0.7080947, z: 0.013553214}
       rotation: {x: 0.8549816, y: 0.3605514, z: 0.022856079, w: -0.37213814}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightWristEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.003508895, y: 0.0070327916, z: 0.00017207519}
+      position: {x: 0.3508895, y: 0.70327914, z: 0.017207518}
       rotation: {x: 0.833811, y: -0.2519795, z: -0.2824876, w: 0.40182874}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftKneeEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.0010767286, y: 0.003850126, z: 0.00041317605}
+      position: {x: -0.107672855, y: 0.3850126, z: 0.041317604}
       rotation: {x: 0.002902648, y: -0.003382172, z: -0.007445659, w: 0.9999624}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightKneeEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.0010472294, y: 0.0038588308, z: 0.00041999592}
+      position: {x: 0.10472294, y: 0.3858831, z: 0.041999593}
       rotation: {x: 0.0040840753, y: 0.006515232, z: 0.014044905, w: 0.99987185}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftElbowEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.002411724, y: 0.007996454, z: 0.00060530583}
+      position: {x: -0.2411724, y: 0.79964536, z: 0.060530584}
       rotation: {x: 0.8549793, y: 0.3605156, z: 0.022939505, w: -0.37217298}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightElbowEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.0023526566, y: 0.008081976, z: 0.0006075649}
+      position: {x: 0.23526566, y: 0.8081976, z: 0.060756493}
       rotation: {x: 0.8624897, y: -0.37850234, z: -0.008380394, w: -0.3358232}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_ChestOriginEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 2.6077033e-12, y: 0.0077017797, z: 0.000036980902}
+      position: {x: 2.6077032e-10, y: 0.77017796, z: 0.0036980903}
       rotation: {x: 3.122502e-17, y: -0, z: -6.162976e-33, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_ChestEndEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.000028409737, y: 0.00998017, z: 0.0004585235}
+      position: {x: 0.0028409737, y: 0.998017, z: 0.04585235}
       rotation: {x: 1.1673977e-15, y: -1.7564075e-17, z: 2.0504263e-32, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftFootEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.0011199188, y: 0.0005164448, z: 0.0007205672}
+      position: {x: -0.111991875, y: 0.051644478, z: 0.07205672}
       rotation: {x: 0.000001991355, y: -0.0009978759, z: -0.0019975654, w: 0.9999975}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightFootEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.0011388591, y: 0.0005164525, z: 0.00072056486}
+      position: {x: 0.11388591, y: 0.05164525, z: 0.07205649}
       rotation: {x: 0.0002372868, y: 0.004965984, z: 0.009862072, w: 0.999939}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftShoulderEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.001228631, y: 0.009817467, z: 0.0004585235}
+      position: {x: -0.1228631, y: 0.98174673, z: 0.04585235}
       rotation: {x: 0.83473164, y: 0.4405097, z: -0.18488818, w: -0.27384415}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightShoulderEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.001227151, y: 0.009781303, z: 0.0004585235}
+      position: {x: 0.1227151, y: 0.9781303, z: 0.04585235}
       rotation: {x: 0.8446328, y: -0.4412154, z: 0.17315742, w: -0.24887927}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_HeadEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.000018939769, y: 0.0117796, z: -0.00051497464}
+      position: {x: -0.0018939769, y: 1.17796, z: -0.051497463}
       rotation: {x: 7.355371e-10, y: 4.5038658e-26, z: -4.5038658e-26, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftHipEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: -0.0010326707, y: 0.0065878937, z: 0.00018794628}
+      position: {x: -0.10326707, y: 0.6587894, z: 0.018794628}
       rotation: {x: -0.04105421, y: -0.0066040354, z: -0.0077531915, w: 0.99910504}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightHipEffector
       parentName: MechRig_Ctrl_Reference
-      position: {x: 0.00096638146, y: 0.0065878937, z: 0.00018794628}
+      position: {x: 0.09663814, y: 0.6587894, z: 0.018794628}
       rotation: {x: -0.042481028, y: 0.008103646, z: 0.014422434, w: 0.9989603}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_Hips
       parentName: MechRig_Ctrl_Reference
-      position: {x: 2.6077033e-12, y: 0.007097355, z: 0.00014706151}
+      position: {x: 2.6077032e-10, y: 0.7097355, z: 0.014706151}
       rotation: {x: 3.0616168e-17, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftUpLeg
       parentName: MechRig_Ctrl_Hips
-      position: {x: -0.0010326707, y: -0.0005094609, z: 0.000040884785}
+      position: {x: -0.10326707, y: -0.050946094, z: 0.0040884786}
       rotation: {x: -0.04105421, y: -0.0066040354, z: -0.0077531915, w: 0.99910504}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftLeg
       parentName: MechRig_Ctrl_LeftUpLeg
-      position: {x: 1.5543123e-19, y: -0.0027473674, z: -1.5543123e-19}
+      position: {x: 1.5543122e-17, y: -0.27473673, z: -1.5543122e-17}
       rotation: {x: 0.04392977, y: 0.0035528226, z: 0.00015588354, w: 0.9990283}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftFoot
       parentName: MechRig_Ctrl_LeftLeg
-      position: {x: 1.5543123e-19, y: -0.0026871269, z: 0}
+      position: {x: 1.5543122e-17, y: -0.2687127, z: 0}
       rotation: {x: -0.0029000866, y: 0.0023785403, z: 0.00545104, w: 0.9999781}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftToeBase
       parentName: MechRig_Ctrl_LeftFoot
-      position: {x: -2.503395e-10, y: -0.0006469054, z: 0.00032314972}
+      position: {x: -0.00000002503395, y: -0.06469054, z: 0.03231497}
       rotation: {x: 2.2365468e-32, y: -0, z: -1.2246467e-16, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightUpLeg
       parentName: MechRig_Ctrl_Hips
-      position: {x: 0.00096638146, y: -0.0005094609, z: 0.000040884785}
+      position: {x: 0.09663814, y: -0.050946094, z: 0.0040884786}
       rotation: {x: -0.042481028, y: 0.008103646, z: 0.014422434, w: 0.9989603}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightLeg
       parentName: MechRig_Ctrl_RightUpLeg
-      position: {x: 1.6689301e-10, y: -0.0027401051, z: 0.000000026786328}
+      position: {x: 0.0000000166893, y: -0.2740105, z: 0.0000026786329}
       rotation: {x: 0.046535555, y: -0.0022496937, z: -0.0000804133, w: 0.9989141}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightFoot
       parentName: MechRig_Ctrl_RightLeg
-      position: {x: -8.344651e-11, y: -0.0027010154, z: 0}
+      position: {x: -0.00000000834465, y: -0.27010155, z: 0}
       rotation: {x: -0.003841076, y: -0.0015125412, z: -0.004201974, w: 0.99998266}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightToeBase
       parentName: MechRig_Ctrl_RightFoot
-      position: {x: 0.000000027120116, y: -0.00064252317, z: 0.00032352514}
+      position: {x: 0.0000027120116, y: -0.06425232, z: 0.032352515}
       rotation: {x: 2.2365468e-32, y: -0, z: -1.2246467e-16, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_Spine
       parentName: MechRig_Ctrl_Hips
-      position: {x: -0, y: 0.00060442573, z: -0.00011008061}
+      position: {x: -0, y: 0.060442574, z: -0.0110080615}
       rotation: {x: 3.122502e-17, y: -0, z: -6.162976e-33, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_Spine1
       parentName: MechRig_Ctrl_Spine
-      position: {x: -0, y: 0.0009429969, z: -0.000047455273}
+      position: {x: -0, y: 0.09429969, z: -0.004745527}
       rotation: {x: 3.8163916e-17, y: 2.8199775e-17, z: 8.251218e-17, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_Spine2
       parentName: MechRig_Ctrl_Spine1
-      position: {x: -0, y: 0.00088617776, z: -0.000047455273}
+      position: {x: -0, y: 0.08861778, z: -0.004745527}
       rotation: {x: 2.7921933e-16, y: -4.445229e-18, z: -8.6736174e-19, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftShoulder
       parentName: MechRig_Ctrl_Spine2
-      position: {x: -0.00084692915, y: 0.00043974567, z: 0.00051645323}
+      position: {x: -0.08469292, y: 0.043974567, z: 0.051645324}
       rotation: {x: 0, y: -0, z: -2.7755576e-17, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftArm
       parentName: MechRig_Ctrl_LeftShoulder
-      position: {x: -0.0003817019, y: -0.00015323311, z: 1.5543123e-19}
+      position: {x: -0.03817019, y: -0.015323311, z: 1.5543122e-17}
       rotation: {x: 0.83473164, y: 0.4405097, z: -0.18488818, w: -0.27384415}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftForeArm
       parentName: MechRig_Ctrl_LeftArm
-      position: {x: -0.002176546, y: -1.2434498e-18, z: -1.5543123e-19}
+      position: {x: -0.2176546, y: -1.2434498e-16, z: -1.5543122e-17}
       rotation: {x: -0.00022659346, y: 0.24244457, z: 0.0006006616, w: 0.9701651}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_LeftHand
       parentName: MechRig_Ctrl_LeftForeArm
-      position: {x: -0.0015273786, y: -1.2434498e-18, z: 0}
+      position: {x: -0.15273786, y: -1.2434498e-16, z: 0}
       rotation: {x: 0.00000032564688, y: -0.00009728447, z: 0.00000047930496, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightShoulder
       parentName: MechRig_Ctrl_Spine2
-      position: {x: 0.0009037486, y: 0.0004586854, z: 0.00051645323}
+      position: {x: 0.090374865, y: 0.04586854, z: 0.051645324}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightArm
       parentName: MechRig_Ctrl_RightShoulder
-      position: {x: 0.00032340223, y: -0.00020833786, z: -1.5543123e-19}
+      position: {x: 0.03234022, y: -0.020833787, z: -1.5543122e-17}
       rotation: {x: 0.84463286, y: -0.44121543, z: 0.17315736, w: -0.24887915}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightForeArm
       parentName: MechRig_Ctrl_RightArm
-      position: {x: 0.0020436945, y: 0, z: -1.5543123e-19}
+      position: {x: 0.20436946, y: 0, z: -1.5543122e-17}
       rotation: {x: -0.0002462896, y: -0.2103938, z: -0.000612248, w: 0.9776165}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_RightHand
       parentName: MechRig_Ctrl_RightForeArm
-      position: {x: 0.001620903, y: 0, z: 1.5543123e-19}
+      position: {x: 0.1620903, y: 0, z: 1.5543122e-17}
       rotation: {x: -0.73139685, y: 0.000058678295, z: -0.00003631371, w: 0.68195206}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_Neck
       parentName: MechRig_Ctrl_Spine2
-      position: {x: 0.000009469915, y: 0.0006284277, z: -0.00007470099}
+      position: {x: 0.00094699155, y: 0.06284277, z: -0.0074700993}
       rotation: {x: 0.00000004214317, y: -5.7679556e-17, z: -3.122502e-17, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Ctrl_Head
       parentName: MechRig_Ctrl_Neck
-      position: {x: -0.000028409742, y: 0.0016202187, z: -0.00038234485}
+      position: {x: -0.0028409741, y: 0.16202188, z: -0.038234483}
       rotation: {x: 3.0616168e-17, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: MechRig_Guides
@@ -588,117 +588,117 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: LeftForeArm
       parentName: MechRig_Guides
-      position: {x: -0.0024352665, y: 0.008361681, z: 0.0014364629}
+      position: {x: -0.24352665, y: 0.8361681, z: 0.14364628}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftShoulder
       parentName: MechRig_Guides
-      position: {x: -0.0008469285, y: 0.010318543, z: 0.0012682242}
+      position: {x: -0.08469285, y: 1.0318543, z: 0.12682243}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Reference
       parentName: MechRig_Guides
-      position: {x: 6.6757205e-10, y: 0.00034783958, z: 0.0008097003}
+      position: {x: 0.0000000667572, y: 0.03478396, z: 0.08097003}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightForeArm
       parentName: MechRig_Guides
-      position: {x: 0.0023764153, y: 0.008447605, z: 0.0014364629}
+      position: {x: 0.23764153, y: 0.84476054, z: 0.14364628}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Head
       parentName: MechRig_Guides
-      position: {x: -0.000018939161, y: 0.012127445, z: 0.00029472527}
+      position: {x: -0.0018939162, y: 1.2127445, z: 0.029472526}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Hips
       parentName: MechRig_Guides
-      position: {x: 6.6757205e-10, y: 0.007445198, z: 0.0009567623}
+      position: {x: 0.0000000667572, y: 0.7445198, z: 0.09567623}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftArm
       parentName: MechRig_Guides
-      position: {x: -0.0012286303, y: 0.010165309, z: 0.0012682242}
+      position: {x: -0.12286303, y: 1.0165309, z: 0.12682243}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftFoot
       parentName: MechRig_Guides
-      position: {x: -0.0011166881, y: 0.0015112378, z: 0.0012071325}
+      position: {x: -0.11166881, y: 0.15112378, z: 0.12071325}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftHand
       parentName: MechRig_Guides
-      position: {x: -0.003540916, y: 0.0074290885, z: 0.00094585505}
+      position: {x: -0.35409158, y: 0.74290884, z: 0.09458551}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftLeg
       parentName: MechRig_Guides
-      position: {x: -0.0011105399, y: 0.0041894875, z: 0.0009889767}
+      position: {x: -0.11105399, y: 0.41894877, z: 0.098897666}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftToeBase
       parentName: MechRig_Guides
-      position: {x: -0.001119918, y: 0.0008643326, z: 0.001530266}
+      position: {x: -0.11199179, y: 0.08643326, z: 0.1530266}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftUpLeg
       parentName: MechRig_Guides
-      position: {x: -0.0010326699, y: 0.006935737, z: 0.0009976468}
+      position: {x: -0.10326699, y: 0.6935737, z: 0.09976468}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Neck
       parentName: MechRig_Guides
-      position: {x: 0.000009470581, y: 0.010507228, z: 0.0006770701}
+      position: {x: 0.0009470581, y: 1.0507228, z: 0.06770701}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightArm
       parentName: MechRig_Guides
-      position: {x: 0.0012271514, y: 0.010129146, z: 0.0012682242}
+      position: {x: 0.12271514, y: 1.0129147, z: 0.12682243}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightFoot
       parentName: MechRig_Guides
-      position: {x: 0.0011229466, y: 0.0015068558, z: 0.0012071325}
+      position: {x: 0.11229466, y: 0.15068558, z: 0.12071325}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightHand
       parentName: MechRig_Guides
-      position: {x: 0.0035201863, y: 0.007409136, z: 0.00094585505}
+      position: {x: 0.35201862, y: 0.74091357, z: 0.09458551}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightLeg
       parentName: MechRig_Guides
-      position: {x: 0.0011010712, y: 0.004198957, z: 0.0009889767}
+      position: {x: 0.110107124, y: 0.41989568, z: 0.098897666}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightShoulder
       parentName: MechRig_Guides
-      position: {x: 0.00090374914, y: 0.010337484, z: 0.0012682242}
+      position: {x: 0.09037492, y: 1.0337484, z: 0.12682243}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightToeBase
       parentName: MechRig_Guides
-      position: {x: 0.0011388593, y: 0.0008643326, z: 0.001530266}
+      position: {x: 0.11388593, y: 0.08643326, z: 0.1530266}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightUpLeg
       parentName: MechRig_Guides
-      position: {x: 0.0009663821, y: 0.006935737, z: 0.0009976468}
+      position: {x: 0.09663821, y: 0.6935737, z: 0.09976468}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Spine
       parentName: MechRig_Guides
-      position: {x: 6.6757205e-10, y: 0.008049623, z: 0.00084668165}
+      position: {x: 0.0000000667572, y: 0.80496234, z: 0.08466817}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Spine1
       parentName: MechRig_Guides
-      position: {x: 6.6757205e-10, y: 0.008992618, z: 0.00079922634}
+      position: {x: 0.0000000667572, y: 0.8992618, z: 0.07992263}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Spine2
       parentName: MechRig_Guides
-      position: {x: 6.6757205e-10, y: 0.009878797, z: 0.0007517709}
+      position: {x: 0.0000000667572, y: 0.98787975, z: 0.07517709}
       rotation: {x: -0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
@@ -708,7 +708,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.07
+    globalScale: 7
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
