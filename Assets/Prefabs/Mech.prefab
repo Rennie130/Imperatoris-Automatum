@@ -468,7 +468,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: db4be340fc840274e8c71bc49790117f, type: 3}
   m_Controller: {fileID: 9100000, guid: d0501b377d16ff84a90b26c9604c1cf9, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -597,9 +597,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  currentHealth: 10
   hitKnockbackForce: 3
   knockbackDuration: 0.06
   canBeInterrupted: 1
+  primaryController: {fileID: 0}
 --- !u!114 &540155589
 MonoBehaviour:
   m_ObjectHideFlags: 0
