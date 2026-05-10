@@ -1,345 +1,325 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-
 public class EnemyController : MonoBehaviour
 {
-    public enum EnemyBehaviourState
+    public enum EnemyState
     {
         Patrol,
-        ChasePlayer,
-        ChaseBuilding,
-        AttackPlayer,
-        AttackBuilding
+        Chase,
+        Attack,
+        Dead
     }
 
-    public EnemyBehaviourState stateDebug;
-    StateMachine<EnemyController, EnemyBehaviourState> StateMachine;
-
     [Header("References")]
-    public Transform mechTarget;         // assign mech in inspector
-    EnemyCombat combat;
+    public Transform mechTarget;
+
     NavMeshAgent agent;
+    EnemyCombat combat;
+    HealthBase health;
 
-    [Header("Vision")]
-    public LayerMask obstructionMask;
+    StateMachine<EnemyController, EnemyState> stateMachine;
+
+    [Header("Debug")]
+    public EnemyState debugState;
+
+    [Header("Detection")]
+    public float detectionRange = 20f;
+    public float loseInterestRange = 45f;
+    public float fieldOfView = 120;
     public float eyeHeight = 1.5f;
+    public LayerMask obstructionMask;
 
-    [Header("Ranges")]
-    public float detectionRange = 15f;
-    private float attackRange = 2.5f;
-    public float loseInterestRange =25f;
+    [Header("Combat")]
+    public float attackRange = 3f;
+    public float aggroMemoryDuration = 6f;
 
     [Header("Patrol")]
-    public float patrolRadius = 15f;
+    public float patrolRadius = 20f;
+    public float idleDuration = 2f;
 
-    Transform currentTarget; // mech OR building
-    EnemyBehaviourState desiredState;
+    [Header("Movement")]
+    public float turnSpeed = 100f;
+
+    Transform currentTarget;
 
     Vector3 wanderTarget;
 
-    float aggroTimer = 0f;
-    public float aggroDuration = 3f;
+    float idleTimer;
+    float aggroTimer;
 
-    float idleTimer = 0f;
-    float idleDuration = 2f;
-    float attackTimer;
+    public Transform CurrentTarget => currentTarget;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
+        health = GetComponent<HealthBase>();
 
-        var health = GetComponent<Health>();
-        health.OnDamaged += OnDamaged;
-        health.OnDeath += OnDeath;
+        stateMachine = new StateMachine<EnemyController, EnemyState> (this, EnemyState.Patrol);
 
-        StateMachine = new StateMachine<EnemyController, EnemyBehaviourState>(this, EnemyBehaviourState.Patrol);
-
-        //PATROL
-        StateMachine.ForState(EnemyBehaviourState.Patrol)
+        // PATROL
+        stateMachine.ForState(EnemyState.Patrol)
             .OnTick(_ => HandlePatrol());
-
-        //PLAYER
-        StateMachine.ForState(EnemyBehaviourState.ChasePlayer)
+        
+        // CHASE
+        stateMachine.ForState(EnemyState.Chase)
             .OnTick(_ => HandleChase());
-
-
-        StateMachine.ForState(EnemyBehaviourState.AttackPlayer)
+        
+        // ATTACK
+        stateMachine.ForState(EnemyState.Attack)
             .OnTick(_ => HandleAttack());
-
-        //BUILDING
-        StateMachine.ForState(EnemyBehaviourState.ChaseBuilding)
-            .OnTick(_ => HandleChase());
-
-        StateMachine.ForState(EnemyBehaviourState.AttackBuilding)
-            .OnTick(_ => HandleAttack());
+        
+        // DAMAGE AGGRO
+        health.OnDamaged += OnDamaged;
     }
 
     void Start()
     {
-        //Agent is properly placed
-        if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
-        {
-            transform.position = hit.position;
-            agent.Warp(hit.position);
-        }
-
-        agent.stoppingDistance = attackRange + 0.2f;
-
-       var rb = GetComponent<Rigidbody>();
-       if (rb != null)
-        {
-            rb.isKinematic = false;
-        }
-
-        mechTarget = GameManager.Instance.mech;
-
-        rb.freezeRotation = true;
-        rb.mass = 1000f;
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        agent.stoppingDistance = attackRange * 0.8f;
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        if (mechTarget == null) return;
+        if (stateMachine.CurrentState.ID == EnemyState.Dead) return;
 
-        aggroTimer -= Time.deltaTime;
+        UpdateAggro();
 
-        EvaluateDecision();
+        EvaluateState();
 
-        if (StateMachine.CurrentState.ID != desiredState)
-        {
-            StateMachine.SetState(desiredState, false);
-        }
+        stateMachine.Tick();
 
-        StateMachine.Tick();
-        stateDebug = StateMachine.CurrentState.ID;
-
-        //Debug.Log($"State: {StateMachine.CurrentState.ID} | HasPath: {agent.hasPath}");
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Debug.Log("[TEST] forcing attack");
-            combat.TryAttack();
-        }
-         
+        debugState = stateMachine.CurrentState.ID;
     }
 
-    private void OnDeath()
-    {
-        MissionManager.Instance.aliveEnemies.Remove(gameObject); //dumb fix to deal with the fact that lambda expressions can't capture external variables - MEL
-    }
-
-    /// =========================
+    /// =========================================
     ///     DECISION SYSTEM
-    /// =========================
-    
-    void EvaluateDecision()
+    /// =========================================
+    void EvaluateState()
     {
-        //aggroTimer = Time.deltaTime;
-
-        Transform bestTarget = GetBestTarget();
-
-        if (bestTarget == null)
+        // Dead target cleanup
+        if (currentTarget == null)
         {
-            currentTarget = null;
-            desiredState = EnemyBehaviourState.Patrol;
+            stateMachine.SetState(EnemyState.Patrol, false);
             return;
         }
 
-        currentTarget = bestTarget;
+        // Lose target completely
+        float dist = Vector3.Distance(transform.position, currentTarget.position);
 
-        bool isPlayer = currentTarget == mechTarget;
+        if (dist > loseInterestRange)
+        {
+            ClearTarget();
+            return;
+        }
 
+        // Attack
         if (IsInAttackRange())
         {
-            desiredState = isPlayer
-                ? EnemyBehaviourState.AttackPlayer
-                : EnemyBehaviourState.AttackBuilding;
+            stateMachine.SetState(EnemyState.Attack, false);
+            return;
         }
-        else
-        {
-            desiredState = isPlayer
-                ? EnemyBehaviourState.ChasePlayer
-                : EnemyBehaviourState.ChaseBuilding;
-        }
+
+        // Chase
+        stateMachine.SetState(EnemyState.Chase, false);
     }
 
-    bool IsInAttackRange()
-    {
-        if (currentTarget == null) return false;
-
-        Vector3 targetPoint = GetTargetPoint(currentTarget);
-        float dist = Vector3.Distance(transform.position, targetPoint);
-        
-        return dist <= attackRange;
-    }
-
-    Transform GetBestTarget()
-    {
-        //Aggro priority
-        if (aggroTimer > 0 && currentTarget != null)
-            return currentTarget;
-
-        //Player (LOS required)
-        if (mechTarget != null && CanDetectTarget(mechTarget))
-        {
-            return mechTarget;
-        }
-
-        var health = mechTarget.GetComponent<HealthBase>();
-        if (health != null && !health.IsAlive)
-            return null;
-
-        //Building fallback
-        var building = DistrictManager.Instance?.GetClosestBuilding(transform.position);
-
-        if (building != null && CanDetectTarget(building.transform))
-        {
-            return building.transform;
-        }
-
-        return null;
-    }
-
-    /// =========================
-    ///     LINE OF SIGHT
-    /// =========================
-    
-    bool CanDetectTarget(Transform target)
-    {
-        if (target == null) return false;
-
-        float viewAngle = 120f;
-
-        Vector3 dirToTarget = (target.position - transform.position).normalized;
-        float angle = Vector3.Angle(transform.forward, dirToTarget);
-
-        if (angle > viewAngle * 0.5f)
-            return false;
-
-        float dist = Vector3.Distance(transform.position, target.position);
-        if (dist > detectionRange) return false;
-
-        Vector3 origin = transform.position + Vector3.up * eyeHeight;
-        Vector3 targetPos = target.position + Vector3.up * eyeHeight;
-        Vector3 dir = (targetPos - origin).normalized;
-
-        if (Physics.Raycast(origin, dir, out RaycastHit hit, detectionRange, obstructionMask))
-        {
-            if (!hit.transform.IsChildOf(target))
-                return false;
-        }
-
-        Debug.DrawLine(origin, targetPos, Color.red, 0.1f);
-
-        return true;
-    }
-
-    /// =========================
-    ///     PATROL STATE
-    /// =========================
-    
+    /// =========================================
+    ///     PATROL
+    /// =========================================
     void HandlePatrol()
     {
-        if (StateMachine.CurrentState.ID != EnemyBehaviourState.Patrol)
-            return;
-
         agent.isStopped = false;
 
-        //Debug.Log("DING");
+        TryFindTarget();
 
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.2f || !agent.hasPath)
+        if (currentTarget != null) return;
+
+        if (!agent.hasPath || agent.remainingDistance <= 1f)
         {
             idleTimer += Time.deltaTime;
 
             if (idleTimer >= idleDuration)
             {
                 wanderTarget = GetRandomPoint(transform.position, patrolRadius);
+
                 agent.SetDestination(wanderTarget);
+
                 idleTimer = 0f;
-                //Debug.Log("DING3");
             }
-            
-            //Debug.Log("DING2");
-            //Debug.Log($"[PATROL] New wander target: {wanderTarget}");
         }
     }
 
-    Vector3 GetRandomPoint(Vector3 centre, float radius)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            Vector3 random = centre + Random.insideUnitSphere * radius;
-
-            if (NavMesh.SamplePosition(random, out NavMeshHit hit, radius, NavMesh.AllAreas))
-            {
-                float dist = Vector3.Distance(transform.position, hit.position);
-
-                if (dist > 5f) //minimum distance
-                    return hit.position;
-            }
-        }
-        
-        return transform.position + transform.forward * 5f;
-    }
-               
-    /// =========================
-    ///     CHASE STATE
-    /// =========================
-    
+    /// =========================================
+    ///     CHASE
+    /// =========================================
     void HandleChase()
     {
         if (currentTarget == null) return;
 
-        if (combat.navigationLocked)
-        {
-            return;
-        }
-
-        if (IsInAttackRange())
-        {
-            agent.isStopped = true;
-            return;
-        }
+        // Stop nav conflict during lungeDuration
+        if (combat.navigationLocked) return;
 
         agent.isStopped = false;
-        agent.SetDestination(GetTargetPoint(currentTarget));
-          
+
+        Vector3 targetPos = GetTargetPoint(currentTarget);
+
+        // Prevent SetDestination spam
+        if (Vector3.Distance(agent.destination, targetPos) > 1f)
+        {
+            agent.SetDestination(targetPos);
+        }
+
+        FaceTarget();
     }
 
-    /// =========================
-    ///     ATTACK STATE
-    /// =========================
-
+    /// =========================================
+    ///     ATTACK 
+    /// =========================================
     void HandleAttack()
     {
         if (currentTarget == null) return;
 
         agent.isStopped = true;
-        agent.ResetPath();
 
-        // Face target
-        Vector3 dir = currentTarget.position - transform.position;
-        dir.y = 0;
+        FaceTarget();
 
-        if (dir != Vector3.zero)
-        {
-            Quaternion lookRot = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 8f * Time.deltaTime);
-        }
-
-        attackTimer -= Time.deltaTime;
-
-        Debug.Log($"[ATTACK] {name} attempting attack on {currentTarget.name}");
-
-        if (attackTimer <= 0f)
+        // Attack only if not already attacking
+        if (!combat.IsAttacking)
         {
             combat.TryAttack();
-            attackTimer = 1.0f; //attack rate
         }
- 
+
+        // Return tp chase if target escapes
+        if (!IsInAttackRange())
+        {
+            stateMachine.SetState(EnemyState.Chase, false);
+        }
+    }
+
+    /// =========================================
+    ///     TARGETING
+    /// =========================================
+    void TryFindTarget()
+    {
+        // Existing target memory
+        if (currentTarget != null) return;
+
+        // PRIORITY 1: Vulcani
+        if (CanSeeTarget(mechTarget))
+        {
+            SetTarget(mechTarget);
+            return;
+        }
+
+        // PRIORITY 2: Building
+        Building building = DistrictManager.Instance?.GetClosestBuilding(transform.position);
+
+        // Buildings ignore LOS/FOV
+        if (building != null && building.IsAlive)
+        {
+            float dist = Vector3.Distance(transform.position, building.transform.position);
+
+            if (dist <= detectionRange)
+            {
+                SetTarget(building.transform);
+            }
+        }
+    }
+
+    void SetTarget(Transform target)
+    {
+        currentTarget = target;
+        aggroTimer = aggroMemoryDuration;
+    }
+
+    void ClearTarget()
+    {
+        currentTarget = null;
+        stateMachine.SetState(EnemyState.Patrol, false);
+    }
+
+    /// =========================================
+    ///     AGGRO MEMORY
+    /// =========================================
+    void UpdateAggro()
+    {
+        if (currentTarget == null) return;
+
+        // Buildings never lose aggro
+        if (currentTarget.GetComponent<Building>() != null) return;
+
+        bool canSee = CanSeeTarget(currentTarget);
+
+        if (canSee)
+        {
+            aggroTimer = aggroMemoryDuration;
+        }
+        else
+        {
+            aggroTimer -= Time.deltaTime;
+
+            if (aggroTimer <= 0f)
+            {
+                ClearTarget();
+            }
+        }
+    }
+
+    /// =========================================
+    ///     DETECTION
+    /// =========================================
+    bool CanSeeTarget(Transform target)
+    {
+        if (target == null) return false;
+
+        float dist = Vector3.Distance(transform.position, target.position);
+
+        if (dist > detectionRange) return false;
+
+        Vector3 origin = transform.position + Vector3.up * eyeHeight;
+        Vector3 targetPos = target.position + Vector3.up * eyeHeight;
+        Vector3 dir = (targetPos - origin).normalized;
+
+        // FOV
+        float angle = Vector3.Angle(transform.forward, dir);
+
+        if (angle > fieldOfView * 0.5f) return false;
+
+        // LOS
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, detectionRange, obstructionMask))
+        {
+            if (!hit.transform.IsChildOf(target)) return false;
+        }
+
+        Debug.DrawLine(origin, targetPos, Color.red);
+
+        return true;
+    }
+
+    /// =========================================
+    ///     MINIONS
+    /// =========================================
+    bool IsInAttackRange()
+    {
+        if (currentTarget == null) return false;
+
+        return Vector3.Distance(transform.position, GetTargetPoint(currentTarget)) <= attackRange;
+    }
+
+    void FaceTarget()
+    {
+        if (currentTarget == null) return;
+
+        Vector3 dir = currentTarget.position - transform.position;
+
+        dir.y = 0f;
+
+        if (dir == Vector3.zero) return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
     }
 
     Vector3 GetTargetPoint(Transform target)
@@ -354,18 +334,28 @@ public class EnemyController : MonoBehaviour
         return target.position;
     }
 
-    /// =========================
-    ///     DAMAGE / AGGRO
-    /// =========================
-    
-    void OnDamaged (Transform attacker)
+    Vector3 GetRandomPoint(Vector3 centre, float radius)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Vector3 random = centre + Random.insideUnitSphere * radius;
+
+            if (NavMesh.SamplePosition(random, out NavMeshHit hit, radius, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+        }
+
+        return transform.position;
+    }
+
+    /// =========================================
+    ///     DAMAGE AGGRO
+    /// =========================================
+    void OnDamaged(Transform attacker)
     {
         if (attacker == null) return;
 
-        currentTarget = attacker;
-        aggroTimer = aggroDuration;
-        
-        attackTimer = 0f; //force immediate response
+        SetTarget(attacker);
     }
-
 }

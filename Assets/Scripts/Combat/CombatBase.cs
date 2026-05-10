@@ -49,6 +49,8 @@ public abstract class CombatBase : MonoBehaviour
     protected float lastAttackTime;
     protected NavMeshAgent agent;
     public bool navigationLocked;
+
+    public bool IsAttacking => isAttacking;
    
     protected Rigidbody rb;
     protected Animator animator;

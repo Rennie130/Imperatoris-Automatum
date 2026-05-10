@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour
     float yaw;
     float pitch;
 
+    GameMode previousMode;
+
     [Header("Auto Align")]
     public float autoAlignSpeed = 2f;
     public bool autoAlign = true;
@@ -43,7 +45,15 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        switch (GameModeManager.Instance.currentMode)
+        GameMode currentMode = GameModeManager.Instance.currentMode;
+
+        // Detect mode transition
+        if (currentMode != previousMode)
+        {
+            OnModeChanged(previousMode, currentMode);
+            previousMode = currentMode;
+        }
+        switch (currentMode)
         {
             case GameMode.ThirdPerson:
                 ThirdPersonUpdate();
@@ -53,6 +63,43 @@ public class CameraController : MonoBehaviour
                 SecondPersonUpdate();
                 break;
         }
+    }
+
+    void OnModeChanged(GameMode oldmode, GameMode newMode)
+    {
+        // Returning from mech control
+        if (oldmode == GameMode.SecondPerson && newMode == GameMode.ThirdPerson)
+        {
+            Vector3 forward = transform.forward;
+
+            forward.y = 0f;
+
+            // Prevent invalid look vector
+            if (forward.sqrMagnitude > 0.01f)
+            {
+                yaw = Quaternion.LookRotation(forward).eulerAngles.y;
+            }
+
+            // Preserve vertical camera angle
+            Vector3 flatforward = new Vector3(forward.x, 0f, forward.z);
+
+            float verticalAngle = Vector3.SignedAngle(flatforward, transform.forward, transform.right);
+
+            pitch = Mathf.Clamp(verticalAngle, minY, maxY);
+
+            if (primaryTarget != null)
+            {
+                Vector3 lookDir = transform.forward;
+                lookDir.y = 0f;
+
+                if (lookDir.sqrMagnitude > 0.01f)
+                {
+                    primaryTarget.forward = lookDir;
+                }
+            }
+        }
+
+        
     }
 
     void ThirdPersonUpdate()
