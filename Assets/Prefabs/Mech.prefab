@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 540155589}
   m_Layer: 6
   m_Name: Mech
-  m_TagString: Untagged
+  m_TagString: Mech
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -455,7 +455,7 @@ Transform:
   - {fileID: 3600172931424147351}
   - {fileID: 2001249589779902455}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5597254157854319050
 Animator:

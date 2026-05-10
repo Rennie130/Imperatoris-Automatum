@@ -2352,7 +2352,7 @@ Transform:
   - {fileID: 5849898092081411142}
   - {fileID: 8536220575662424217}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &524581070507178619
 Animator:
@@ -2396,7 +2396,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6551703694976809659}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.2
+  m_Radius: 1.5
   m_Speed: 3.5
   m_Acceleration: 5
   avoidancePriority: 50
@@ -2405,7 +2405,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.2
+  m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
@@ -2451,7 +2451,7 @@ MonoBehaviour:
   recoveryTime: 0.5
   maxCombo: 3
   comboResetTime: 1
-  lungeForce: 5
+  lungeForce: 2
   lungeDuration: 0.12
   normalHit:
     freezeTime: 0
@@ -2463,7 +2463,7 @@ MonoBehaviour:
     freezeTime: 0
     timeScale: 0
   navigationLocked: 1
-  target: {fileID: 1386427581705338192, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+  target: {fileID: 0}
 --- !u!114 &6586636476600022645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2476,17 +2476,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a99489a1bf52104198ce069b26f59fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mechTarget: {fileID: 1967331780583357360, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+  mechTarget: {fileID: 0}
   debugState: 0
   detectionRange: 30
   loseInterestRange: 30
-  fieldOfView: 120
-  eyeHeight: 1.5
+  fieldOfView: 200
+  eyeHeight: 5
   obstructionMask:
     serializedVersion: 2
     m_Bits: 257
   attackRange: 3
-  aggroMemoryDuration: 6
+  aggroMemoryDuration: 10
   patrolRadius: 15
   idleDuration: 2
   turnSpeed: 100
