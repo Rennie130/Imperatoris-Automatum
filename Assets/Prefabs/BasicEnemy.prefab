@@ -264,7 +264,7 @@ Transform:
   - {fileID: 387641515822411650}
   - {fileID: 2465881147327634269}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5983455425512595903
 Animator:
@@ -375,7 +375,7 @@ MonoBehaviour:
     freezeTime: 0
     timeScale: 0
   navigationLocked: 1
-  target: {fileID: 1967331780583357360, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+  target: {fileID: 0}
 --- !u!114 &1091630671625547185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a99489a1bf52104198ce069b26f59fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mechTarget: {fileID: 1967331780583357360, guid: cb749191da818c74ca7f0f92d1e0b46f, type: 3}
+  mechTarget: {fileID: 0}
   debugState: 0
   detectionRange: 30
   loseInterestRange: 30

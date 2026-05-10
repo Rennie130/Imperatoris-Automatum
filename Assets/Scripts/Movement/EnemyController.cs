@@ -56,6 +56,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         combat = GetComponent<EnemyCombat>();
         health = GetComponent<HealthBase>();
+        
 
         stateMachine = new StateMachine<EnemyController, EnemyState> (this, EnemyState.Patrol);
 
@@ -77,6 +78,7 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        mechTarget = GameManager.Instance.mech;
         agent.stoppingDistance = attackRange * 0.8f;
 
         Debug.Log($"{name} On NavMesh: {agent.isOnNavMesh}");

@@ -8,6 +8,7 @@ public class EnemyCombat : CombatBase
 
     void Start()
     {
+        target = GameManager.Instance.mech;
         Debug.Log($"[ENEMY COMBAT ACTIVE] {name}");
     }
 
