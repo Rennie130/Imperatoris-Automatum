@@ -393,13 +393,13 @@ MonoBehaviour:
   detectionRange: 30
   loseInterestRange: 30
   fieldOfView: 200
-  eyeHeight: 5
+  eyeHeight: 6
   obstructionMask:
     serializedVersion: 2
     m_Bits: 257
   attackRange: 3
   aggroMemoryDuration: 10
-  patrolRadius: 15
+  patrolRadius: 20
   idleDuration: 2
   turnSpeed: 100
 --- !u!54 &7822723581624584685

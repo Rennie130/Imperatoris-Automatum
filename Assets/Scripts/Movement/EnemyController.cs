@@ -42,6 +42,7 @@ public class EnemyController : MonoBehaviour
     public float turnSpeed = 100f;
 
     Transform currentTarget;
+    Transform currentTargetPoint;
 
     Vector3 wanderTarget;
 

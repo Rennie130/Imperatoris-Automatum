@@ -32,6 +32,9 @@ public class CameraController : MonoBehaviour
     public LayerMask cameraCollisionMask;
     public float collisionOffset = 0.3f;
 
+    [Header("Targets")]
+    [SerializeField] Transform mechLookTarget;
+
     void Start()
     {
         //Cursor.lockState = CursorLockMode.Locked;
@@ -123,7 +126,9 @@ public class CameraController : MonoBehaviour
         //collision
         RaycastHit hit;
 
-       if (Physics.Linecast(target.position + Vector3.up * 1.5f, desiredPosition, out hit, cameraCollisionMask))
+        Vector3 lookPos = GetLookPosition();
+
+       if (Physics.Linecast(lookPos, desiredPosition, out hit, cameraCollisionMask))
         {
             desiredPosition = hit.point + hit.normal * collisionOffset;
         }
@@ -132,7 +137,7 @@ public class CameraController : MonoBehaviour
        transform.position = Vector3.Lerp(transform.position, desiredPosition, 8f * Time.deltaTime);
 
        //look at player
-       transform.LookAt(target.position + Vector3.up * 1.5f);
+       transform.LookAt(GetLookPosition());
        
         //auto-align behind player
        if (autoAlign && Mathf.Abs(Input.GetAxis("Mouse X")) < 0.1f)
@@ -162,12 +167,29 @@ public class CameraController : MonoBehaviour
         transform.position = headPosition;
 
        //always look at secondary
-        Vector3 lookTarget = secondary.position + Vector3.up * 2f;
-        Vector3 direction = (lookTarget - transform.position).normalized;
+        Vector3 targetPos = GetLookPosition();
+        Vector3 direction = (targetPos - transform.position).normalized;
        
        Quaternion targetRotation = Quaternion.LookRotation(direction);
 
        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 6f * Time.deltaTime);
        
+    }
+
+    Vector3 GetLookPosition()
+    {
+        if (GameModeManager.Instance.currentMode == GameMode.SecondPerson)
+        {
+            if (mechLookTarget != null)
+                return mechLookTarget.position;
+
+            if (secondaryTarget != null)
+                return secondaryTarget.position + Vector3.up * 3f;
+        }
+
+        if (primaryTarget != null)
+            return primaryTarget.position + Vector3.up * 1.5f;
+        
+        return Vector3.zero;
     }
 }
