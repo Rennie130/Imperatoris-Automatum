@@ -77,6 +77,20 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         agent.stoppingDistance = attackRange * 0.8f;
+
+        Debug.Log($"{name} On NavMesh: {agent.isOnNavMesh}");
+
+        if (!agent.isOnNavMesh)
+        {
+            NavMeshHit hit;
+
+            if (NavMesh.SamplePosition(transform.position, out hit, 5f, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+
+                Debug.Log($"{name} warped to NavMesh");
+            }
+        }
     }
 
     void Update()
@@ -135,6 +149,9 @@ public class EnemyController : MonoBehaviour
 
         if (currentTarget != null) return;
 
+        // Debug current path state
+       // Debug.Log($"Path Status: {agent.pathStatus} | " + $"Remaining: {agent.remainingDistance}");
+
         if (!agent.hasPath || agent.remainingDistance <= 1f)
         {
             idleTimer += Time.deltaTime;
@@ -144,6 +161,8 @@ public class EnemyController : MonoBehaviour
                 wanderTarget = GetRandomPoint(transform.position, patrolRadius);
 
                 agent.SetDestination(wanderTarget);
+
+                Debug.Log($"NEW PATROL TARGET: {wanderTarget}");
 
                 idleTimer = 0f;
             }
@@ -340,12 +359,31 @@ public class EnemyController : MonoBehaviour
         {
             Vector3 random = centre + Random.insideUnitSphere * radius;
 
+            random.y = centre.y;
+
+            // Find nearest NavMesh point
             if (NavMesh.SamplePosition(random, out NavMeshHit hit, radius, NavMesh.AllAreas))
             {
-                return hit.position;
+                // Prevent tiny little patrols
+                float dist = Vector3.Distance(transform.position, hit.position);
+
+                if (dist < 5f) continue;
+
+                // Verify path is actually reachable
+                NavMeshPath path = new NavMeshPath();
+
+                bool validPath = agent.CalculatePath(hit.position, path);
+
+                // Ensure path is valid
+                if (validPath && path.status == NavMeshPathStatus.PathComplete)
+                {
+                    Debug.DrawLine(transform.position, hit.position, Color.green, 2f);
+                    return hit.position;
+                }
             }
         }
 
+        // Fallback
         return transform.position;
     }
 
