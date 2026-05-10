@@ -159,10 +159,6 @@ public class PrimaryController : MonoBehaviour
         if (!value)
         {
             rb.velocity = Vector3.zero; //stop instantly
-
-            // Reset jump stateMachine
-            jumpBufferTime = 0f;
-            coyoteTimer = 0f;
         }
     }   
 
