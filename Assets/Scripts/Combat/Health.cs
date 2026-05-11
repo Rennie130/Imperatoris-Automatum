@@ -17,8 +17,13 @@ public class Health : HealthBase
 
         OnDeath?.Invoke();
 
-        // Disable AI
+        // Remove from wave tracking
+        if (MissionManager.Instance != null)
+        {
+            MissionManager.Instance.aliveEnemies.Remove(gameObject);
+        }
 
+        // Disable AI
         var ai = GetComponent<EnemyController>();
         if (ai) ai.enabled = false;
 
@@ -47,7 +52,11 @@ public class Health : HealthBase
         // Destroy after delay
         Destroy(gameObject, 2f);  
 
-        primaryController.OnPlayerDeath();
+        // Player only
+        if (primaryController != null)
+        {
+            primaryController.OnPlayerDeath();
+        }
     }
 
     // No duplicate damage logic

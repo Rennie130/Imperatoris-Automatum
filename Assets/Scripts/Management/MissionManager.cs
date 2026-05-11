@@ -47,7 +47,7 @@ public class MissionManager : MonoBehaviour
                 SpawnEnemy();
             }
 
-            yield return new WaitUntil(() => aliveEnemies.Count == 0); //is the current wave alive?
+            yield return new WaitUntil(AreAllEnemiesDead);
 
             yield return new WaitForSeconds(5f); //wait 5 seconds before the next wave
             waveCount++;
@@ -66,6 +66,13 @@ public class MissionManager : MonoBehaviour
 
         aliveEnemies.Add(basicEnemy);
 
+    }
+
+    private bool AreAllEnemiesDead()
+    {
+        aliveEnemies.RemoveAll(enemy => enemy == null);
+
+        return aliveEnemies.Count == 0;
     }
 
 }
