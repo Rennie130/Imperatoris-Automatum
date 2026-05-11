@@ -23,7 +23,7 @@ public class UpdateUIStats : MonoBehaviour
         if(GameManager.Instance.mechHealth)
         {
             //Update Mech Health display in UI
-            mechHealthText.text = "Mech Health " + GameManager.Instance.mechHealth.currentHealth.ToString() + "/10";
+            mechHealthText.text = "Mech Health " + GameManager.Instance.mechHealth.currentHealth.ToString() + "/20";
         }
 
         if(GameManager.Instance.signalStrength)
@@ -35,7 +35,7 @@ public class UpdateUIStats : MonoBehaviour
         if(GameManager.Instance.districtHealth)
         {
             //Update Mech Health display in UI
-            districtHealthText.text = "District Health " + GameManager.Instance.districtHealth.currentDistrictHealth.ToString() + "/120";
+            districtHealthText.text = "District Health " + GameManager.Instance.districtHealth.currentDistrictHealth.ToString() + "/160";
         }
 
         
