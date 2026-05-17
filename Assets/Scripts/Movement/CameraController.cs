@@ -34,6 +34,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Targets")]
     [SerializeField] Transform mechLookTarget;
+    [SerializeField] Transform mechCameraTarget;
 
     void Start()
     {

@@ -19,6 +19,8 @@ public abstract class CombatBase : MonoBehaviour
     [SerializeField] int damage = 1;
     [SerializeField] LayerMask damageMask;
 
+    public float AttackRange => attackRange;
+
     [Header("Timing")]
     [SerializeField] public float windUpTime = 0.3f;
     [SerializeField] public float hitDelay = 0.1f;
@@ -36,6 +38,10 @@ public abstract class CombatBase : MonoBehaviour
     [SerializeField] protected HitStopData normalHit;
     [SerializeField] protected HitStopData heavyHit;
     [SerializeField] protected HitStopData finisherHit;
+
+    [Header("Combat Points")]
+    [SerializeField] protected Transform attackPoint;
+    [SerializeField] protected Transform hitCentre;
     
     protected bool isAttacking;
     protected bool queuedNextAttack;
@@ -198,7 +204,7 @@ public abstract class CombatBase : MonoBehaviour
         Debug.Log($"[PERFORM HIT CALLED] {name}");
         
         // Attack originates slightly in front
-        Vector3 hitPoint = transform.position + transform.forward * attackRadius;
+        Vector3 hitPoint = attackPoint != null ? attackPoint.position : transform.position + Vector3.up * 2f;
         
         //Detect everything in range
         Collider[] hits = Physics.OverlapSphere(hitPoint, attackRadius, damageMask);
@@ -300,7 +306,9 @@ public abstract class CombatBase : MonoBehaviour
 
         Vector3 start = transform.position;
 
-        Vector3 target = start + transform.forward * lungeForce;
+        Vector3 forward = attackPoint != null ? attackPoint.forward : transform.forward;
+
+        Vector3 target = start + forward * lungeForce;
 
         while (timer < lungeDuration)
         {

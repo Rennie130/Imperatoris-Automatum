@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
@@ -24,15 +24,16 @@ public class EnemyController : MonoBehaviour
     public EnemyState debugState;
 
     [Header("Detection")]
+    [SerializeField] Transform eyePoint;
     public float detectionRange = 20f;
     public float loseInterestRange = 45f;
     public float fieldOfView = 120;
-    public float eyeHeight = 1.5f;
     public LayerMask obstructionMask;
 
     [Header("Combat")]
-    public float attackRange = 3f;
     public float aggroMemoryDuration = 6f;
+    [SerializeField] float attackEnterRange = 10f;
+    [SerializeField] float attackExitRange = 12f;
 
     [Header("Patrol")]
     public float patrolRadius = 20f;
@@ -79,7 +80,10 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         mechTarget = GameManager.Instance.mech;
-        agent.stoppingDistance = attackRange * 0.8f;
+        agent.stoppingDistance = combat.AttackRange * 0.8f;
+        agent.updateRotation = true;
+        agent.angularSpeed = turnSpeed;
+        agent.autoBraking = false;
 
         Debug.Log($"{name} On NavMesh: {agent.isOnNavMesh}");
 
@@ -114,31 +118,44 @@ public class EnemyController : MonoBehaviour
     /// =========================================
     void EvaluateState()
     {
-        // Dead target cleanup
+        EnemyState desiredState;
+
+        // No target
         if (currentTarget == null)
         {
-            stateMachine.SetState(EnemyState.Patrol, false);
-            return;
+            desiredState = EnemyState.Patrol;
         }
-
-        // Lose target completely
-        float dist = Vector3.Distance(transform.position, currentTarget.position);
-
-        if (dist > loseInterestRange)
+        else
         {
-            ClearTarget();
-            return;
+            float dist = Vector3.Distance(transform.position, GetTargetPoint(currentTarget));
+
+            // Lose target
+            if (dist > loseInterestRange)
+            {
+                ClearTarget();
+                return;
+            }
+
+            bool inAttackRange = Vector3.Distance(transform.position, GetTargetPoint(currentTarget)) <= attackEnterRange;
+            bool shouldLeaveAttack = Vector3.Distance(transform.position, GetTargetPoint(currentTarget)) > attackExitRange;
+
+            if (stateMachine.CurrentState.ID == EnemyState.Attack)
+            {
+                desiredState = shouldLeaveAttack ? EnemyState.Chase : EnemyState.Attack;
+            }
+            else
+            {
+                desiredState = inAttackRange ? EnemyState.Attack : EnemyState.Chase;
+            }
         }
 
-        // Attack
-        if (IsInAttackRange())
+        // Only change if needed
+        if (stateMachine.CurrentState.ID != desiredState)
         {
-            stateMachine.SetState(EnemyState.Attack, false);
-            return;
-        }
+            //agent.ResetPath();
 
-        // Chase
-        stateMachine.SetState(EnemyState.Chase, false);
+            stateMachine.SetState(desiredState, false);
+        }
     }
 
     /// =========================================
@@ -165,7 +182,7 @@ public class EnemyController : MonoBehaviour
 
                 agent.SetDestination(wanderTarget);
 
-                Debug.Log($"NEW PATROL TARGET: {wanderTarget}");
+                //Debug.Log($"NEW PATROL TARGET: {wanderTarget}");
 
                 idleTimer = 0f;
             }
@@ -181,18 +198,23 @@ public class EnemyController : MonoBehaviour
 
         // Stop nav conflict during lungeDuration
         if (combat.navigationLocked) return;
+        Debug.Log($"State: {stateMachine.CurrentState.ID} | " + $"Locked: {combat.navigationLocked} | " + $"Stopped: {agent.isStopped}");
 
         agent.isStopped = false;
 
         Vector3 targetPos = GetTargetPoint(currentTarget);
 
-        // Prevent SetDestination spam
-        if (Vector3.Distance(agent.destination, targetPos) > 1f)
+        if (Vector3.Distance(agent.destination, targetPos) > 1.5f)
         {
             agent.SetDestination(targetPos);
         }
 
-        FaceTarget();
+        Debug.DrawLine(transform.position, targetPos, Color.green);
+
+        Debug.Log($"NAV LOCKED: {combat.navigationLocked}");
+
+        Debug.Log($"Destination Valid: " + $"{agent.isOnNavMesh} | " + $"{agent.pathStatus}");
+
     }
 
     /// =========================================
@@ -212,6 +234,11 @@ public class EnemyController : MonoBehaviour
             combat.TryAttack();
         }
 
+        if (!combat.IsAttacking)
+        {
+            combat.navigationLocked = false;
+        }
+
         // Return tp chase if target escapes
         if (!IsInAttackRange())
         {
@@ -219,6 +246,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+   // void ExitAttack()
+   // {
+   //     combat.navigationLocked = false;
+   //     agent.isStopped = false;
+   // }
+//
     /// =========================================
     ///     TARGETING
     /// =========================================
@@ -244,7 +277,9 @@ public class EnemyController : MonoBehaviour
 
             if (dist <= detectionRange)
             {
+                // Optional LOS check later
                 SetTarget(building.transform);
+                return;
             }
         }
     }
@@ -252,12 +287,25 @@ public class EnemyController : MonoBehaviour
     void SetTarget(Transform target)
     {
         currentTarget = target;
+
+        TargetPoint point = target.GetComponentInChildren<TargetPoint>();
+
+        currentTargetPoint = point != null ? point.transform : target;
+
         aggroTimer = aggroMemoryDuration;
+
+        idleTimer = 0f;
+        
+        agent.ResetPath();
     }
 
     void ClearTarget()
     {
         currentTarget = null;
+        currentTargetPoint = null;
+
+        agent.ResetPath();
+
         stateMachine.SetState(EnemyState.Patrol, false);
     }
 
@@ -295,21 +343,22 @@ public class EnemyController : MonoBehaviour
     {
         if (target == null) return false;
 
-        float dist = Vector3.Distance(transform.position, target.position);
+        Vector3 origin = eyePoint != null ? eyePoint.position : transform.position + Vector3.up * 3f;
+        Vector3 targetPos = GetTargetPoint(target);
+
+        float dist = Vector3.Distance(origin, targetPos);
 
         if (dist > detectionRange) return false;
 
-        Vector3 origin = transform.position + Vector3.up * eyeHeight;
-        Vector3 targetPos = target.position + Vector3.up * eyeHeight;
         Vector3 dir = (targetPos - origin).normalized;
-
+        
         // FOV
-        float angle = Vector3.Angle(transform.forward, dir);
+        float angle = Vector3.Angle(eyePoint.forward, dir);
 
         if (angle > fieldOfView * 0.5f) return false;
 
         // LOS
-        if (Physics.Raycast(origin, dir, out RaycastHit hit, detectionRange, obstructionMask))
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, obstructionMask))
         {
             if (!hit.transform.IsChildOf(target)) return false;
         }
@@ -326,7 +375,7 @@ public class EnemyController : MonoBehaviour
     {
         if (currentTarget == null) return false;
 
-        return Vector3.Distance(transform.position, GetTargetPoint(currentTarget)) <= attackRange;
+        return Vector3.Distance(transform.position, GetTargetPoint(currentTarget)) <= combat.AttackRange;
     }
 
     void FaceTarget()
@@ -346,13 +395,30 @@ public class EnemyController : MonoBehaviour
 
     Vector3 GetTargetPoint(Transform target)
     {
+        if (target == null)
+        {
+            return transform.position;
+        }
+
+        // Try collider closest point
         Collider col = target.GetComponentInChildren<Collider>();
 
         if (col != null)
         {
-            return col.ClosestPoint(transform.position);
+            Vector3 dir = (transform.position - col.bounds.center).normalized;
+//
+            return col.bounds.center + dir * combat.AttackRange * 0.8f;
         }
 
+        // Fallback to TargetPoint marker
+        TargetPoint point = target.GetComponentInChildren<TargetPoint>();
+
+        if (point != null)
+        {
+            return point.transform.position;
+        }
+        
+        // Final fallback
         return target.position;
     }
 
@@ -398,5 +464,46 @@ public class EnemyController : MonoBehaviour
         if (attacker == null) return;
 
         SetTarget(attacker);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Detection Range
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        // Attack Range
+        if (combat != null)
+        {
+            Gizmos.color = Color.red;
+
+            Gizmos.DrawWireSphere(transform.position, combat.AttackRange);
+        }
+
+        if (eyePoint != null)
+        {
+            Gizmos.color = Color.cyan;
+
+            Vector3 leftBoundary = Quaternion.Euler(0, -fieldOfView * 0.5f, 0) * eyePoint.forward;
+
+            Vector3 rightBoundary = Quaternion.Euler(0, fieldOfView * 0.5f, 0) * eyePoint.forward;
+
+            Gizmos.DrawRay(eyePoint.position, leftBoundary * detectionRange);
+
+            Gizmos.DrawRay(eyePoint.position, rightBoundary * detectionRange);
+
+            // Forward direction
+            Gizmos.color = Color.blue;
+
+            Gizmos.DrawRay(eyePoint.position, eyePoint.forward * detectionRange);
+        }
+
+        if (currentTarget != null)
+        {
+            Gizmos.color = Color.magenta;
+
+            Gizmos.DrawLine(eyePoint.position, GetTargetPoint(currentTarget));
+        }
     }
 }
