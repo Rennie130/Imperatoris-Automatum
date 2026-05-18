@@ -53,11 +53,7 @@ public class GameModeManager : MonoBehaviour
                 ResetSecondaryState();
         }
 
-        //update signal only in second person
-        if (currentMode == GameMode.SecondPerson)
-        {
-            UpdateSignal();
-        }  
+        UpdateSignal();
 
     }
 

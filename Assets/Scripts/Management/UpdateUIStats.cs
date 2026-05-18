@@ -29,7 +29,7 @@ public class UpdateUIStats : MonoBehaviour
         if(GameManager.Instance.signalStrength)
         {
             //Update Signal Strength display in UI
-            signalStrengthText.text = "Signal Strength " + GameManager.Instance.signalStrength.signalStrength.ToString();
+            signalStrengthText.text = "Signal Strength " + GameManager.Instance.signalStrength.signalStrength.ToString("P0");
         }
 
         if(GameManager.Instance.districtHealth)
@@ -38,10 +38,5 @@ public class UpdateUIStats : MonoBehaviour
             districtHealthText.text = "District Health " + GameManager.Instance.districtHealth.currentDistrictHealth.ToString() + "/160";
         }
 
-        
-
-        // mechHealthText.text = "Mech Health " + mechHealth.currentHealth.ToString() + "/20";
-        // playerHealthText.text = "Player Health " + playerHealth.currentHealth.ToString() + "/10";
-        // signalStrengthText.text = "Signal Strength " + signalStrength.signalStrength.ToString();
     }
 }
