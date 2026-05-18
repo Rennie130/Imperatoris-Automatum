@@ -3,6 +3,9 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    // Permanent numbers (add any 'magic numbers' and make em constant so it cannot be changed)
+    private const float WANDER_DISTANCE_THRESHOLD = 4f;
+
     public enum EnemyState
     {
         Patrol,
@@ -102,6 +105,8 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+
+
         if (stateMachine.CurrentState.ID == EnemyState.Dead) return;
 
         UpdateAggro();
@@ -170,9 +175,9 @@ public class EnemyController : MonoBehaviour
         if (currentTarget != null) return;
 
         // Debug current path state
-       // Debug.Log($"Path Status: {agent.pathStatus} | " + $"Remaining: {agent.remainingDistance}");
+        //Debug.Log($"Path Status: {agent.pathStatus} | " + $"Remaining: {agent.remainingDistance}");
 
-        if (!agent.hasPath || agent.remainingDistance <= 1f)
+        if (!agent.hasPath || agent.remainingDistance <= WANDER_DISTANCE_THRESHOLD)
         {
             idleTimer += Time.deltaTime;
 
@@ -505,5 +510,14 @@ public class EnemyController : MonoBehaviour
 
             Gizmos.DrawLine(eyePoint.position, GetTargetPoint(currentTarget));
         }
+
+        if (wanderTarget != null)
+        {
+            Gizmos.color = Color.green;
+
+            Gizmos.DrawLine(eyePoint.position, wanderTarget);
+        }
     }
+
+
 }
