@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject levelCompletedUI;
 
     public static bool gameIsPaused = false;
+    public static bool gameIsActive = false;
 
 
     // Start is called before the first frame update
@@ -28,22 +29,28 @@ public class UIManager : MonoBehaviour
         //pauses the game when ESC is pressed.
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(!gameIsPaused)
+            if(!gameIsPaused && gameIsActive)
             {
                 Pause();
             }
+            else
+            {
+                Resume();
+            }
         }
         
-        //locks/unlocks mouse cursor
+        //locks/unlocks mouse cursor and specifies if gameplay is active.
         if(mainMenuUI.activeInHierarchy || pauseMenuUI.activeInHierarchy || gameOverUI.activeInHierarchy || levelCompletedUI.activeInHierarchy)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            gameIsActive = false;
         }
         else
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            gameIsActive = true;
         }
     }
 
