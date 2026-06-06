@@ -50,8 +50,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f44143b4efb8c4f94c85d7abfd9bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  currentHealth: 0
+  maxHealth: 6
+  currentHealth: 6
+  hitKnockbackForce: 0.3
+  knockbackDuration: 0.06
+  canBeInterrupted: 1
   targetPoint: {fileID: 0}
 --- !u!65 &-2348935219886061373
 BoxCollider:
