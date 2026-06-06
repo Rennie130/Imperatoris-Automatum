@@ -5,12 +5,14 @@ using UnityEngine;
 public class Building : HealthBase
 {
     [Header("Targeting")]
-    public Transform targetPoint;
+    [SerializeField] Transform targetPoint;
 
-    public Transform GetTargetPoint()
+    public override Transform GetTargetPoint()
     {
         return targetPoint != null ? targetPoint : transform;
     }
+
+    //public bool IsAlive => CurrentHealth > 0;
 
     protected override void Awake()
     {

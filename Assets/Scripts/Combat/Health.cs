@@ -59,6 +59,11 @@ public class Health : HealthBase
         }
     }
 
+    public override Transform GetTargetPoint()
+    {
+        return transform;
+    }
+
     // No duplicate damage logic
     // Only defines what happens on death
 }

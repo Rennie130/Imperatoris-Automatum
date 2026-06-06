@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class HealthBase : MonoBehaviour, Damageable
+public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
 {
    [Header("Health")]
    public int maxHealth = 10;
@@ -111,5 +111,7 @@ public abstract class HealthBase : MonoBehaviour, Damageable
     ///     DEATH
     /// =================
 
+    public abstract Transform GetTargetPoint();
+    
     protected abstract void Die();
 }

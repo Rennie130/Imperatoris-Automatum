@@ -20,6 +20,7 @@ public abstract class CombatBase : MonoBehaviour
     [SerializeField] LayerMask damageMask;
 
     public float AttackRange => attackRange;
+    public bool CanBeInterrupted => true;
 
     [Header("Timing")]
     [SerializeField] public float windUpTime = 0.3f;
@@ -433,4 +434,5 @@ public abstract class CombatBase : MonoBehaviour
 
         Gizmos.DrawWireSphere(hitPoint, attackRadius);
     }
+
 }
