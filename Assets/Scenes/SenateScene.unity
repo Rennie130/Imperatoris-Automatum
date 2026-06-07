@@ -159,50 +159,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1499455508096259077, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.25588
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508096259077, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -283
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063294, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.343179
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063294, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.3394961
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063294, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.38131
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063294, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -315
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063294, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063295, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_text
-      value: Protect The District, Destroy All Enemies!
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063295, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_fontSize
-      value: 195.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1499455508616063295, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_margin.z
-      value: -1671.9885
-      objectReference: {fileID: 0}
-    - target: {fileID: 2920355680723652362, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7339455447699021377, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -278,22 +234,6 @@ PrefabInstance:
     - target: {fileID: 9055586793037102068, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9055586793037102068, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.089826
-      objectReference: {fileID: 0}
-    - target: {fileID: 9055586793037102068, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.1945
-      objectReference: {fileID: 0}
-    - target: {fileID: 9055586793037102068, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1945
-      objectReference: {fileID: 0}
-    - target: {fileID: 9055586793037102068, guid: 7bebb1ed72e6cfb4385bc6ea75ff08da, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 97
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

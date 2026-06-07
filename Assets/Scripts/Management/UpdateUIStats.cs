@@ -7,22 +7,23 @@ using TMPro;
 public class UpdateUIStats : MonoBehaviour
 {
    [Header("UI Text")]
-    public TMP_Text playerHealthText;
-    public TMP_Text signalStrengthText;
-    public TMP_Text mechHealthText;
-    public TMP_Text districtHealthText;
+    // public TMP_Text playerHealthText;
+    // public TMP_Text signalStrengthText;
+    // public TMP_Text mechHealthText;
+    // public TMP_Text districtHealthText;
 
     public Slider playerHealthSlider;
     public Slider mechHealthSlider;
     public Slider signalStrengthSlider;
     public Slider districtHealthSlider;
-    public Slider enemyHealthSlider;
 
     void Start()
     {
         //Max Values
         playerHealthSlider.maxValue = GameManager.Instance.playerHealth.maxHealth;
         mechHealthSlider.maxValue = GameManager.Instance.mechHealth.maxHealth;
+        //districtHealthSlider.maxValue = GameManager.Instance.districtHealth.maxDistrictHealth;
+        
 
         //Current Values
         playerHealthSlider.value = GameManager.Instance.playerHealth.currentHealth;
