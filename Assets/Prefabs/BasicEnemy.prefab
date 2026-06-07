@@ -436,9 +436,9 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 257
-  eyeHeight: 1.5
   attackRange: 8
   searchDuration: 5
+  eyePoint: {fileID: 2442662010350950501}
 --- !u!54 &7822723581624584685
 Rigidbody:
   m_ObjectHideFlags: 0

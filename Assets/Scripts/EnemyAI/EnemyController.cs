@@ -42,13 +42,15 @@ public class EnemyController : MonoBehaviour
     public float loseInterestRange = 45f;
     public float fieldOfView = 120f;
     public LayerMask obstructionMask;
-    public float eyeHeight = 1.5f;
 
     [Header("Combat")]
     public float attackRange = 10f;
 
     [Header("Search")]
     public float searchDuration = 5f;
+
+    [Header("Vision")]
+    [SerializeField] Transform eyePoint;
 
     void Awake()
     {
@@ -272,29 +274,62 @@ public class EnemyController : MonoBehaviour
         ChangeState(new StunState(this, duration));
     }
 
-    Vector3 debugPatrolPoint;
-
     public Vector3 GetRandomPatrolPoint()
     {
-        Vector3 random = Random.insideUnitSphere * patrolRadius;
-
-        Vector3 point = transform.position + new Vector3(random.x, 0, random.z);
-
-        NavMeshHit hit;
-
-        if (NavMesh.SamplePosition(point, out hit, patrolRadius, NavMesh.AllAreas))
+        for (int i = 0; i < 10; i++)
         {
-            debugPatrolPoint = hit.position;
-            return hit.position;
-        }
+            Vector2 random = Random.insideUnitCircle * patrolRadius;
 
-        return transform.position;
+            Vector3 point = transform.position + new Vector3(random.x, 0f, random.y);
+
+            NavMeshHit hit;
+
+            if (!NavMesh.SamplePosition(point, out hit, patrolRadius, NavMesh.AllAreas))
+            {
+                continue;
+            }
+
+            NavMeshPath path = new NavMeshPath();
+
+            bool validPath = Agent.CalculatePath(hit.position, path);
+
+            if (validPath && path.status == NavMeshPathStatus.PathComplete)
+            {
+                return hit.position;
+            }
+        }
+        
+       return transform.position;
     }
 
-    void OnDrawGizmos()
+    public Vector3 EyePosition
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(debugPatrolPoint, 1f);
+        get
+        {
+            if (eyePoint != null) return eyePoint.position;
+
+            return transform.position + Vector3.up * 2f;
+        }
+    }
+
+    public bool HasLineOfSight(ITargetable target)
+    {
+        if (target == null) return false;
+
+        Vector3 start = EyePosition;
+
+        Vector3 end = target.GetTargetPoint().position;
+
+        Vector3 dir = end - start;
+
+        float distance = dir.magnitude;
+
+        if (Physics.Raycast(start, dir.normalized, out RaycastHit hit, distance, obstructionMask))
+        {
+            return false;
+        }
+
+        return true;
     }
 
      bool CanDetectTarget(Transform target)
@@ -312,8 +347,8 @@ public class EnemyController : MonoBehaviour
         float dist = Vector3.Distance(transform.position, target.position);
         if (dist > detectionRange) return false;
 
-        Vector3 origin = transform.position + Vector3.up * eyeHeight;
-        Vector3 targetPos = target.position + Vector3.up * eyeHeight;
+        Vector3 origin = transform.position + Vector3.up;
+        Vector3 targetPos = target.position + Vector3.up;
         Vector3 dir = (targetPos - origin).normalized;
 
         if (Physics.Raycast(origin, dir, out RaycastHit hit, detectionRange, obstructionMask))
