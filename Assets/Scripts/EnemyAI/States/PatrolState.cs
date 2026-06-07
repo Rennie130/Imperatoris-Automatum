@@ -6,6 +6,8 @@ public class PatrolState : IEnemyState
 {
     EnemyController enemy;
 
+    Vector3 patrolPoint;
+
     public PatrolState(EnemyController enemy)
     {
         this.enemy = enemy;
@@ -14,6 +16,12 @@ public class PatrolState : IEnemyState
     public void Enter()
     {
         enemy.DebugState = EnemyStateType.Patrol;
+
+        patrolPoint = enemy.GetRandomPatrolPoint();
+
+        enemy.Agent.SetDestination(patrolPoint);
+        
+        enemy.Agent.isStopped = false;
     }
 
     public void Tick()
@@ -21,6 +29,16 @@ public class PatrolState : IEnemyState
         if (enemy.TryFindTarget())
         {
             enemy.ChangeState(new ChaseState(enemy));
+
+            return;
+        }
+
+        if (!enemy.Agent.pathPending && enemy.HasReachedDestination())
+        {
+            patrolPoint = enemy.GetRandomPatrolPoint();
+
+            enemy.Agent.SetDestination(patrolPoint);
+
         }
     }
 

@@ -7,6 +7,9 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
 {
    [Header("Health")]
    public int maxHealth = 10;
+
+   [SerializeField]
+   float staggerTime = 0.5f;
    
    public int currentHealth = 10;
    //public int CurrentHealth => currentHealth;
@@ -45,6 +48,13 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
         if (combat != null && canBeInterrupted)
         {
             combat.CancelAttack();
+        }
+
+        EnemyController enemy = GetComponent <EnemyController>();
+
+        if (enemy != null)
+        {
+            enemy.Stagger(staggerTime);
         }
 
         // Apply knockback

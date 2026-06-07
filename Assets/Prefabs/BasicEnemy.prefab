@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  staggerTime: 0.5
   currentHealth: 10
   hitKnockbackForce: 3
   knockbackDuration: 0.06
@@ -426,12 +427,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugState: 0
+  aggroDuration: 8
+  playerOverrideRange: 15
+  patrolRadius: 20
   detectionRange: 20
   loseInterestRange: 80
   fieldOfView: 120
   obstructionMask:
     serializedVersion: 2
     m_Bits: 257
+  eyeHeight: 1.5
   attackRange: 8
   searchDuration: 5
 --- !u!54 &7822723581624584685

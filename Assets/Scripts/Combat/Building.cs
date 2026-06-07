@@ -79,7 +79,7 @@ public class Building : HealthBase
         Debug.Log($"[BUILDING DESTROYED] {name}");
 
         // Wait before despawn
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0f);
 
         Destroy(gameObject);
     }

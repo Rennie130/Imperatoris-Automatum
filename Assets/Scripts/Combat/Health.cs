@@ -50,7 +50,7 @@ public class Health : HealthBase
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
         // Destroy after delay
-        Destroy(gameObject, 2f);  
+        Destroy(gameObject, 0f);  
 
         // Player only
         if (primaryController != null)

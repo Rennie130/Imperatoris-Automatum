@@ -8,26 +8,36 @@ public class ChaseState : IEnemyState
 
    public ChaseState(EnemyController enemy)
    {
-    this.enemy = enemy;
+        this.enemy = enemy;
    }
 
    public void Enter()
    {
-    enemy.DebugState = EnemyStateType.Chase;
+        enemy.DebugState = EnemyStateType.Chase;
 
-    enemy.Agent.isStopped = false;
+        enemy.Agent.isStopped = false;
    }
 
    public void Tick()
    {
-    if (enemy.CurrentTarget == null || !enemy.CurrentTarget.IsAlive)
-    {
-        enemy.ClearTarget();
+        if (enemy.ShouldSwitchToPlayer())
+        {
+            ITargetable player = enemy.FindPlayerTarget();
 
-        enemy.ChangeState(new SearchState(enemy, enemy.LastKnownTargetPosition));
+            if (player != null)
+            {
+                enemy.SetTarget(player);
+            }
+        }
 
-        return;
-    }
+        if (enemy.CurrentTarget == null || !enemy.CurrentTarget.IsAlive)
+        {
+            enemy.ClearTarget();
+
+            enemy.ChangeState(new SearchState(enemy, enemy.LastKnownTargetPosition));
+
+            return;
+        }
 
     enemy.MoveToTarget();
 

@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 6
+  staggerTime: 0
   currentHealth: 6
   hitKnockbackForce: 0.3
   knockbackDuration: 0.06
