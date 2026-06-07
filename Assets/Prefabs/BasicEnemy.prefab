@@ -391,7 +391,7 @@ MonoBehaviour:
   attackRadius: 3
   attackCooldown: 0.6
   attackRange: 5
-  damage: 2
+  damage: 1
   damageMask:
     serializedVersion: 2
     m_Bits: 320

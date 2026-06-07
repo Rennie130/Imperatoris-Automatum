@@ -6082,13 +6082,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f44143b4efb8c4f94c85d7abfd9bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 40
   staggerTime: 0
-  currentHealth: 20
+  currentHealth: 40
   hitKnockbackForce: 0
   knockbackDuration: 0
   canBeInterrupted: 1
-  targetPoint: {fileID: 6044068526102143249}
+  targetPoint: {fileID: 0}
 --- !u!65 &-6519313668590113236
 BoxCollider:
   m_ObjectHideFlags: 0
