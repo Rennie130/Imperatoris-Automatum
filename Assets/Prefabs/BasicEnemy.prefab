@@ -3688,7 +3688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa5592a652f2fb47aafa263240e09bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectHealth: {fileID: 5865446515233727334}
+  enemyHealth: {fileID: 5865446515233727334}
+  destructibleObjectHealth: {fileID: 0}
   objectHealthText: {fileID: 4278974490542719651}
   objectHealthSlider: {fileID: 8500411287884221717}
   canvasTransform: {fileID: 1568353552198488759}

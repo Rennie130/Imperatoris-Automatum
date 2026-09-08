@@ -6,11 +6,11 @@ using TMPro;
 public class WorldSpaceHealthBars : MonoBehaviour
 {
     [Header("Enemy References")]
-    public Health objectHealth;
+    public Health enemyHealth;
     
 
-    [Header("Destructible Object References")]
-    public Building destructibleObjectHealth;
+    [Header("Destructable Object References")]
+    public Building destructableObjectHealth;
 
     [Header("Shared References")]
     public TMP_Text objectHealthText;
@@ -20,20 +20,43 @@ public class WorldSpaceHealthBars : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Enemy Max Value
-        objectHealthSlider.maxValue = objectHealth.maxHealth;
+        if(gameObject.CompareTag("Enemy"))
+        {
+            // Enemy Max Value
+            objectHealthSlider.maxValue = enemyHealth.maxHealth;
 
-        // Enemy Current Value
-        objectHealthSlider.value = objectHealth.currentHealth;
+            // Enemy Current Value
+            objectHealthSlider.value = enemyHealth.currentHealth; 
+        }
+
+        if(gameObject.CompareTag("Temple"))
+        {
+            // Temple Max Value
+            objectHealthSlider.maxValue = destructableObjectHealth.maxHealth;
+
+            // Temple Current Value
+            objectHealthSlider.value = destructableObjectHealth.currentHealth;
+        }
+        
 
     }    
 
     // Update is called once per frame
     void Update()
     {
+        if(gameObject.CompareTag("Enemy"))
+        {
+            objectHealthSlider.value = enemyHealth.currentHealth;
+            objectHealthText.text = gameObject.tag + " Health " + enemyHealth.currentHealth.ToString() + "/10"; 
+        }
+            
+
+        if(gameObject.CompareTag("Temple"))
+        {
+            objectHealthSlider.value = destructableObjectHealth.currentHealth;
+            objectHealthText.text = gameObject.tag + " Health " + destructableObjectHealth.currentHealth.ToString() + "/40";
+        }
         
-        objectHealthSlider.value = objectHealth.currentHealth;
-        objectHealthText.text = gameObject.tag + " Health " + objectHealth.currentHealth.ToString() + "/10"; 
         
     }
 
