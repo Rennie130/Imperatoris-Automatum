@@ -160,7 +160,7 @@ public class CameraController : MonoBehaviour
         Vector3 headPosition = primary.position + headOffset;
 
         //prevent clipping
-        if (Physics.CheckSphere(headPosition, 0.2f))
+        if (Physics.CheckSphere(headPosition, 0.2f, cameraCollisionMask))
         {
             headPosition += Vector3.up * 0.5f; //push up slightly
         }

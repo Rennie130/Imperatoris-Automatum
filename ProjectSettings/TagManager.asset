@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Ally
   - Mech
+  - Temple
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - Enemy
   - Building
   - Dead
-  - 
-  - 
+  - CollidesWithMechs
+  - PlayerMech
   - 
   - 
   - 

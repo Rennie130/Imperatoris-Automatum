@@ -179,6 +179,7 @@ public class SecondaryController : MonoBehaviour
 
         //apply to rigidbody
         rb.velocity = currentVelocity;
+        
     }
 
     public void EnableControl(bool value)

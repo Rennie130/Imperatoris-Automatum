@@ -57,6 +57,7 @@ public class PrimaryController : MonoBehaviour
         if (!canMove)
         {
             SendControlSignal(); //still controlling secondary
+            rb.velocity = Vector3.up * rb.velocity.y;
             return;
         }
 
