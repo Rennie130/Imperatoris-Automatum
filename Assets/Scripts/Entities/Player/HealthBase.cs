@@ -117,6 +117,15 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
         }
     }
 
+    /// <summary>
+    /// Gets the healthpool's current health as a percentage of the maximum health
+    /// </summary>
+    /// <returns>The health as a percentage (0.0 - 1.0 range)</returns>
+    public float GetHealthPercentage()
+    {
+        return currentHealth / (float)maxHealth;
+    }
+
     /// =================
     ///     DEATH
     /// =================

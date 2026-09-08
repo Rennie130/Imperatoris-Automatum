@@ -72,6 +72,15 @@ public class DistrictManager : MonoBehaviour
             GameManager.Instance.GameOver();
         }
     }
+    
+    /// <summary>
+    /// Gets the healthpool's current health as a percentage of the maximum health
+    /// </summary>
+    /// <returns>The health as a percentage (0.0 - 1.0 range)</returns>
+    public float GetHealthPercentage()
+    {
+        return currentDistrictHealth / (float)maxDistrictHealth;
+    }
 
     public Building GetClosestBuilding(Vector3 position)
     {

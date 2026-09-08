@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum GameMode
 {
@@ -24,8 +25,7 @@ public class GameModeManager : MonoBehaviour
     public float maxSignalDistance = 25f;
     public float minSignalDistance = 5f;
 
-    //[HideInInspector]
-    public float signalStrength = 1f;
+    public float signalStrengthPercentage = 1f;
 
     void Awake()
     {
@@ -82,7 +82,7 @@ public class GameModeManager : MonoBehaviour
     void UpdateSignal()
     {
         float distance = Vector3.Distance(primaryController.transform.position, secondaryController.transform.position);
-        signalStrength = Mathf.InverseLerp(maxSignalDistance, minSignalDistance, distance);
+        signalStrengthPercentage = Mathf.InverseLerp(maxSignalDistance, minSignalDistance, distance);
 
         /*
         if (secondaryController != null)

@@ -68,7 +68,7 @@ public class SecondaryController : MonoBehaviour
     {
         if (!canControl) return;
 
-        float signal = GameModeManager.Instance.signalStrength;
+        float signal = GameModeManager.Instance.signalStrengthPercentage;
 
         if (signal <= 0.05f)
             return; //lost signal
