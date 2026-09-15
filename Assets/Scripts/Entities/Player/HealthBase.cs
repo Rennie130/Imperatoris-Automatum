@@ -58,7 +58,7 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
         }
 
         // Apply knockback
-        ApplyHitReaction(attacker);
+        //ApplyHitReaction(attacker);
 
         // Death check
         if (currentHealth <= 0)

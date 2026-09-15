@@ -295,7 +295,7 @@ public abstract class CombatBase : MonoBehaviour
     
     protected virtual void PerformLunge()
     {
-        StartCoroutine(LungeRoutine());
+        //StartCoroutine(LungeRoutine());
     }
 
     // To avoid NavMesh instantly cancelling any movement

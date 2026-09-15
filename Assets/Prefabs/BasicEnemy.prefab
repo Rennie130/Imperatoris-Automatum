@@ -473,7 +473,7 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 257
-  attackRange: 8
+  attackRange: 5
   searchDuration: 5
   eyePoint: {fileID: 2442662010350950501}
 --- !u!1 &1196304303097645169

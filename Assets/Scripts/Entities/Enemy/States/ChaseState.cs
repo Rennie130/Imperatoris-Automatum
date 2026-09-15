@@ -39,12 +39,12 @@ public class ChaseState : IEnemyState
             return;
         }
 
-    enemy.MoveToTarget();
-
-    if (enemy.IsInAttackRange())
-    {
-        enemy.ChangeState(new AttackState(enemy));
-    }
+        enemy.MoveToTarget();
+    
+        if (enemy.IsInAttackRange())
+        {
+            enemy.ChangeState(new AttackState(enemy));
+        }
 
    }
    
