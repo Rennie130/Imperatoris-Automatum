@@ -8,7 +8,19 @@ using Random = UnityEngine.Random;
 
 public class EnemyZone : MonoBehaviour
 {
-    public List<EnemyPatrolPoint> PatrolPoints;
+    public List<EnemyPatrolPoint> PatrolPoints = new();
+    public List<EnemyWave> Waves = new();
+    public EnemyZone NextZone;
+    public bool SpawnOnStart;
+
+    public int CurrentWave;
+    public List<Enemy> CurrentRemainingEnemies = new();
+
+    private void Awake() 
+    {
+        if(SpawnOnStart)
+            StartWaves();    
+    }
 
     public Vector3 GetRandomPatrolPosition()
     {
@@ -39,6 +51,13 @@ public class EnemyZone : MonoBehaviour
                 Handles.DrawWireDisc(point.transform.position, Vector3.up, point.Radius, 3f);
             }
         }
+
+        if(NextZone != null)
+        {
+            Handles.color = Color.green;
+            Handles.DrawLine(transform.position, NextZone.transform.position, 4f);
+        }
+
     }
 
     private void OnValidate()
@@ -50,4 +69,56 @@ public class EnemyZone : MonoBehaviour
                 PatrolPoints.Add(point);
         }
     }
+
+    //Tells the zone to start spawning waves
+    public void StartWaves()
+    {
+        CurrentWave = 0;
+        SpawnWave(Waves[CurrentWave]);
+    }
+
+    //Spawns the given wave
+    public void SpawnWave(EnemyWave wave)
+    {
+        foreach(EnemySpawnSet spawns in wave.Spawns)
+        {
+            for(int i = 0; i < spawns.Count; i++)
+            {
+                var spawn = Instantiate(spawns.EnemyPrefab, GetRandomPatrolPosition(), Quaternion.identity);
+                spawn.AssociatedEnemyZone = this;
+                spawn.OnDeath += OnEnemyDeath;
+                CurrentRemainingEnemies.Add(spawn);
+            }
+        }
+    }
+
+    //Invoked on enemy death, if all enemies are dead we end the wave
+    private void OnEnemyDeath(Enemy dead)
+    {
+        dead.OnDeath -= OnEnemyDeath;
+        CurrentRemainingEnemies.Remove(dead);
+        if(CurrentRemainingEnemies.Count == 0)
+        {
+            OnWaveEnded();
+        }
+    }
+
+    //Handle wave and zone switching and win condition
+    private void OnWaveEnded()
+    {
+        CurrentWave++;
+        if(CurrentWave < Waves.Count) // next wave
+        {
+            SpawnWave(Waves[CurrentWave]);
+        }
+        else if(NextZone != null) //no more waves? next zone
+        {
+            NextZone.StartWaves();
+        }
+        else //no more zones? you win!
+        {
+            //tell game manager that the game is over
+        }
+    }
+
 }

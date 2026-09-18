@@ -1,11 +1,16 @@
- using UnityEngine;
+using UnityEngine;
+using System;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : Enemy
 {
+
     public NavMeshAgent Agent { get; private set; }
 
     public EnemyCombat Combat { get; private set; }
+
+    public override Action<Enemy> OnDeath { get; set; }
     
     //public Animator Animator { get; private set; }
 
@@ -61,6 +66,8 @@ public class EnemyController : MonoBehaviour
         health = GetComponent<HealthBase>();
 
         health.OnDamaged += OnDamaged;
+
+        health.OnDeath += () => OnDeath?.Invoke(this);
 
        //Animator GetComponent<Animator>();
     }
@@ -311,6 +318,8 @@ public class EnemyController : MonoBehaviour
             return transform.position + Vector3.up * 2f;
         }
     }
+
+    
 
     public bool HasLineOfSight(ITargetable target)
     {
