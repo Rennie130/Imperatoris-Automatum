@@ -283,30 +283,9 @@ public class EnemyController : Enemy
 
     public Vector3 GetRandomPatrolPoint()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            Vector2 random = Random.insideUnitCircle * patrolRadius;
-
-            Vector3 point = transform.position + new Vector3(random.x, 0f, random.y);
-
-            NavMeshHit hit;
-
-            if (!NavMesh.SamplePosition(point, out hit, patrolRadius, NavMesh.AllAreas))
-            {
-                continue;
-            }
-
-            NavMeshPath path = new NavMeshPath();
-
-            bool validPath = Agent.CalculatePath(hit.position, path);
-
-            if (validPath && path.status == NavMeshPathStatus.PathComplete)
-            {
-                return hit.position;
-            }
-        }
-        
-       return transform.position;
+        if(AssociatedEnemyZone)
+            return AssociatedEnemyZone.GetRandomPatrolPosition();
+        return Vector3.zero;
     }
 
     public Vector3 EyePosition
