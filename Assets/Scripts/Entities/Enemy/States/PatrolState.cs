@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PatrolState : IEnemyState
 {
-    EnemyController enemy;
-
-    Vector3 patrolPoint;
+    private EnemyController enemy;
+    private Vector3 patrolPoint;
+    private float patrolDelayCooldown = 0;
 
     public PatrolState(EnemyController enemy)
     {
@@ -17,11 +17,7 @@ public class PatrolState : IEnemyState
     {
         enemy.DebugState = EnemyStateType.Patrol;
 
-        patrolPoint = enemy.GetRandomPatrolPoint();
-
-        enemy.Agent.SetDestination(patrolPoint);
-        
-        enemy.Agent.isStopped = false;
+        NavigateToNextPoint();
     }
 
     public void Tick()
@@ -33,13 +29,35 @@ public class PatrolState : IEnemyState
             return;
         }
 
+        patrolDelayCooldown -= Time.deltaTime;
+
+        
+        
+        if (enemy.Agent.isStopped && patrolDelayCooldown <= 0)
+        {
+            enemy.Agent.isStopped = false;
+        }
+
         if (!enemy.Agent.pathPending && enemy.HasReachedDestination())
         {
-            patrolPoint = enemy.GetRandomPatrolPoint();
-
-            enemy.Agent.SetDestination(patrolPoint);
-
+            enemy.Agent.isStopped = true;
+            NavigateToNextPoint();
+            //decide if we want to pause at this navigation point
+            var chance = Random.Range(0, 100);
+            Debug.Log(chance);
+            if (chance < enemy.PatrolDelayChance)
+            {
+                patrolDelayCooldown = enemy.PatrolDelayDurationSeconds;
+                //play look animation
+            }
         }
+    }
+
+    private void NavigateToNextPoint()
+    {
+        //resume patrol behaviour
+        patrolPoint = enemy.GetRandomPatrolPoint();
+        enemy.Agent.SetDestination(patrolPoint);
     }
 
     public void Exit()

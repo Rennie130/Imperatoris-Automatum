@@ -42,6 +42,9 @@ public class EnemyController : Enemy
 
     [SerializeField] float patrolRadius = 20f;
 
+    [field: SerializeField, Range(0, 100)] public int PatrolDelayChance { get; private set; } = 50;
+    [field: SerializeField] public float PatrolDelayDurationSeconds { get; private set; } = 2f;
+
     [Header("Detection")]
     [SerializeField] public float detectionRange = 20f;
     public float loseInterestRange = 45f;
