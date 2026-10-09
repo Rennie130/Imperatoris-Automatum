@@ -189,7 +189,7 @@ public class CameraController : MonoBehaviour
         }
 
         if (primaryTarget != null)
-            return primaryTarget.position + Vector3.up * 1.5f;
+            return primaryTarget.position + Vector3.up * 0.5f;
         
         return Vector3.zero;
     }
