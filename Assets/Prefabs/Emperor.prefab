@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1942480511971624518}
   - component: {fileID: 628646002}
   m_Layer: 6
-  m_Name: Player
+  m_Name: Emperor
   m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
