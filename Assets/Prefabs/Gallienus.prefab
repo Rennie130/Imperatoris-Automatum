@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1942480511971624518}
   - component: {fileID: 628646002}
   m_Layer: 6
-  m_Name: Emperor
+  m_Name: Gallienus
   m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ Transform:
   - {fileID: 1942480511660121323}
   - {fileID: 8508123058828002736}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!33 &1942480511971624516
 MeshFilter:

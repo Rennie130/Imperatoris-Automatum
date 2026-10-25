@@ -55,6 +55,21 @@ public abstract class CombatBase : MonoBehaviour
 
 
     // =======================================================
+    //    BLOCK AND STAGGER
+    // =======================================================
+
+    [Header("Block and Stagger")]
+    [SerializeField] private float staggerDuration = 0.5f;
+
+    private bool isBlocking;
+    private bool blockChordUsed;
+    private float staggeredUntil;
+
+    public bool IsBlocking => isBlocking;
+    public bool IsStaggered => Time.time < staggeredUntil;
+
+
+    // =======================================================
     //    COMBO / LUNGE / HIT STOP
     // =======================================================
 
@@ -73,7 +88,7 @@ public abstract class CombatBase : MonoBehaviour
 
 
     // =======================================================
-    //    CCOMBAT POINTS
+    //    COMBAT POINTS
     // =======================================================
 
     [Header("Combat Points")]
@@ -212,19 +227,33 @@ public abstract class CombatBase : MonoBehaviour
 
     protected virtual void HandleMouseInput()
     {
-        // -------------------------------------------------------
-        //    LEFT MOUSE
-        // -------------------------------------------------------
-
         if (Input.GetMouseButtonDown(0))
         {
             leftMouseHeld = true;
             leftMouseHoldTime = 0f;
         }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            rightMouseHeld = true;
+            rightMouseHoldTime = 0f;
+        }
+
         if (leftMouseHeld)
         {
             leftMouseHoldTime += Time.deltaTime;
+        }
+
+        if (rightMouseHeld)
+        {
+            rightMouseHoldTime += Time.deltaTime;
+        }
+
+        // Holding both activates Blocking
+        if (leftMouseHeld && rightMouseHeld)
+        {
+            blockChordUsed = true;
+            SetBlocking(true);
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -234,34 +263,60 @@ public abstract class CombatBase : MonoBehaviour
             leftMouseHeld = false;
             leftMouseHoldTime = 0f;
 
-            TryPlap(PlapSide.Left, heavy);
+            // Don't punch if this press was part of block
+            if (!blockChordUsed)
+            {
+                TryPlap(PlapSide.Left, heavy);
+            }
         }
 
-        // -------------------------------------------------------
-        //    RIGHT MOUSE
-        // -------------------------------------------------------
-
-         if (Input.GetMouseButtonDown(0))
-        {
-            rightMouseHeld = true;
-            rightMouseHoldTime = 0f;
-        }
-
-        if (rightMouseHeld)
-        {
-            rightMouseHoldTime += Time.deltaTime;
-        }
-
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(1))
         {
             bool heavy = rightMouseHoldTime >= heavyPlapHoldTime;
 
             rightMouseHeld = false;
             rightMouseHoldTime = 0f;
 
-            TryPlap(PlapSide.Right, heavy);
+            // Don't punch if block
+            if (!blockChordUsed)
+            {
+                TryPlap(PlapSide.Right, heavy);
+            }
+
         }
 
+        // Blocking ends as soon as either button is released
+        SetBlocking(leftMouseHeld && rightMouseHeld);
+
+        // Clear only after both buttons are released
+        if (!leftMouseHeld && !rightMouseHeld)
+        {
+            blockChordUsed = false;
+        }
+
+    }
+
+    private void SetBlocking(bool blocking)
+    {
+        if (isBlocking == blocking)
+        {
+            return;
+        }
+
+        isBlocking = blocking;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsBlocking", isBlocking);
+        }
+    }
+
+    public void OnBlockedHit()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("BlockHit");
+        }
     }
 
 
@@ -292,6 +347,10 @@ public abstract class CombatBase : MonoBehaviour
 
     public virtual void TryAttack(PlapSide side, bool heavy)
     {
+        if (isBlocking || IsStaggered)
+        {
+            return;
+        }
         // -------------------------------------------
         // COOLDOWN
         // -------------------------------------------
@@ -452,7 +511,7 @@ public abstract class CombatBase : MonoBehaviour
     {
         FistHitbox fist = GetCurrentFist();
 
-        if (fist = null)
+        if (fist == null)
         {
             Debug.LogWarning($"[COMBAT] No fist hitbox assigned for {currentPlapSide} plap.");
             return;
@@ -501,6 +560,19 @@ public abstract class CombatBase : MonoBehaviour
             return;
         }
 
+        // Find target's combat component, even if collider is on child object
+        CombatBase targetCombat = hitCollider.GetComponentInParent<CombatBase>();
+
+        // Blocking prevents damage and normal stagger
+        if (targetCombat != null && targetCombat.IsBlocking)
+        {
+            hitTargets.Add(damageable);
+            targetCombat.OnBlockedHit();
+
+            Debug.Log($"[BLOCKED HIT] {hitCollider.name}");
+            return;
+        }
+
         // Register target
         hitTargets.Add(damageable);
 
@@ -524,6 +596,12 @@ public abstract class CombatBase : MonoBehaviour
 
         // Hit Callback
         OnHit(hitCollider.transform);
+
+        // Interrupt and stagger targets with combat components
+        if (targetCombat != null)
+        {
+            targetCombat.ApplyStagger();
+        }
     }
 
 
@@ -568,7 +646,7 @@ public abstract class CombatBase : MonoBehaviour
 
 
     // =========================================================
-    // KNOCKBACK
+    // KNOCKBACK AND STAGGER
     // =========================================================
 
     protected virtual float GetKnockbackForce()
@@ -584,6 +662,26 @@ public abstract class CombatBase : MonoBehaviour
         }
 
         return 0.5f;
+    }
+
+    public virtual void ApplyStagger()
+    {
+        staggeredUntil = Mathf.Max(staggeredUntil, Time.time + staggerDuration);
+
+        CancelAttack();
+        SetBlocking(false);
+
+        //Don't leave held mouse button ready to punch immediately after stagger
+        leftMouseHeld = false;
+        rightMouseHeld = false;
+        leftMouseHoldTime = 0f;
+        rightMouseHoldTime = 0f;
+        blockChordUsed = false;
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Stagger");
+        }
     }
 
 

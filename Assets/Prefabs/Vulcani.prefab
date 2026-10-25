@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 540155589}
   - component: {fileID: 3508163408908947286}
   m_Layer: 6
-  m_Name: Mech
+  m_Name: Vulcani
   m_TagString: Mech
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
