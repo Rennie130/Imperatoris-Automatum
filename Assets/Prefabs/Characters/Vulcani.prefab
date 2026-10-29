@@ -552,7 +552,7 @@ Transform:
   - {fileID: 2211565721297934280}
   - {fileID: 5937118891726059336}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5597254157854319050
 Animator:
@@ -603,7 +603,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 1.03, z: 0.2}
 --- !u!23 &540155592
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -671,6 +671,7 @@ MonoBehaviour:
   heavyPlapHoldTime: 0.5
   heavyDamageMultiplier: 2
   fistHitboxDuration: 0.15
+  staggerDuration: 0.5
   maxCombo: 3
   comboResetTime: 1.5
   lungeForce: 0.6
@@ -3122,7 +3123,7 @@ CapsuleCollider:
   m_Radius: 0.55
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0.2}
+  m_Center: {x: 0, y: 1.03, z: 0.2}
 --- !u!1 &8368936904584425090
 GameObject:
   m_ObjectHideFlags: 0

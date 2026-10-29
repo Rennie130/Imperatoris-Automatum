@@ -297,6 +297,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gallienus
       objectReference: {fileID: 0}
+    - target: {fileID: 1601750091299913684, guid: e65c7ae247bbbdb4b904acb65ecba483, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.63279253
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601750091299913684, guid: e65c7ae247bbbdb4b904acb65ecba483, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0011068117
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601750091299913684, guid: e65c7ae247bbbdb4b904acb65ecba483, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.12652862
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601750091299913684, guid: e65c7ae247bbbdb4b904acb65ecba483, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7639128
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: e65c7ae247bbbdb4b904acb65ecba483, type: 3}

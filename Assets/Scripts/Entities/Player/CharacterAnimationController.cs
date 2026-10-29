@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 public class CharacterAnimationController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Animator animator;
-    [SerializeField] private PrimaryController primaryController;
 
     [Header("Animation Settings")]
     [SerializeField] private float runThreshold = 0.1f;
@@ -17,25 +15,20 @@ public class CharacterAnimationController : MonoBehaviour
 
     private void Awake()
     {
-        if (primaryController == null)
-        {
-            primaryController = GetComponent<PrimaryController>();
-        }
-            
-
         if (animator == null)
         {
             animator = GetComponentInChildren<Animator>();
-        }
-            
 
-        previousPosition = transform.position;
+            previousPosition = transform.position;
+        }
     }
 
     private void Update()
     {
-        if (animator == null || primaryController == null)
+        if (animator == null)
+        {
             return;
+        }
 
         // Measure actual horizontal movement.
         Vector3 movement = transform.position - previousPosition;
@@ -45,7 +38,7 @@ public class CharacterAnimationController : MonoBehaviour
 
         previousPosition = transform.position;
 
-        // Avoid playing Run for tiny movements.
+        // Ignore tiny movements.
         if (speed < runThreshold)
             speed = 0f;
 
