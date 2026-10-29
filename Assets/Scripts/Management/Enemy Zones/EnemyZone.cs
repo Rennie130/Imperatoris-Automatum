@@ -117,7 +117,7 @@ public class EnemyZone : MonoBehaviour
         }
         else //no more zones? you win!
         {
-            //tell game manager that the game is over
+            GameManager.Instance.LevelCompleted();
         }
     }
 

@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SenateScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: Assets/Scenes/DistrictOne/DistrictOne.unity
     guid: 39f03b1bacd7b8940bd3323dfdc01d28
   - enabled: 1
-    path: Assets/Scenes/TestScene/TestScene.unity
-    guid: 12362531209764b40a03c0bb7a437658
+    path: Assets/Scenes/GameScene/GameScene.unity
+    guid: bf5b37cefefc59143a093b79d08fd9d5
   m_configObjects: {}
