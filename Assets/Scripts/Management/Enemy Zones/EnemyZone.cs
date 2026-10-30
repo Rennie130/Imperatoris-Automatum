@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
@@ -15,6 +16,7 @@ public class EnemyZone : MonoBehaviour
 
     public int CurrentWave;
     public List<Enemy> CurrentRemainingEnemies = new();
+    public UnityEvent OnZoneComplete;
 
     private void Awake() 
     {
@@ -74,7 +76,13 @@ public class EnemyZone : MonoBehaviour
     public void StartWaves()
     {
         CurrentWave = 0;
-        SpawnWave(Waves[CurrentWave]);
+        if(Waves.Count > 0)
+            SpawnWave(Waves[CurrentWave]);
+        else
+        {
+            OnZoneComplete.Invoke();
+            NextZone.StartWaves();
+        }
     }
 
     //Spawns the given wave
@@ -113,6 +121,7 @@ public class EnemyZone : MonoBehaviour
         }
         else if(NextZone != null) //no more waves? next zone
         {
+            OnZoneComplete.Invoke();
             NextZone.StartWaves();
         }
         else //no more zones? you win!
@@ -120,5 +129,6 @@ public class EnemyZone : MonoBehaviour
             GameManager.Instance.LevelCompleted();
         }
     }
+
 
 }
