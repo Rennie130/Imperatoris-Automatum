@@ -151,13 +151,13 @@ MonoBehaviour:
   - Spawns:
     - Count: 1
       EnemyPrefab: {fileID: 1091630671625547185, guid: e684d9d381f9464438a222b3f97165c3, type: 3}
-  - Spawns:
-    - Count: 2
-      EnemyPrefab: {fileID: 1091630671625547185, guid: e684d9d381f9464438a222b3f97165c3, type: 3}
   NextZone: {fileID: 0}
   SpawnOnStart: 0
   CurrentWave: 0
   CurrentRemainingEnemies: []
+  OnZoneComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2919376056503804383
 GameObject:
   m_ObjectHideFlags: 0

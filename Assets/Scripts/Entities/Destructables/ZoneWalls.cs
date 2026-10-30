@@ -5,6 +5,7 @@ using UnityEngine;
 public class ZoneWalls : MonoBehaviour
 {
     public Animator WallCollapse;
+    public ParticleSystem DustParticles;
     public Transform VisualRoot;
     public Collider WallCollider;
     public float WallCollapseDurationSeconds = 3; //How long it takes for wall to collapse
@@ -36,7 +37,9 @@ public class ZoneWalls : MonoBehaviour
                 IsCollapsing = false;
                 WallCollapse.Play("Idle");
                 WallCollider.enabled = false;
+
                 //stop dust particle effects
+                DustParticles.Stop();
             }
         }
     }
@@ -47,6 +50,7 @@ public class ZoneWalls : MonoBehaviour
         WallCollapse.Play("WallCollapse");
 
         //Play dust particles effect
+        DustParticles.Play();
         
         //Allow wall to move down
         IsCollapsing = true;

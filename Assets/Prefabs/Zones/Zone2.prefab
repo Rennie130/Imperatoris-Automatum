@@ -159,7 +159,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8116323433894826802}
-  m_LocalRotation: {x: -0, y: -0.7925259, z: -0, w: 0.60983837}
+  m_LocalRotation: {x: 0, y: -0.7925238, z: 0, w: 0.609841}
   m_LocalPosition: {x: -81.01, y: -3.8222694, z: 31.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -196,13 +196,13 @@ MonoBehaviour:
   - Spawns:
     - Count: 1
       EnemyPrefab: {fileID: 1091630671625547185, guid: e684d9d381f9464438a222b3f97165c3, type: 3}
-  - Spawns:
-    - Count: 3
-      EnemyPrefab: {fileID: 1091630671625547185, guid: e684d9d381f9464438a222b3f97165c3, type: 3}
   NextZone: {fileID: 0}
   SpawnOnStart: 0
   CurrentWave: 0
   CurrentRemainingEnemies: []
+  OnZoneComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8116323434248054980
 GameObject:
   m_ObjectHideFlags: 0

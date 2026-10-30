@@ -194,17 +194,26 @@ MonoBehaviour:
   - {fileID: 3981647836590273663}
   - {fileID: 3981647837257992326}
   - {fileID: 5021641527810253319}
-  Waves:
-  - Spawns:
-    - Count: 1
-      EnemyPrefab: {fileID: 1091630671625547185, guid: e684d9d381f9464438a222b3f97165c3, type: 3}
-  - Spawns:
-    - Count: 3
-      EnemyPrefab: {fileID: 1091630671625547185, guid: e684d9d381f9464438a222b3f97165c3, type: 3}
+  Waves: []
   NextZone: {fileID: 0}
   SpawnOnStart: 1
   CurrentWave: 0
   CurrentRemainingEnemies: []
+  OnZoneComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ZoneWalls, Assembly-CSharp
+        m_MethodName: CollapsedWall
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3981647837222809886
 GameObject:
   m_ObjectHideFlags: 0
