@@ -6,10 +6,12 @@ public class CharacterAnimationController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Animator animator;
+    [SerializeField] private Rigidbody rb;
 
     [Header("Animation Settings")]
-    [SerializeField] private float runThreshold = 0.1f;
-    [SerializeField] private float dampTime = 0.1f;
+    [SerializeField] private float runThreshold = 0.15f;
+    [SerializeField] private float accelerationDamp = 0.03f;
+    [SerializeField] private float decelerationDamp = 0.02f;
 
     private Vector3 previousPosition;
 
@@ -19,29 +21,50 @@ public class CharacterAnimationController : MonoBehaviour
         {
             animator = GetComponentInChildren<Animator>();
 
-            previousPosition = transform.position;
+            if (rb == null)
+            {
+                rb = GetComponent<Rigidbody>();
+            }
         }
     }
 
     private void Update()
     {
-        if (animator == null)
+        if (animator == null || rb == null)
         {
             return;
         }
 
         // Measure actual horizontal movement.
-        Vector3 movement = transform.position - previousPosition;
-        movement.y = 0f;
+        Vector3 horizontalVelocity = rb.velocity;
+        horizontalVelocity.y = 0f;
 
-        float speed = movement.magnitude / Mathf.Max(Time.deltaTime, 0.0001f);
-
-        previousPosition = transform.position;
+        float speed = horizontalVelocity.magnitude;
 
         // Ignore tiny movements.
         if (speed < runThreshold)
             speed = 0f;
+        
+        float damp = speed > animator.GetFloat("Speed") ? accelerationDamp : decelerationDamp;
 
-        animator.SetFloat("Speed", speed, dampTime, Time.deltaTime);
+        animator.SetFloat("Speed", speed, damp, Time.deltaTime);
+    }
+
+    public void PlayJump()
+    {
+        animator.SetTrigger("Jump");
+    }
+
+    public void SetGrounded(bool grounded)
+    {
+        animator.SetBool("Grounded", grounded);
+    }
+
+    public void PlayDoubleJump()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("DoubleJump");
+        }
     }
 }

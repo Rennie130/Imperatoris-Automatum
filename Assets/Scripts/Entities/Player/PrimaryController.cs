@@ -23,12 +23,25 @@ public class PrimaryController : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
+    [Header("Landing")]
+    public float landingRecoveryTime = 0.3f;
+    private float landingTimer;
+    public bool hasLeftGround;
+    private bool isLanding;
+
+    [Header("Movement Smoothing")]
+    public float acceleration = 30f;
+    public float deceleration = 45f;
+    private Vector3 currentMoveVelocity;
+
     private Rigidbody rb;
     private Transform cameraTransform;
     private HealthBase playerHealthBase;
 
     private bool isGrounded;
     private bool canMove = true;
+
+    [SerializeField] private CharacterAnimationController animationController;
 
     void Start()
     {
@@ -40,6 +53,11 @@ public class PrimaryController : MonoBehaviour
         playerHealthBase = GetComponent<HealthBase>();
         //Assign script reference to Game Manager
         GameManager.Instance.playerHealth = playerHealthBase;
+
+        if (animationController == null)
+        {
+            animationController = GetComponent<CharacterAnimationController>();
+        }
     }
 
     void Update()
@@ -61,6 +79,20 @@ public class PrimaryController : MonoBehaviour
             return;
         }
 
+        // Temporarily stop horizontal movement during landing recovery
+        if (isLanding)
+        {
+            landingTimer -= Time.fixedDeltaTime;
+
+            Debug.Log("Landing timer: " + landingTimer);
+
+            if (landingTimer <= 0f)
+            {
+                landingTimer = 0f;
+                isLanding = false;
+            }
+        }
+
         Move();
         ApplyGravity();
     }
@@ -69,6 +101,11 @@ public class PrimaryController : MonoBehaviour
     void CheckGrounded()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+
+        if (animationController != null)
+        {
+            animationController.SetGrounded(isGrounded);
+        }
 
         if (isGrounded)
         {
@@ -83,7 +120,13 @@ public class PrimaryController : MonoBehaviour
 
     //standard movement
     void Move()
-    {
+    { 
+        if (isLanding)
+        {
+            rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+            return;
+        }
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -99,10 +142,33 @@ public class PrimaryController : MonoBehaviour
         Vector3 move = forward * v + right * h;
         move = Vector3.ClampMagnitude(move, 1f);
 
-        Vector3 velocity = move * moveSpeed;
-        velocity.y = rb.velocity.y;
+    //    Vector3 velocity = move * moveSpeed;
+    //    velocity.y = rb.velocity.y;
+//
+    //    rb.velocity = velocity;
 
-        rb.velocity = velocity;
+        Vector3 targetVelocity = move * moveSpeed;
+
+        bool changingDirection = Vector3.Dot(currentMoveVelocity, targetVelocity) > 0;
+
+        float speedChange;
+
+        if (move.magnitude < 0.1f)
+        {
+            speedChange = deceleration;
+        }
+        else if (changingDirection)
+        {
+            speedChange = acceleration * 2f;
+        }
+        else
+        {
+            speedChange = acceleration;
+        }
+
+        currentMoveVelocity = Vector3.MoveTowards(currentMoveVelocity, targetVelocity, speedChange * Time.fixedDeltaTime);
+
+        rb.velocity = new Vector3(currentMoveVelocity.x, rb.velocity.y, currentMoveVelocity.z);
 
         if (move.magnitude > 0.1f)
         {
@@ -130,9 +196,24 @@ public class PrimaryController : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            hasLeftGround = true;
+
+            if (animationController != null)
+            {
+                animationController.PlayJump();
+            }
+            else
+            {
+                animationController.PlayDoubleJump();
+            }
             
             jumpCount++;
             jumpBufferTimer = 0;
+
+            isLanding = false;
+            landingTimer = 0f;
+            hasLeftGround = true;
         }
     }
 
@@ -166,5 +247,26 @@ public class PrimaryController : MonoBehaviour
     public void OnPlayerDeath()
     {
         GameManager.Instance.GameOver();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Only detect landing after the character has jumped
+        if (!hasLeftGround || isLanding)
+        {
+            return;
+        }
+
+        // Check whether the collision is with a surface underneath
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            if (contact.normal.y > 0.5f)
+            {
+                isLanding = true;
+                landingTimer = landingRecoveryTime;
+                hasLeftGround = false;
+                break;
+            }
+        }
     }
 }
