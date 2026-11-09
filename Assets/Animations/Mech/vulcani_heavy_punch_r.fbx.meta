@@ -27,17 +27,17 @@ ModelImporter:
     animationCompression: 1
     animationRotationError: 0
     animationPositionError: 0
-    animationScaleError: 0.5
+    animationScaleError: 0
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: heavy_punch
+      name: right_heavy
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 0
-      lastFrame: 86
+      lastFrame: 64
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
