@@ -7,7 +7,8 @@ public class UIManager : MonoBehaviour
 {
     [Header("Scene UI")]
     public UpdateUIStats levelUI;
-    public GameObject mainMenuUI; // is the Senate Scene UI for now
+    public GameObject mainMenuUI;
+    public GameObject tutorialMenuUI;
     public GameObject pauseMenuUI; 
     public GameObject gameOverUI;
     public GameObject levelCompletedUI;
@@ -40,7 +41,7 @@ public class UIManager : MonoBehaviour
         }
         
         //locks/unlocks mouse cursor and specifies if gameplay is active.
-        if(mainMenuUI.activeInHierarchy || pauseMenuUI.activeInHierarchy || gameOverUI.activeInHierarchy || levelCompletedUI.activeInHierarchy)
+        if(mainMenuUI.activeInHierarchy ||tutorialMenuUI.activeInHierarchy || pauseMenuUI.activeInHierarchy || gameOverUI.activeInHierarchy || levelCompletedUI.activeInHierarchy)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -58,6 +59,7 @@ public class UIManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         mainMenuUI.SetActive(false);
+        tutorialMenuUI.SetActive(false);
         gameOverUI.SetActive(false);
         levelCompletedUI.SetActive(false);
         levelUI.gameObject.SetActive(true);
@@ -66,10 +68,18 @@ public class UIManager : MonoBehaviour
     public void ToggleMainMenuUI()
     {
         pauseMenuUI.SetActive(false);
-        mainMenuUI.SetActive(true); //for now, it's the Senate Scene and UI acting as "Main Menu"
+        mainMenuUI.SetActive(true);
+        tutorialMenuUI.SetActive(false); 
         gameOverUI.SetActive(false);
         levelCompletedUI.SetActive(false);
         levelUI.gameObject.SetActive(false);
+    }
+
+    public void ToggleTutorialMenuUI()
+    {
+        bool isActive = tutorialMenuUI.activeSelf;
+        tutorialMenuUI.SetActive(!isActive);
+         
     }
 
     public void ToggleGameOverUI()
