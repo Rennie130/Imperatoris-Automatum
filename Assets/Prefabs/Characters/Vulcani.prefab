@@ -56,12 +56,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284346759810235391}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.03, y: 3.219, z: -0.014}
+  m_LocalRotation: {x: 0.38021663, y: -0.9246619, z: 0.019306205, w: 0.0079386225}
+  m_LocalPosition: {x: 0.0077595403, y: -0.28015792, z: 0.014630914}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6926596867804418737}
+  m_Father: {fileID: 2403684217649639832}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &5383277437018942532
@@ -75,7 +75,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.21
+  m_Radius: 0.27
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5369710473140263066
 MonoBehaviour:
@@ -160,9 +160,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.65
-  m_Height: 6.3
+  m_Height: 6.7506304
   m_Direction: 1
-  m_Center: {x: 0, y: 3.15, z: 0.2}
+  m_Center: {x: 0, y: 3.3753152, z: 0.20000008}
 --- !u!23 &540155592
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -463,12 +463,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8559768620454046654}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.03, y: 3.219, z: -0.014}
+  m_LocalRotation: {x: -0.0079386225, y: -0.019306205, z: -0.9246619, w: 0.38021663}
+  m_LocalPosition: {x: -0.00092922477, y: 0.28691, z: -0.01491297}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 6926596867804418737}
+  m_Father: {fileID: 2956610547859053797}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1239556025917300891
@@ -482,7 +482,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.21
+  m_Radius: 0.27
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &306155892932384100
 MonoBehaviour:
@@ -554,13 +554,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 3342593472537579682}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
-      insertIndex: 1
+    - targetCorrespondingSourceObject: {fileID: 5669315026010401215, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4232883515664843110}
+    - targetCorrespondingSourceObject: {fileID: -4111482625341422398, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3342593472537579682}
   m_SourcePrefab: {fileID: 100100000, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+--- !u!4 &2403684217649639832 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4111482625341422398, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+  m_PrefabInstance: {fileID: 7469939451048605018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2956610547859053797 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5669315026010401215, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+  m_PrefabInstance: {fileID: 7469939451048605018}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6926596867804418737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
@@ -591,3 +601,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &6599754182217251030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7740534971258931211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cde22189fa5f5b4aa957e6ebd10ea18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
