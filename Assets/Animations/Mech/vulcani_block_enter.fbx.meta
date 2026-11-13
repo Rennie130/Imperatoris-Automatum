@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7eb6ada0e3ae00e4887753cb08fce77a
+guid: 038f1c62f19e9d24497f7edca7fab059
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: right_heavy
+      name: mech_block_enter
       takeName: Take 001
       internalID: 1827226128182048838
-      firstFrame: 0
-      lastFrame: 64
+      firstFrame: 1
+      lastFrame: 32
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

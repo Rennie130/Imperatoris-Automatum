@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 327825d1ce08043429a1d57264586f09
+guid: 66fba2d63e68e304cae8f85587754711
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
@@ -25,19 +25,19 @@ ModelImporter:
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 1
-    animationRotationError: 0
-    animationPositionError: 0
-    animationScaleError: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: left_light
+      name: mech_hit
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 1
-      lastFrame: 58
+      lastFrame: 44
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

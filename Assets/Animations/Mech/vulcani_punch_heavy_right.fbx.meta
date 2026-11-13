@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 627008442ba13db40a7e23b2edfc7ad4
+guid: 900ce483a9086a94790ddf84e645c28e
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: left_heavy
+      name: mech_punch_heavy_right
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 1
-      lastFrame: 79
+      lastFrame: 64
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
