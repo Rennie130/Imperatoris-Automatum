@@ -7,6 +7,8 @@ public class SecondaryController : MonoBehaviour
 {
     public float moveSpeed = 4f;
     public float rotationSpeed = 100f;
+
+    [SerializeField] private Animator animator;
     
     private Rigidbody rb;
 
@@ -53,9 +55,20 @@ public class SecondaryController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        if (animator == null)
+            {
+                animator = GetComponentInChildren<Animator>();
+            }
+
         rb.freezeRotation = false;
         rb.mass = 1000f;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        if (animator == null)
+        {
+            Debug.LogError("No Animator found on " + name);
+        }
     }
 
     void Update()
@@ -74,6 +87,8 @@ public class SecondaryController : MonoBehaviour
             return; //lost signal
 
         HandleMovement(signal);
+
+        Debug.Log("Vertical Velocity: " + rb.velocity.y);
     }
 
     public void ReceiveInput(float h, float v)
@@ -81,8 +96,6 @@ public class SecondaryController : MonoBehaviour
         inputH = h;
         inputV = v;
     }
-
-    //
 
     void HandleMovement(float signal)
     {
@@ -179,6 +192,11 @@ public class SecondaryController : MonoBehaviour
 
         //apply to rigidbody
         rb.velocity = currentVelocity;
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", speedPercent);
+        }
         
     }
 

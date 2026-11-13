@@ -98,7 +98,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1967331780583357360}
-  - component: {fileID: 5597254157854319050}
   - component: {fileID: 540155590}
   - component: {fileID: 4230449769112000573}
   - component: {fileID: 540155592}
@@ -106,7 +105,6 @@ GameObject:
   - component: {fileID: 540155588}
   - component: {fileID: 540155589}
   - component: {fileID: 3508163408908947286}
-  - component: {fileID: 737001943}
   m_Layer: 6
   m_Name: Vulcani
   m_TagString: Mech
@@ -133,28 +131,8 @@ Transform:
   - {fileID: 7153750459069765524}
   - {fileID: 2211565721297934280}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5597254157854319050
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154765902541070602}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: db4be340fc840274e8c71bc49790117f, type: 3}
-  m_Controller: {fileID: 9100000, guid: d0501b377d16ff84a90b26c9604c1cf9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
 --- !u!54 &540155590
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -170,7 +148,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &4230449769112000573
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -272,6 +250,7 @@ MonoBehaviour:
   rightFistHitbox: {fileID: 5369710473140263066}
   enableMouseInput: 1
   navigationLocked: 0
+  animator: {fileID: 2343256029279599227}
 --- !u!114 &540155588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +284,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   rotationSpeed: 50
+  animator: {fileID: 2343256029279599227}
+  animationDampTime: 0.1
   directionChangeResistance: 12
   skidFactor: 0.97
   acceleration: 8
@@ -321,21 +302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5114c76e076d1554fac9eb2ba8b815ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &737001943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154765902541070602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3247f472b9d8fd43b2ab0ff99f137cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5597254157854319050}
-  runThreshold: 0.1
-  dampTime: 0.1
 --- !u!1 &4200467015412641490
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,3 +567,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
   m_PrefabInstance: {fileID: 7469939451048605018}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7740534971258931211 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+  m_PrefabInstance: {fileID: 7469939451048605018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2343256029279599227
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7740534971258931211}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d0501b377d16ff84a90b26c9604c1cf9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

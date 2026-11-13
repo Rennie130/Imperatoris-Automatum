@@ -143,7 +143,7 @@ public abstract class CombatBase : MonoBehaviour
     public bool IsAttacking => isAttacking;
 
     protected Rigidbody rb;
-    protected Animator animator;
+    [SerializeField] protected Animator animator;
 
     Coroutine attackRoutine;
 
@@ -181,7 +181,10 @@ public abstract class CombatBase : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
 
-        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
 
         // Give fist hitboxes a reference back to this combat component
         if (leftFistHitbox != null)
@@ -214,11 +217,22 @@ public abstract class CombatBase : MonoBehaviour
             }
         }
 
+        // Keep Animator synced with stagger timer.
+        if (animator != null)
+        {
+            animator.SetBool("IsStaggered", IsStaggered);
+        }
+
+        if (enableMouseInput && !IsStaggered)
+        {
+            HandleMouseInput();
+        }
+
         // =======================================================
         //    MOUSE INPUT
         // =======================================================
 
-        if (enableMouseInput)
+        if (enableMouseInput && !IsStaggered)
         {
             HandleMouseInput();
         }
@@ -305,6 +319,17 @@ public abstract class CombatBase : MonoBehaviour
 
         isBlocking = blocking;
 
+        if (blocking)
+        {
+            // Blocking interrupts the current attack.
+            CancelAttack();
+
+            if (animator != null)
+            {
+                animator.SetTrigger("BlockStart");
+            }
+        }
+
         if (animator != null)
         {
             animator.SetBool("IsBlocking", isBlocking);
@@ -313,10 +338,12 @@ public abstract class CombatBase : MonoBehaviour
 
     public void OnBlockedHit()
     {
-        if (animator != null)
+        if (!isBlocking || animator == null)
         {
-            animator.SetTrigger("BlockHit");
+            return;
         }
+
+        animator.SetTrigger("BlockHit");
     }
 
 
@@ -419,20 +446,10 @@ public abstract class CombatBase : MonoBehaviour
         // Wait for animation to finish
         yield return new WaitForSeconds(recoveryTime);
         
-        // Small forward movement
-       // PerformLunge();
-        
-      //  yield return new WaitForSeconds(windUpTime / signalMultiplier);
-
-      //  Debug.Log($"[HIT FRAME] {name}");
-        // Small Delay Before Hit Frame
-      //  yield return new WaitForSeconds(hitDelay / signalMultiplier);
-
-        // Hit Frame
-       // PerformHit();
-
-        // Recovery
-     //   yield return new WaitForSeconds(recoveryTime / signalMultiplier);
+        if (!IsStaggered && animator != null)
+        {
+            animator.ResetTrigger("Stagger");
+        }
 
         lastAttackTime = Time.time;
         isAttacking = false;
@@ -598,7 +615,7 @@ public abstract class CombatBase : MonoBehaviour
         OnHit(hitCollider.transform);
 
         // Interrupt and stagger targets with combat components
-        if (targetCombat != null)
+        if (targetCombat != null && currentPlapIsHeavy)
         {
             targetCombat.ApplyStagger();
         }
@@ -666,20 +683,27 @@ public abstract class CombatBase : MonoBehaviour
 
     public virtual void ApplyStagger()
     {
+        bool wasAlreadyStaggered = IsStaggered;
+    
+        // Refresh stagger duration.
         staggeredUntil = Mathf.Max(staggeredUntil, Time.time + staggerDuration);
 
+        // Interrupts attack and blocking.
         CancelAttack();
         SetBlocking(false);
 
-        //Don't leave held mouse button ready to punch immediately after stagger
+        // Clear held input so player must release and press again after recovery.
         leftMouseHeld = false;
         rightMouseHeld = false;
+
         leftMouseHoldTime = 0f;
         rightMouseHoldTime = 0f;
+
         blockChordUsed = false;
 
-        if (animator != null)
+        if (animator != null && !wasAlreadyStaggered)
         {
+            animator.SetBool("IsStaggered", true);
             animator.SetTrigger("Stagger");
         }
     }

@@ -33,7 +33,7 @@ public class AttackState : IEnemyState
 
         if (!enemy.Combat.IsAttacking)
         {
-            enemy.Combat.TryAttack();
+            enemy.Combat.TryChooseAttack();
         }
 
         if (!enemy.IsInAttackRange())
