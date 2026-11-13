@@ -40,7 +40,7 @@ public class EnemyZone : MonoBehaviour
         //if THAT fails, just use raw patrol point position
         return position;
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -54,7 +54,7 @@ public class EnemyZone : MonoBehaviour
             }
         }
 
-        if(NextZone != null)
+        if (NextZone != null)
         {
             Handles.color = Color.green;
             Handles.DrawLine(transform.position, NextZone.transform.position, 4f);
