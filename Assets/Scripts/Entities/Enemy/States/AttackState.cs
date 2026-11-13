@@ -20,6 +20,11 @@ public class AttackState : IEnemyState
 
     public void Tick()
     {
+        if (!enemy.Combat.IsAttacking)
+        {
+            enemy.Combat.TryChooseAttack();
+        }
+
         if (enemy.CurrentTarget == null || !enemy.CurrentTarget.IsAlive)
         {
             enemy.ClearTarget();

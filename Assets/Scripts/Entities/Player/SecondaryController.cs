@@ -64,11 +64,6 @@ public class SecondaryController : MonoBehaviour
         rb.freezeRotation = false;
         rb.mass = 1000f;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-
-        if (animator == null)
-        {
-            Debug.LogError("No Animator found on " + name);
-        }
     }
 
     void Update()
@@ -87,8 +82,6 @@ public class SecondaryController : MonoBehaviour
             return; //lost signal
 
         HandleMovement(signal);
-
-        Debug.Log("Vertical Velocity: " + rb.velocity.y);
     }
 
     public void ReceiveInput(float h, float v)

@@ -12,7 +12,8 @@ public class EnemyController : Enemy
 
     public override Action<Enemy> OnDeath { get; set; }
     
-    //public Animator Animator { get; private set; }
+    [SerializeField] private Animator animator;
+    [SerializeField] private NavMeshAgent agent;
 
     HealthBase health;
 
@@ -82,6 +83,8 @@ public class EnemyController : Enemy
 
     void Update()
     {
+        animator.SetFloat("Speed", agent.velocity.magnitude);
+
         currentState?.Tick();
 
         if (aggroTimer > 0)

@@ -426,6 +426,8 @@ public abstract class CombatBase : MonoBehaviour
 
     protected virtual IEnumerator AttackRoutine()
     {
+        Debug.Log("[COMBAT] AttackRoutine started on " + name);
+
         isAttacking = true;
 
         float signalMultiplier = GetSignalMultiplier();
@@ -508,6 +510,8 @@ public abstract class CombatBase : MonoBehaviour
     // Replaces the old OverlapSphere attack
     public virtual void AnimationHitFrame()
     {
+        Debug.Log("[COMBAT] AnimationHitFrame called");
+
         Debug.Log($"[HIT FRAME] {name} | " + $"{currentPlapSide} | " + $"{(currentPlapIsHeavy ? "HEAVY" : "LIGHT" )}");
 
         // Optional lunge
@@ -533,6 +537,8 @@ public abstract class CombatBase : MonoBehaviour
             Debug.LogWarning($"[COMBAT] No fist hitbox assigned for {currentPlapSide} plap.");
             return;
         }
+
+        Debug.Log("[FIST] Activating: " + fist.name);
 
         fist.SetHitboxActive(true);
 

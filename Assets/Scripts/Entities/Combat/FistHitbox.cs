@@ -58,19 +58,27 @@ public class FistHitbox : MonoBehaviour
             return;
         }
 
+        Debug.Log("[FIST COLLISION] Hit: " + other.name);
+
         // ------------------------------------------------------
         //    Find Damageable
         // ------------------------------------------------------
+        Damageable damageable = null;
 
-        Damageable damageable = other.GetComponent<Damageable>();
+        MonoBehaviour[] components = other.GetComponentsInParent<MonoBehaviour>();
 
-        if (damageable == null)
+        foreach (MonoBehaviour component in components)
         {
-            damageable = other.GetComponentInParent<Damageable>();
+            if (component is Damageable foundDamageable)
+            {
+                damageable = foundDamageable;
+                break;
+            }
         }
 
         if (damageable == null)
         {
+            Debug.LogWarning("[FIST] No Damageable found on " + other.name);
             return;
         }
 
