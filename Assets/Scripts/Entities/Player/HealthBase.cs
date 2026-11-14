@@ -23,6 +23,8 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
    public Action<Transform> OnDamaged;
    public Action OnDeath;
 
+    private Animator hitAnimator;
+
    protected virtual void Awake()
     {
         currentHealth = maxHealth;
@@ -34,6 +36,10 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
 
     public virtual void Hurt(int damage, Transform attacker)
     {
+        currentHealth -= damage;
+
+        PlayHitReaction();
+
         if (!IsAlive) return;
 
         currentHealth = Mathf.Max(currentHealth - damage, 0);
@@ -49,17 +55,7 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
         {
             combat.CancelAttack();
         }
-
-        EnemyController enemy = GetComponent <EnemyController>();
-
-        if (enemy != null)
-        {
-            enemy.Stagger(staggerTime);
-        }
-
-        // Apply knockback
-        //ApplyHitReaction(attacker);
-
+        
         // Death check
         if (currentHealth <= 0)
         {
@@ -115,6 +111,22 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
         {
             combat.UnlockNavigation();
         }
+    }
+
+    private void PlayHitReaction()
+    {
+        if (hitAnimator == null)
+        {
+            hitAnimator = GetComponentInChildren<Animator>();
+        }
+
+        if (hitAnimator == null)
+        {
+            return;
+        }
+
+        hitAnimator.ResetTrigger("HitReact");
+        hitAnimator.SetTrigger("HitReact");
     }
 
     /// <summary>

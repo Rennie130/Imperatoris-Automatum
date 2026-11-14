@@ -5,14 +5,6 @@ using UnityEngine.AI;
 
 public abstract class CombatBase : MonoBehaviour
 {
-    [System.Serializable]
-    public struct HitStopData
-    {
-        public float freezeTime;
-        public float timeScale;
-    }
-
-
     // =======================================================
     //    ATTACK SETTINGS
     // =======================================================
@@ -36,6 +28,7 @@ public abstract class CombatBase : MonoBehaviour
     [SerializeField] public float windUpTime = 0.3f;
     [SerializeField] public float hitDelay = 0.1f;
     [SerializeField] public float recoveryTime = 0.4f;
+    public bool IsOnCooldown => Time.time < lastAttackTime + attackCooldown;
 
 
     // =======================================================
@@ -70,7 +63,7 @@ public abstract class CombatBase : MonoBehaviour
 
 
     // =======================================================
-    //    COMBO / LUNGE / HIT STOP
+    //    COMBO / LUNGE
     // =======================================================
 
     [Header("Combo")]
@@ -80,12 +73,6 @@ public abstract class CombatBase : MonoBehaviour
     [Header("Lunge")]
     [SerializeField] float lungeForce = 5f;
     [SerializeField] float lungeDuration = 0.12f;
-
-    [Header("Hit Stop")]
-    [SerializeField] protected HitStopData normalHit;
-    [SerializeField] protected HitStopData heavyHit;
-    [SerializeField] protected HitStopData finisherHit;
-
 
     // =======================================================
     //    COMBAT POINTS
@@ -126,6 +113,15 @@ public abstract class CombatBase : MonoBehaviour
     // =======================================================
 
     protected bool isAttacking;
+    public enum CombatTeam
+    {
+        Enemy,
+        Friend,
+        Neutral
+    }
+
+    public virtual CombatTeam Team => CombatTeam.Neutral;
+
     protected bool queuedNextAttack;
     void QueueNextCombo()
     {
@@ -221,11 +217,6 @@ public abstract class CombatBase : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool("IsStaggered", IsStaggered);
-        }
-
-        if (enableMouseInput && !IsStaggered)
-        {
-            HandleMouseInput();
         }
 
         // =======================================================
@@ -586,6 +577,12 @@ public abstract class CombatBase : MonoBehaviour
         // Find target's combat component, even if collider is on child object
         CombatBase targetCombat = hitCollider.GetComponentInParent<CombatBase>();
 
+        // Prevent friendly fire
+        if (targetCombat != null && targetCombat.Team == Team)
+        {
+            return;
+        }
+
         // Blocking prevents damage and normal stagger
         if (targetCombat != null && targetCombat.IsBlocking)
         {
@@ -612,10 +609,6 @@ public abstract class CombatBase : MonoBehaviour
 
         Debug.Log($"[FIST HIT] {name} -> {hitCollider.name} | " + $"Damage: {finalDamage} | " + $"Side: {currentPlapSide} | " + $"{(currentPlapIsHeavy ? "HEAVY" : "LIGHT")}");
 
-        // Hit Stop
-        HitStopData data = GetHitStopData();
-
-        HitStopManager.Instance?.TriggerHitStop(data.freezeTime, data.timeScale);
 
         // Hit Callback
         OnHit(hitCollider.transform);
@@ -643,30 +636,6 @@ public abstract class CombatBase : MonoBehaviour
 
         return damage;
     }
-
-
-    // =========================================================
-    // HIT STOP DATA
-    // =========================================================
-
-    protected virtual HitStopData GetHitStopData()
-    {
-        // Combo finisher
-        if (comboStep >= maxCombo - 1)
-        {
-            return finisherHit;
-        }
-
-        // Middle combo hit
-        if (comboStep == 1)
-        {
-            return heavyHit;
-        }
-
-        // Basic hit
-        return normalHit;
-    }
-
 
     // =========================================================
     // KNOCKBACK AND STAGGER

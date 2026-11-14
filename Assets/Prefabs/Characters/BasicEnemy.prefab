@@ -162,15 +162,6 @@ MonoBehaviour:
   comboResetTime: 1
   lungeForce: 2
   lungeDuration: 0.12
-  normalHit:
-    freezeTime: 0
-    timeScale: 0
-  heavyHit:
-    freezeTime: 0
-    timeScale: 0
-  finisherHit:
-    freezeTime: 0
-    timeScale: 0
   attackPoint: {fileID: 0}
   hitCentre: {fileID: 8495598240192663063}
   leftFistHitbox: {fileID: 2174449462917201323}
@@ -247,7 +238,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1417131805810143366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.006, y: 0.753, z: 0.111}
+  m_LocalPosition: {x: 0.006, y: 0.753, z: 0.025}
   m_LocalScale: {x: 0.16666667, y: 0.16666667, z: 0.16666667}
   m_ConstrainProportionsScale: 0
   m_Children: []

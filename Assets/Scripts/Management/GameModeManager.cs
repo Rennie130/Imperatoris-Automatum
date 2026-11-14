@@ -47,10 +47,15 @@ public class GameModeManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (currentMode == GameMode.ThirdPerson)
+            {
                 SetMode(GameMode.SecondPerson);
+            }
             else
+            {
                 SetMode(GameMode.ThirdPerson);
                 ResetSecondaryState();
+            }
+                
         }
 
         UpdateSignal();

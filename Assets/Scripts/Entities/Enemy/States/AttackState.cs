@@ -20,11 +20,6 @@ public class AttackState : IEnemyState
 
     public void Tick()
     {
-        if (!enemy.Combat.IsAttacking)
-        {
-            enemy.Combat.TryChooseAttack();
-        }
-
         if (enemy.CurrentTarget == null || !enemy.CurrentTarget.IsAlive)
         {
             enemy.ClearTarget();
@@ -36,14 +31,14 @@ public class AttackState : IEnemyState
 
         enemy.FaceTarget();
 
-        if (!enemy.Combat.IsAttacking)
-        {
-            enemy.Combat.TryChooseAttack();
-        }
-
         if (!enemy.IsInAttackRange())
         {
             enemy.ChangeState(new ChaseState(enemy));
+        }
+
+        if (!enemy.Combat.IsAttacking)
+        {
+            enemy.Combat.TryChooseAttack();
         }
     }
 

@@ -188,18 +188,54 @@ public class SecondaryController : MonoBehaviour
 
         if (animator != null)
         {
-            animator.SetFloat("Speed", speedPercent);
+            // measure movement relative to forward direction
+            float actualforwardSpeed = Vector3.Dot(currentVelocity, transform.forward);
+
+            // Convert movement into value between -1 and 1
+            float moveDirection = Mathf.Clamp(actualforwardSpeed / moveSpeed, -1f, 1f);
+
+            animator.SetFloat("MoveDirection", moveDirection);
+            animator.SetFloat("Speed", Mathf.Abs(moveDirection));
         }
+
+        
+        
         
     }
 
     public void EnableControl(bool value)
     {
         canControl = value;
+
+        if (!value)
+        {
+            inputH = 0f;
+            inputV = 0f;
+            currentSpeed = 0f;
+            currentVelocity = Vector3.zero;
+
+            if (rb != null)
+            {
+                rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+            }
+
+            ResetMovementAnimation();
+        }
     }
 
     private void OnMechDeath()
     {
         GameManager.Instance.GameOver();
+    }
+
+    public void ResetMovementAnimation()
+    {
+        if (animator == null)
+        {
+            return;
+        }
+
+        animator.SetFloat("Speed", 0f);
+        animator.SetFloat("MoveDirection", 0f);
     }
 }

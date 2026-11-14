@@ -85,6 +85,8 @@ public class EnemyController : Enemy
     {
         animator.SetFloat("Speed", agent.velocity.magnitude);
 
+        CheckPlayerPriority();
+
         currentState?.Tick();
 
         if (aggroTimer > 0)
@@ -251,6 +253,47 @@ public class EnemyController : Enemy
         float distance = Vector3.Distance(transform.position, mech.position);
 
         return distance <= playerOverrideRange;
+    }
+
+    private void CheckPlayerPriority()
+    {
+        Transform mech = GameManager.Instance.mech;
+
+        if (mech == null)
+        {
+            return;
+        }
+
+        float distance = Vector3.Distance(transform.position, mech.position);
+
+        // Only override current target when player is close enough
+        if (distance > playerOverrideRange)
+        {
+            return;
+        }
+
+        ITargetable playerTarget = mech.GetComponent<ITargetable>();
+
+        if (playerTarget == null || !playerTarget.IsAlive)
+        {
+            return;
+        }
+
+        // Already targeting player
+        if (currentTarget == playerTarget)
+        {
+            return;
+        }
+
+        Debug.Log("[AI] Ho... mukatte kuru no ka?");
+
+        SetTarget(playerTarget);
+
+        // Don't interrupt active stun
+        if (!(currentState is StunState));
+        {
+            ChangeState(new ChaseState(this));
+        }
     }
 
     void OnDamaged(Transform attacker)

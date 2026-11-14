@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MechCombat : CombatBase
 {
+
+    public override CombatTeam Team => CombatTeam.Friend;
+
     protected override void Update()
     {
         base.Update();

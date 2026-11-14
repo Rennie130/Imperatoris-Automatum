@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyCombat : CombatBase
 {
+
+    public override CombatTeam Team => CombatTeam.Enemy;
+
     [Header("Enemy Attack Selection")]
     [SerializeField, Range(0f, 1f)]
     private float heavyAttackChance = 0.2f;
@@ -13,7 +16,7 @@ public class EnemyCombat : CombatBase
 
     public void TryChooseAttack()
     {
-        if (IsAttacking || IsBlocking || IsStaggered)
+        if (IsAttacking || IsBlocking || IsStaggered || IsOnCooldown)
         {
             return;
         }
