@@ -36,7 +36,7 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
 
     public virtual void Hurt(int damage, Transform attacker)
     {
-        currentHealth -= damage;
+        //currentHealth -= damage;
 
         PlayHitReaction();
 

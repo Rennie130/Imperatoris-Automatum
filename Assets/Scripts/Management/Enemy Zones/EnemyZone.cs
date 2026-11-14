@@ -41,26 +41,26 @@ public class EnemyZone : MonoBehaviour
         return position;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        foreach (var point in PatrolPoints)
-        {
-            if (point)
-            {
-                Gizmos.DrawLine(transform.position, point.transform.position);
-                Handles.color = Color.yellow;
-                Handles.DrawWireDisc(point.transform.position, Vector3.up, point.Radius, 3f);
-            }
-        }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    foreach (var point in PatrolPoints)
+    //    {
+    //        if (point)
+    //        {
+    //            Gizmos.DrawLine(transform.position, point.transform.position);
+    //            Handles.color = Color.yellow;
+    //            Handles.DrawWireDisc(point.transform.position, Vector3.up, point.Radius, 3f);
+    //        }
+    //    }
 
-        if (NextZone != null)
-        {
-            Handles.color = Color.green;
-            Handles.DrawLine(transform.position, NextZone.transform.position, 4f);
-        }
+    //    if (NextZone != null)
+    //    {
+    //        Handles.color = Color.green;
+    //        Handles.DrawLine(transform.position, NextZone.transform.position, 4f);
+    //    }
 
-    }
+    //}
 
     private void OnValidate()
     {
