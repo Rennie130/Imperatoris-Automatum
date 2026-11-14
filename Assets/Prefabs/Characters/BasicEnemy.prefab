@@ -1254,6 +1254,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vulcani
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1636402168384460314, guid: 9e114d45eb95c7b498d186cf15b9840f, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.029203951
