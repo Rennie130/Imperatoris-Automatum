@@ -141612,7 +141612,7 @@ PrefabInstance:
     - target: {fileID: 6789914720459835134, guid: f40de72224f03ae44bdf75b939eeb32a, type: 3}
       propertyPath: NextZone
       value: 
-      objectReference: {fileID: 6871892289156471401}
+      objectReference: {fileID: 0}
     - target: {fileID: 6789914720459835134, guid: f40de72224f03ae44bdf75b939eeb32a, type: 3}
       propertyPath: Waves.Array.size
       value: 2
@@ -141698,15 +141698,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.size
-      value: 3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
+      propertyPath: Waves.Array.data[0].Spawns.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.data[1].Spawns.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.data[2].Spawns.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.data[0].Spawns.Array.data[0].Count
@@ -141755,17 +141759,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
---- !u!114 &6871892289156471401 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
-  m_PrefabInstance: {fileID: 6871892289156471400}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d062d905d4b35b67abcea7a11ef99e15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8065604258558424849
 PrefabInstance:
   m_ObjectHideFlags: 0
