@@ -230,7 +230,7 @@ public class EnemyController : Enemy
         {
             if (!building.IsAlive) continue;
 
-            float distance = Vector3.Distance(transform.position, building.transform.position);
+            float distance = Vector3.Distance(transform.position, building.GetTargetPoint().position);
 
             if (distance > detectionRange) continue;
 
