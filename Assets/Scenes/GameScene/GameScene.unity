@@ -61206,6 +61206,7 @@ Transform:
   - {fileID: 805234418}
   - {fileID: 673026288}
   - {fileID: 912259310}
+  - {fileID: 1104725899}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72330,6 +72331,70 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1001 &1104725898
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 922275902}
+    m_Modifications:
+    - target: {fileID: 3845695679530837681, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_Name
+      value: HitStopManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -182.79651
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.701723
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 91.393135
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+--- !u!4 &1104725899 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3845695679530837695, guid: 854846f6b7c45644594c4dd4a3217f5b, type: 3}
+  m_PrefabInstance: {fileID: 1104725898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1109623044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -141701,16 +141766,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
-      propertyPath: Waves.Array.data[0].Spawns.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.data[1].Spawns.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.data[2].Spawns.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6871892288246687197, guid: 5bed333cc03ff4b47aac551908738754, type: 3}
       propertyPath: Waves.Array.data[0].Spawns.Array.data[0].Count
