@@ -140624,7 +140624,7 @@ Camera:
   m_TargetTexture: {fileID: 8400000, guid: 6d2f1d935b9b05847b57ffacf4d8002d, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0

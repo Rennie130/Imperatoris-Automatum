@@ -46,7 +46,7 @@ public abstract class CombatBase : MonoBehaviour
     [Tooltip("How long the fist hitbox stays active after the animation hit frame.")]
     [SerializeField] protected float fistHitboxDuration = 0.15f;
     
-    private bool heavyWindupComplete;
+    //private bool heavyWindupComplete;
 
 
     // =======================================================
@@ -450,11 +450,11 @@ public abstract class CombatBase : MonoBehaviour
         {
             Debug.Log($"[HEAVY WINDUP] {name}");
 
-            heavyWindupComplete = false;
+            //heavyWindupComplete = false;
 
             PlayAttackAnimation(true);
 
-            yield return new WaitUntil(() => heavyWindupComplete);
+            //yield return new WaitUntil(() => heavyWindupComplete);
 
             if (IsStaggered)
             {
@@ -532,15 +532,15 @@ public abstract class CombatBase : MonoBehaviour
     // ANIMATION HIT FRAME
     // =========================================================
 
-        public void HeavyWindupFinished()
-    {
-        if (!currentPlapIsHeavy || !isAttacking)
-        {
-            return;
-        }
+    //    public void HeavyWindupFinished()
+    //{
+    //    if (!currentPlapIsHeavy || !isAttacking)
+    //    {
+    //        return;
+    //    }
 
-        heavyWindupComplete = true;
-    }
+    //    heavyWindupComplete = true;
+    //}
 
     // Replaces the old OverlapSphere attack
     public virtual void AnimationHitFrame()

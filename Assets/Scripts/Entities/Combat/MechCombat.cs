@@ -14,11 +14,11 @@ public class MechCombat : CombatBase
         if (!GameModeManager.Instance.IsControllingSecondary())
             return;
         
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("[MECH INPUT DETECTED]");
-            TryAttack();
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Debug.Log("[MECH INPUT DETECTED]");
+        //    TryAttack();
+        //}
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
