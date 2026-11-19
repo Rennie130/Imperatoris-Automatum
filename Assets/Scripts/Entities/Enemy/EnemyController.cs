@@ -83,7 +83,19 @@ public class EnemyController : Enemy
 
     void Update()
     {
-        animator.SetFloat("Speed", agent.velocity.magnitude);
+        //animator.SetFloat("Speed", agent.velocity.magnitude);
+
+        if (animator != null)
+        {
+            // measure movement relative to forward direction
+            float actualforwardSpeed = Vector3.Dot(agent.velocity, transform.forward);
+
+            // Convert movement into value between -1 and 1
+            float moveDirection = Mathf.Clamp(actualforwardSpeed / agent.speed, -1f, 1f);
+
+            animator.SetFloat("MoveDirection", moveDirection);
+            animator.SetFloat("Speed", Mathf.Abs(moveDirection));
+        }
 
         CheckPlayerPriority();
 

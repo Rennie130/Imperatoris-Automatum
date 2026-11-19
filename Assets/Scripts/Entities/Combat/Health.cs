@@ -5,57 +5,127 @@ using System;
 
 public class Health : HealthBase
 {
-    public PrimaryController primaryController;
+    [Header("Death Animation")]
+    [SerializeField] private Animator deathAnimator;
+    [SerializeField] private float deathAnimatorDuration = 2f;
 
-    void Start()
+    private PrimaryController primaryController;
+    private SecondaryController secondaryController;
+    private bool isDying;
+
+    protected override void Awake()
     {
+        base.Awake();
+
         primaryController = GetComponent<PrimaryController>();
+        secondaryController = GetComponent<SecondaryController>();
+
+        if (deathAnimator == null)
+        {
+            deathAnimator = GetComponentInChildren<Animator>();
+        }
     }
     protected override void Die()
     {
+        if (isDying) return;
+        isDying = true;
+
         Debug.Log($"[DEATH] {name} died");
 
-        OnDeath?.Invoke();
-
-        // Remove from wave tracking
-        if (MissionManager.Instance != null)
+        // Stop combat.
+        CombatBase combat = GetComponent<CombatBase>();
+        if (combat != null)
         {
-            MissionManager.Instance.aliveEnemies.Remove(gameObject);
+            combat.CancelAttack();
         }
 
-        // Disable AI
-        var ai = GetComponent<EnemyController>();
-        if (ai) ai.enabled = false;
+        // Disable player and mech controls.
+        if (primaryController != null)
+        {
+            primaryController.EnableMovement(false);
+        }
 
-        // Stop NavMesh
-        var agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent)
+        if (secondaryController != null)
+        {
+            secondaryController.EnableControl(false);
+        }
+
+        // Disable enemy ai
+        EnemyController ai = GetComponent<EnemyController>();
+        if (ai != null)
+        {
+            ai.enabled = false;
+        }
+
+        // Stop NavMesh movement.
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null && agent.enabled)
         {
             agent.isStopped = true;
             agent.enabled = false;
         }
 
-        // Stop Combat
-        var combat = GetComponent<CombatBase>();
-        if (combat) combat.CancelAttack();
+        // Disable colliders.
+        foreach (Collider col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
 
-        // Disable Collider
-        Collider col = GetComponent<Collider>();
-        if (col) col.enabled = false;
-
-        // Freeze Physics
+        // Stop physics movement.
         Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb) rb.isKinematic = true;
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
 
+        // Prevent dead from being targeted
         gameObject.layer = LayerMask.NameToLayer("Dead");
 
-        // Destroy after delay
-        Destroy(gameObject, 0f);  
 
-        // Player only
-        if (primaryController != null)
+        // Remove from wave tracking
+        if (primaryController == null && secondaryController == null)
         {
-            primaryController.OnPlayerDeath();
+            if (MissionManager.Instance != null)
+            {
+                MissionManager.Instance.aliveEnemies.Remove(gameObject);
+            }
+        }
+        
+        StartCoroutine(DeathRoutine());
+
+    }
+
+    private IEnumerator DeathRoutine()
+    {
+        if (deathAnimator != null)
+        {
+            deathAnimator.SetTrigger("Die");
+
+            yield return new WaitForSeconds(deathAnimatorDuration);
+
+            // Vulcani death.
+            if (primaryController != null || secondaryController != null)
+            {
+                OnDeath?.Invoke();
+
+                if (primaryController != null)
+                {
+                    primaryController.OnPlayerDeath();
+                }
+
+                if (secondaryController != null)
+                {
+                    GameManager.Instance.GameOver();
+                }
+
+                yield break;
+            }
+
+            // Enemy death.
+            OnDeath?.Invoke();
+            Destroy(gameObject);
         }
     }
 

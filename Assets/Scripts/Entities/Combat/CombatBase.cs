@@ -45,6 +45,8 @@ public abstract class CombatBase : MonoBehaviour
 
     [Tooltip("How long the fist hitbox stays active after the animation hit frame.")]
     [SerializeField] protected float fistHitboxDuration = 0.15f;
+    
+    //private bool heavyWindupComplete;
 
 
     // =======================================================
@@ -153,6 +155,9 @@ public abstract class CombatBase : MonoBehaviour
         Right
     }
 
+    private bool leftHeavyStarted;
+    private bool rightHeavyStarted;
+
     protected PlapSide currentPlapSide;
 
     protected bool currentPlapIsHeavy;
@@ -236,12 +241,14 @@ public abstract class CombatBase : MonoBehaviour
         {
             leftMouseHeld = true;
             leftMouseHoldTime = 0f;
+            leftHeavyStarted = false;
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             rightMouseHeld = true;
             rightMouseHoldTime = 0f;
+            rightHeavyStarted = false;
         }
 
         if (leftMouseHeld)
@@ -261,32 +268,43 @@ public abstract class CombatBase : MonoBehaviour
             SetBlocking(true);
         }
 
+        // Heavy charge.
+        if (leftMouseHeld && !blockChordUsed && !leftHeavyStarted && leftMouseHoldTime >= heavyPlapHoldTime)
+        {
+            leftHeavyStarted = true;
+            TryPlap(PlapSide.Left, true);
+        }
+
+        if (rightMouseHeld && !blockChordUsed && !rightHeavyStarted && rightMouseHoldTime >= heavyPlapHoldTime)
+        {
+            rightHeavyStarted = true;
+            TryPlap(PlapSide.Right, true);
+        }
+
+
+        // Release.
         if (Input.GetMouseButtonUp(0))
         {
-            bool heavy = leftMouseHoldTime >= heavyPlapHoldTime;
+            if (!blockChordUsed && !leftHeavyStarted)
+            {
+                TryPlap(PlapSide.Left, false);
+            }        
 
             leftMouseHeld = false;
             leftMouseHoldTime = 0f;
-
-            // Don't punch if this press was part of block
-            if (!blockChordUsed)
-            {
-                TryPlap(PlapSide.Left, heavy);
-            }
+            leftHeavyStarted = false;
         }
 
         if (Input.GetMouseButtonUp(1))
         {
-            bool heavy = rightMouseHoldTime >= heavyPlapHoldTime;
+            if (!blockChordUsed && !rightHeavyStarted)
+            {
+                TryPlap(PlapSide.Right, false);
+            }
 
             rightMouseHeld = false;
             rightMouseHoldTime = 0f;
-
-            // Don't punch if block
-            if (!blockChordUsed)
-            {
-                TryPlap(PlapSide.Right, heavy);
-            }
+            rightHeavyStarted = false;
 
         }
 
@@ -428,17 +446,33 @@ public abstract class CombatBase : MonoBehaviour
         hitTargets.Clear();
 
         // Wind up
+        if (currentPlapIsHeavy)
+        {
+            Debug.Log($"[HEAVY WINDUP] {name}");
 
-        Debug.Log($"[WINDUP] {name}");
-        // Wind-Up (telegraph)
-        OnWindUp();
+            //heavyWindupComplete = false;
 
-        // Trigger animation
-        PlayAttackAnimation();
+            PlayAttackAnimation(true);
 
-        // Wait for animation to finish
+            //yield return new WaitUntil(() => heavyWindupComplete);
+
+            if (IsStaggered)
+            {
+                isAttacking = false;
+                attackRoutine = null;
+                yield break;
+            }
+
+            PlayAttackAnimation(false);
+        }
+        else
+        {
+            Debug.Log($"[LIGHT PLAP] {name}");
+            PlayAttackAnimation(false);
+        }
+
         yield return new WaitForSeconds(recoveryTime);
-        
+
         if (!IsStaggered && animator != null)
         {
             animator.ResetTrigger("Stagger");
@@ -446,34 +480,40 @@ public abstract class CombatBase : MonoBehaviour
 
         lastAttackTime = Time.time;
         isAttacking = false;
+        attackRoutine = null;
 
-        // Continue combo if queued
         if (queuedNextAttack)
         {
             queuedNextAttack = false;
 
             comboStep++;
-            
-            // Wrap combo back around
+
             if (comboStep >= maxCombo)
+            {
                 comboStep = 0;
+            }
 
             attackRoutine = StartCoroutine(AttackRoutine());
         }
         else
         {
-            // Begin combo expiration timer
             comboTimer = comboResetTime;
         }
-
     }
 
-    protected virtual void PlayAttackAnimation()
+    protected virtual void PlayAttackAnimation(bool windingUp = false)
     {
         if (animator == null) return;
 
         animator.SetInteger("ComboStep", comboStep);
-        
+
+        animator.SetInteger("PlapSide", currentPlapSide == PlapSide.Left ? 0 : 1);
+
+        animator.SetBool("IsHeavy", currentPlapIsHeavy);
+        animator.SetBool("IsWindingUp", windingUp);
+ 
+        animator.ResetTrigger("Plap");
+        animator.SetTrigger("Plap");
 
         /*
         New parameters.
@@ -486,17 +526,21 @@ public abstract class CombatBase : MonoBehaviour
         false = Light
         true = Heavy
         */
-        
-        animator.SetInteger("PlapSide", currentPlapSide == PlapSide.Left ? 0 : 1);
-
-        animator.SetBool("IsHeavy", currentPlapIsHeavy);
-
-        animator.SetTrigger("Plap");
     }
 
     // =========================================================
     // ANIMATION HIT FRAME
     // =========================================================
+
+    //    public void HeavyWindupFinished()
+    //{
+    //    if (!currentPlapIsHeavy || !isAttacking)
+    //    {
+    //        return;
+    //    }
+
+    //    heavyWindupComplete = true;
+    //}
 
     // Replaces the old OverlapSphere attack
     public virtual void AnimationHitFrame()
@@ -873,5 +917,6 @@ public abstract class CombatBase : MonoBehaviour
 
         Gizmos.DrawWireSphere(rangePoint, 0.2f);
     }
+
 
 }

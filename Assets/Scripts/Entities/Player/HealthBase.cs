@@ -36,19 +36,14 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
 
     public virtual void Hurt(int damage, Transform attacker)
     {
-        //currentHealth -= damage;
-
-        PlayHitReaction();
-
         if (!IsAlive) return;
 
         currentHealth = Mathf.Max(currentHealth - damage, 0);
 
-        Debug.Log($"[DAMAGE] {name} took {damage} from {attacker?.name}. HP: {currentHealth}/{maxHealth}");
+        Debug.Log("[DAMAGE {name} took {damage} from {attacker.name}. HP: {currentHealth}/{maxHealth}]");
 
         OnDamaged?.Invoke(attacker);
 
-        // Interrupt attack if allowed
         CombatBase combat = GetComponent<CombatBase>();
 
         if (combat != null && canBeInterrupted)
@@ -60,7 +55,10 @@ public abstract class HealthBase : MonoBehaviour, Damageable, ITargetable
         if (currentHealth <= 0)
         {
             Die();
+            return;
         }
+
+        PlayHitReaction();
     }
 
     /// ========================
